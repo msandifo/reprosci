@@ -343,7 +343,7 @@ reprosci003 <- function( gas.efficiency, gas){
 #--------
 #drake plan
 #------
-repromake001 = drake::drake_plan(
+reproplan001 = drake::drake_plan(
    lng = update_gladstone( local.path=local.path),
    NSW1 =get_aemo_data(state='NSW'),# %>% padr::pad()
    VIC1 =get_aemo_data(state='VIC'),

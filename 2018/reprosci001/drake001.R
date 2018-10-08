@@ -16,7 +16,7 @@ download_aemo_current( local.path=local.path )
 
 drake::clean(reprosci001.plot,reprosci002.plot,reprosci003.plot)
 drake::drake_gc(verb=T)
-drake::make( repromake001, force=T)
+drake::make( reproplan001, force=T)
 
 setwd("./figs")
 ggsave("reprosci001.png",  readd(reprosci001.plot) ,width=8, height=5) 
