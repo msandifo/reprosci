@@ -1,0 +1,117 @@
+---
+title: "001-Gladstone LNG"
+output: github_document
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,  message=FALSE, warning=FALSE)
+ source('./src/themes001.R')
+source('./src/functions001.R')
+
+  
+```
+
+## Summary
+
+time series of monthly Gladstone Port Authority LNG export volumes, and averaed NEM market dispatch prices.
+LNG exprts are in annualised tonneage. NEM market prices are in AUD$ per megawatt hour.
+
+## Data Sources
+
+
+* Gladstone Port authority - http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx, 
+
+* AEMO dispatch files by region id
+
+
+
+
+## Code
+The code is organised and run/update via a drake plan.
+```{r drake_plan, echo=FALSE}
+config <- drake::drake_config(reproplan001)
+graph <- drake::drake_graph_info(
+  config, group = "status", clusters = "imported")
+drake::render_drake_graph(graph)
+```
+
+AEMO data files  are dowloaded to a local directory set by *local.path*
+By dafult local.path is set to NULL,a nd data is downloaded via rappdirs::__ to the users cache direcrtory (MACOSX, ~/Library/cache) wheer it sis troerd in fodlers aemo. The date fiels are read into timeseires for each Region, abd then agreated acorss the NEM as monthly and annual series. 
+
+Gladssone exports are read form html tables (via rvest) and stored in 
+
+
+## Output
+
+The code generates three charts :
+
+```{r repo001  }
+drake::readd(reprosci001.plot)
+```
+
+
+
+
+```{r repo002, echo=FALSE}
+drake::readd(reprosci002.plot)
+```
+
+```{r repo003, echo=FALSE}
+drake::readd(reprosci003.plot)
+```
+
+## Code details
+
+We sue rvest to download the data from ladstine prot authority
+
+```{r code1, echo=T}
+
+ read_gladstone_ports<- function(year=NULL, 
+                                 month=NULL,
+                                 fuel="Liquefied Natural Gas",
+                                 country="Total"){
+  args <- as.list(match.call())
+   if (is.null(year)) year <- lubridate::year(Sys.Date())
+  if (is.null(month)) {
+    current.month <- lubridate::month(Sys.Date())
+    #current month not posted (usually not posted until second week of current month)
+ 
+    if (current.month>1 ) month <- current.month <- 1  else if (is.null(args$year)) {
+      month=12
+      year<-year-1
+      }
+  }
+   if (month>= 10) yearmonth= paste(year,month, sep="") else 
+     yearmonth= paste(year,month, sep="0")
+   message(paste(fuel, month, year))
+   url<-paste0("http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoOriginDestination.aspx?View=C&Durat=M&Key=",yearmonth)
+   wg <- rvest::html_session(url )
+   batches <- rvest::read_html(wg) %>%
+     rvest::html_nodes("#MainContent_pnlResults")   #class(batches)
+   table <- batches %>%
+     rvest::html_nodes("td") %>%
+     rvest::html_text()
+   lng.ind <- which( table==fuel)
+   t.ind <-which(str_detect(table,country))
+   t.lng.ind  <- t.ind[t.ind>lng.ind][1]
+   value <- table[t.lng.ind+1] %>% str_replace_all(",","") %>%as.numeric()
+   mdays <- lubridate::days_in_month(lubridate::ymd(paste(year,month, "01", sep="-")))
+   if(country=="Total"){
+     ships <- table[t.lng.ind+2] %>% str_replace_all(",","") %>%as.numeric()
+     return(data.frame(year=year, 
+                       month=month, 
+                       date=lubridate::ymd(paste(year,month, "15", sep="-")),
+                       tonnes=value, 
+                       shipments=ships, 
+                       mdays=mdays))
+   } else 
+     return(data.frame(year=year, 
+                       month=month,  
+                       date=lubridate::ymd(paste(year,month, "15", sep="-")),
+                       tonnes=value,
+                       mdays=mdays))
+ }
+```
+
+## Errata
