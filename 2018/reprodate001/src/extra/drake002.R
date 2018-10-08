@@ -29,7 +29,7 @@ p1 +geom_line(data=NEM.month %>% subset(date< max( gas$date)+months(1)), aes(y=R
        y="gigawatts", caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/twitter/blob/master/001/drake001.R")+
   theme(plot.caption=element_text(colour="grey80", size=8,hjust=1) )
 
-ggsave("/Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/001/figs/ms002.png", width=8, height=5) 
+#ggsave("/Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/001/figs/ms002.png", width=8, height=5) 
 
 gas.use$date = lubridate::ymd(paste0(gas.use$year,"-",gas.use$month,"-15"))
 gas.use$sum = rowSums(gas.use[, 3:5])

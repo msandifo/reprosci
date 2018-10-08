@@ -169,7 +169,6 @@ read_gladstone_ports<- function(year=NULL,
                       mdays=mdays))
 }
 
- 
  # requires purrr
  #reads a sequence of gladstone port authority tables
  read_gladstone_year <- function(years=2015:lubridate::year(Sys.Date()),fuel="Liquefied Natural Gas", country="Total"){
@@ -184,7 +183,7 @@ read_gladstone_ports<- function(year=NULL,
    local.path=validate_directory(local.path, folder="gladstone")
    gladstone.file = paste0(local.path, "/", "lng.Rdata")
    if (!file.exists(gladstone.file)) {
-     read_gladstone_year(years=2015:2018 ) -> lng
+     read_gladstone_year(years=years ) -> lng
     save(lng, file=gladstone.file )} else load(gladstone.file)
    lng
  }
@@ -226,7 +225,7 @@ read_gladstone_ports<- function(year=NULL,
 # --------------------
 # ggplot themes
 #---------------------
-repo001<- function(lng=lng, NEM.month=NEM.month, NEM.year=NEM.year) {
+reprodate001<- function(lng=lng, NEM.month=NEM.month, NEM.year=NEM.year) {
   library(ggplot2)
   (NEM.year %>% subset(year %in% c(2015,2017)))$RRP %>% diff() -> nem.diff.15.17.RRP
   (NEM.year %>% subset(year %in% c(2017)))$TOTALDEMAND -> nem.17.TD
@@ -277,18 +276,13 @@ ggplot(lng  , aes(date, tonnes/1e6/mdays*365))+ geom_line(data=NEM.month , aes(y
   geom_point(size=1.25, colour="white")+
   geom_point(size=.75)+
   labs(subtitle="Gladstone LNG exports, NEM prices", x=NULL, 
-       y="million tonnes - annualised", caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/twitter/blob/master/drake001.R")+
+       y="million tonnes - annualised", caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprodate001")+
   theme(plot.caption=element_text(colour="grey80", size=8,hjust=1) )
 
 }
 
-repo002 <- function(gas.use,NEM.month ){
+ reprodate002 <- function(gas.use,gas, NEM.month ){
   #gas.use <-data.table::fread("/Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/001/data/gas_generation.csv")
-names(gas.use) <- stringr::str_to_lower(names(gas.use))
-gas <- tidyr::gather(gas.use, key,value, -year, -month) %>% 
-  dplyr::mutate(date = lubridate::ymd(paste0(year,"-",month,"-15")) ,
-                mdays = lubridate::days_in_month(date),
-                mw= value*1e3/(mdays*24)*12, gas.type= stringr::str_remove_all(key, "gas_"))
 
 #NEM.month<-readd(NEM.month)
 
@@ -311,24 +305,65 @@ p1 +geom_line(data=NEM.month %>% subset(date< max( gas$date)+months(1)), aes(y=R
         axis.title.y.left= element_text(  color = "red3"),
         axis.title.y.right= element_text(angle = -90, hjust = 0, color = "black"))+
   labs(subtitle="NEM gas generation, prices", x=NULL, 
-       y="gigawatts", caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/twitter/blob/master/001/drake001.R")+
+       y="gigawatts", caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprodate001")+
   theme(plot.caption=element_text(colour="grey80", size=8,hjust=1) )}
 
 
+reprodate003 <- function(gas, gas.efficiency){
+ # names(gas.use) <- stringr::str_to_lower(names(gas.use))
+  #30-35% for steam (i.e. Torrens & Northern), 45%-50% for CCGT, and 30-35% for OCGT. 
+  
+
+  # gas.effciency<- gas.use %>% dplyr::mutate(date = lubridate::ymd(paste0(year,"-",month,"-15")),
+  #                                           sum = gas_ccgt+gas_ocgt+gas_steam,
+  #                                           efficiencyLower =(gas_ccgt*.45 +gas_ocgt*.3 + gas_steam*.3 )/sum,
+  #                                           efficiencyUpper =(gas_ccgt*.5 + gas_ocgt*.35 + gas_steam*.35 )/sum)
+  
+  
+  ggplot(gas, aes(date, mw/1000 ))+ geom_area(aes( fill=gas.type), alpha=.85,col="white", size=.2,position = "fill")+
+    geom_vline(xintercept = lubridate::ymd(c("2012-07-01", "2014-07-17")),
+               col="red4", size=.2, linetype=2) +
+    geom_vline(xintercept = lubridate::ymd(c("2017-04-01")), col="darkgreen", size=.2, linetype=2) +
+    geom_text(data = data.frame(),aes(x=lubridate::ymd("2012-07-15"), y=.900 ,
+                                      label="start\nC-Tax"), hjust=-0.,col="Red4", size=3)+
+    geom_text(data = data.frame(),aes(x=lubridate::ymd("2014-07-28"), y=.900 , 
+                                      label="end\nC-Tax"), hjust=-0.,col="Red4", size=3)+
+    geom_text(data = data.frame(),aes(x=lubridate::ymd("2017-04-19"), y=.900,
+                                      label="Hazelwood\nclosure"), hjust=-0.,col="darkgreen", size=3)+
+    theme(legend.position = "bottom")+
+    geom_line(data=gas.efficiency, aes(y=efficiencyLower), size=.2)+
+    geom_line(data=gas.efficiency, aes(y=efficiencyUpper), size=.2)+
+    coord_cartesian(ylim=c(0,.6))+
+    scale_y_continuous(labels = scales::percent, breaks = seq(0,1,by=0.1))+
+    labs(subtitle="NEM gas generation, thermal efficiency", x=NULL, 
+         y=NULL, caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprodate001")
+  
+  
+}
 #--------
 #drake plan
 #------
- twitter001 = drake::drake_plan(
-   lng = update_gladstone(),
+repromake001 = drake::drake_plan(
+   lng = update_gladstone( local.path=local.path),
    NSW1 =get_aemo_data(state='NSW'),# %>% padr::pad()
    VIC1 =get_aemo_data(state='VIC'),
    SA1 = get_aemo_data(state='SA'),
    QLD1  =get_aemo_data(state='QLD'),
    TAS1  =get_aemo_data(state='TAS'),
    aemo = data.table::rbindlist(list(NSW1,QLD1,SA1,TAS1,VIC1)) ,
-   gas.use= gas.use <-data.table::fread(paste0(drake.path, "/data/gas_generation.csv")),
-
-   # nb 5 regionns being summed so lenegth is 5x number of time increments
+   gas.use= gas.use <-data.table::fread(paste0(drake.path, "/data/gas_generation.csv"))%>%
+     purrr::set_names(~ stringr::str_to_lower(.)),
+   gas =tidyr::gather(gas.use, key,value, -year, -month) %>% 
+     dplyr::mutate(date = lubridate::ymd(paste0(year,"-",month,"-15")) ,
+                   mdays = lubridate::days_in_month(date),
+                   mw= value*1e3/(mdays*24)*12, gas.type= stringr::str_remove_all(key, "gas_")),
+   
+   gas.efficiency =gas.use %>% dplyr::mutate(date = lubridate::ymd(paste0(year,"-",month,"-15")),
+                                             sum = gas_ccgt+gas_ocgt+gas_steam,
+                                             efficiencyLower =(gas_ccgt*.45 +gas_ocgt*.3 + gas_steam*.3 )/sum,
+                                             efficiencyUpper =(gas_ccgt*.5 + gas_ocgt*.35 + gas_steam*.35 )/sum),
+   
+   # nb 5 regions being summed so lenegth is 5x number of time increments
    
    NEM.month = aemo %>% 
      dplyr::group_by(year, month) %>% 
@@ -342,8 +377,10 @@ p1 +geom_line(data=NEM.month %>% subset(date< max( gas$date)+months(1)), aes(y=R
      dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),
                       RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
                       TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND)),
-   repo001.plot= repo001(lng, NEM.month,NEM.year),
-   repo002.plot= repo002(gas.use, NEM.month )
+   reprodate001.plot= reprodate001(lng, NEM.month,NEM.year),
+   reprodate002.plot= reprodate002(gas.use,gas, NEM.month ),
+   reprodate003.plot= reprodate003(gas, gas.effciency  )
+   
    
  )
 

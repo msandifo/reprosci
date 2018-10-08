@@ -27,12 +27,13 @@ we use rvest to acces the Gladstone Port authority, with the function  read_glad
                                  month=NULL,
                                  fuel="Liquefied Natural Gas",
                                  country="Total"){
+  args <- as.list(match.call())
    if (is.null(year)) year <- lubridate::year(Sys.Date())
   if (is.null(month)) {
     current.month <- lubridate::month(Sys.Date())
     #current month not posted (usually not posted until second week of current month)
  
-    if (m>1) month <- current.month <- 1  else {
+    if (current.month>1 ) month <- current.month <- 1  else if (is.null(args$year)) {
       month=12
       year<-year-1
       }
