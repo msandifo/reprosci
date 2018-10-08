@@ -14,32 +14,51 @@ source('./src/functions001.R')
 
 ## Summary
 
-time series of monthly Gladstone Port Authority LNG export volumes, and averaed NEM market dispatch prices.
-LNG exprts are in annualised tonneage. NEM market prices are in AUD$ per megawatt hour.
+Amongst the many factors that caused Australian east coast electricity wholesale prices to double between 2015 and 2016, is the opening of the east coast gas market to internatinal exports. 
+Here I explore time series of Gladstone Port Authority LNG export volumes, and NEM market dispatch prices to illustrate the correlations.
+LNG exports are expresed in annualised tonneage. NEM market prices are in AUD$ per megawatt hour.
 
 ## Data Sources
 
+LNG epxorts  are soruced from Gladstone Port authority - http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx, 
 
-* Gladstone Port authority - http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx, 
-
-* AEMO dispatch files by region id
+NEM electricity prices are sourced from AEMO dispatch files by region id
 
 
 
 
 ## Code
+
+AEMO data files  are downloaded  to a local directory set by 
+``` local.path```
+By dafult ``` local.path=NULL``` in which case data is downloaded via rappdirs::user_cache_dir() to a folder in the users cache directory (for MACOSX, ~/Library/cache), aeomo to ```file.path(local.path, aemo)```.
+
+```{r echo=T, eval=F}
+download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
+download_aemo_current( local.path=local.path )
+```
+
 The code is organised and run/update via a drake plan.
-```{r drake_plan, echo=FALSE}
+```{r drake_plan, echo=TRUE, cache=TRUE}
 config <- drake::drake_config(reproplan001)
 graph <- drake::drake_graph_info(
   config, group = "status", clusters = "imported")
-drake::render_drake_graph(graph)
+drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
+#drake::vis_drake_graph(config, file="test_vis_drake.png")
 ```
 
-AEMO data files  are dowloaded to a local directory set by *local.path*
-By dafult local.path is set to NULL,a nd data is downloaded via rappdirs::__ to the users cache direcrtory (MACOSX, ~/Library/cache) wheer it sis troerd in fodlers aemo. The date fiels are read into timeseires for each Region, abd then agreated acorss the NEM as monthly and annual series. 
+<img src="./figs/rmd_render_drake.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
-Gladssone exports are read form html tables (via rvest) and stored in 
+
+
+The drake make file
+```{r echo=T, eval=F}
+drake::make( reproplan001, force=T)
+```
+
+AEMO data files for each of the five region are aggregated across the NEM as monthly ``` NEM.month``` and annual ```NEM.year``` timeseries. 
+
+Gladstone cargo exports are read from html tables ```lng``` and stored to disk as   ```file.path(local.path, lng, lng.Rdata)``` - see code details.
 
 
 ## Output
