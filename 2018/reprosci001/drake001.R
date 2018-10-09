@@ -6,22 +6,16 @@ drake.path <-
   dirname(rstudioapi::getSourceEditorContext()$path )
 
 setwd(drake.path)
-setwd("./src")
-source('themes001.R')
-source('functions001.R')
-setwd(drake.path)
-
-download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
-download_aemo_current( local.path=local.path )
+ 
+source('./src/themes.R')
+source('./src/functions.R')
+source('./src/plan.R')
+source('./src/downloads.R')
 
 drake::clean(reprosci001.plot,reprosci002.plot,reprosci003.plot)
 drake::drake_gc(verb=T)
-drake::make( reproplan001, force=T)
+drake::make( reproplan, force=T)
 
-setwd("./figs")
-ggsave("reprosci001.png",  readd(reprosci001.plot) ,width=8, height=5) 
-ggsave("reprosci002.png",  readd(reprosci002.plot) ,width=8, height=5) 
-ggsave("reprosci003.png",  readd(reprosci003.plot) ,width=8, height=5) 
-setwd(drake.path)
+source('./src/outputs.R')
   
   

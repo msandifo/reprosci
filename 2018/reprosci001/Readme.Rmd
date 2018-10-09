@@ -18,52 +18,78 @@ Amongst the many factors that caused Australian east coast electricity wholesale
 Here I explore time series of Gladstone Port Authority LNG export volumes, and NEM market dispatch prices to illustrate the correlations.
 LNG exports are expresed in annualised tonneage. NEM market prices are in AUD$ per megawatt hour.
 
+## Package dependencies
+
 ## Data Sources
 
-LNG epxorts  are soruced from Gladstone Port authority - http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx, 
+LNG epxorts data are sourced from the [Gladstone Port Authority (GPA)  website](http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx). 
 
-NEM electricity prices are sourced from AEMO dispatch files by region id
-
-
+NEM electricity prices are sourced from AEMO's half hourly rpice and demand files.
 
 
 ## Code
 
+The code base in managed using   the ```drake``` package.
+
+To start we set some variables, such as the ```drake.path```, read in key functions and the  drake plan ```reproplan001``` and set a ggplot theme.
+
+```{r echo=T, eval=F}
+pkgconfig::set_config("drake::strings_in_dots" = "literals")
+local.path=NULL
+drake.path <- dirname(rstudioapi::getSourceEditorContext()$path )
+setwd(drake.path)
+source('./src/functions.R')
+source('./src/plan.R')
+source('./src/themes.R')
+``` 
+ 
 AEMO data files  are downloaded  to a local directory set by 
 ``` local.path```
-By dafult ``` local.path=NULL``` in which case data is downloaded via rappdirs::user_cache_dir() to a folder in the users cache directory (for MACOSX, ~/Library/cache), aeomo to ```file.path(local.path, aemo)```.
+By dafult ``` local.path=NULL``` in which case data is downloaded via ```rappdirs::user_cache_dir()``` to a folder in the users cache directory (for macOSX, ```~/Library/cache```) to ```file.path(local.path, aemo)```.
 
 ```{r echo=T, eval=F}
 download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
 download_aemo_current( local.path=local.path )
 ```
 
-The code is organised and run/update via a drake plan.
+
+
+
+With the data he code is organised and run/update via drake 
+```{r echo=T, eval=F}
+drake::make( reproplan001, force=T)
+```
+
+The drake plan ```reproplan001``` dependency structure can be easily visualised 
 ```{r drake_plan, echo=TRUE, cache=TRUE}
 config <- drake::drake_config(reproplan001)
-graph <- drake::drake_graph_info(
-  config, group = "status", clusters = "imported")
+graph <- drake::drake_graph_info(config, group = "status", clusters = "imported")
 drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
-#drake::vis_drake_graph(config, file="test_vis_drake.png")
 ```
 
 <img src="./figs/rmd_render_drake.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
 
+Note that the drake plan includes 
 
-The drake make file
-```{r echo=T, eval=F}
-drake::make( reproplan001, force=T)
-```
+* the statement ```lng = update_gladstone( local.path=local.path)``` which either reads the Gladstone export data from html tables as a data.frame  and stores ```lng``` to disk in   ```file.path(local.path, "lng", "lng.Rdata")```, or if already dowlnoaded ```load(file.path(local.path, "lng", "lng.Rdata"))```- see code details.
+* statements to read the monthly AEMO data files for each of the five region, and aggregated them as monthly ``` NEM.month``` and annual ```NEM.year``` timeseries. 
 
-AEMO data files for each of the five region are aggregated across the NEM as monthly ``` NEM.month``` and annual ```NEM.year``` timeseries. 
 
-Gladstone cargo exports are read from html tables ```lng``` and stored to disk as   ```file.path(local.path, lng, lng.Rdata)``` - see code details.
+
 
 
 ## Output
 
-The code generates three charts :
+The code generates three charts, output to ```./figs``` directory :
+
+```{r  echo=TRUE, cache=TRUE}
+setwd("./figs")
+ggsave("reprosci001.png",  readd(reprosci001.plot) ,width=8, height=5) 
+ggsave("reprosci002.png",  readd(reprosci002.plot) ,width=8, height=5) 
+ggsave("reprosci003.png",  readd(reprosci003.plot) ,width=8, height=5) 
+```
+
 
 ```{r repo001  }
 drake::readd(reprosci001.plot)
@@ -82,55 +108,14 @@ drake::readd(reprosci003.plot)
 
 ## Code details
 
-We sue rvest to download the data from ladstine prot authority
+### Gladstone Port Authority (GPA)
 
-```{r code1, echo=T}
+The function call
 
- read_gladstone_ports<- function(year=NULL, 
-                                 month=NULL,
-                                 fuel="Liquefied Natural Gas",
-                                 country="Total"){
-  args <- as.list(match.call())
-   if (is.null(year)) year <- lubridate::year(Sys.Date())
-  if (is.null(month)) {
-    current.month <- lubridate::month(Sys.Date())
-    #current month not posted (usually not posted until second week of current month)
- 
-    if (current.month>1 ) month <- current.month <- 1  else if (is.null(args$year)) {
-      month=12
-      year<-year-1
-      }
-  }
-   if (month>= 10) yearmonth= paste(year,month, sep="") else 
-     yearmonth= paste(year,month, sep="0")
-   message(paste(fuel, month, year))
-   url<-paste0("http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoOriginDestination.aspx?View=C&Durat=M&Key=",yearmonth)
-   wg <- rvest::html_session(url )
-   batches <- rvest::read_html(wg) %>%
-     rvest::html_nodes("#MainContent_pnlResults")   #class(batches)
-   table <- batches %>%
-     rvest::html_nodes("td") %>%
-     rvest::html_text()
-   lng.ind <- which( table==fuel)
-   t.ind <-which(str_detect(table,country))
-   t.lng.ind  <- t.ind[t.ind>lng.ind][1]
-   value <- table[t.lng.ind+1] %>% str_replace_all(",","") %>%as.numeric()
-   mdays <- lubridate::days_in_month(lubridate::ymd(paste(year,month, "01", sep="-")))
-   if(country=="Total"){
-     ships <- table[t.lng.ind+2] %>% str_replace_all(",","") %>%as.numeric()
-     return(data.frame(year=year, 
-                       month=month, 
-                       date=lubridate::ymd(paste(year,month, "15", sep="-")),
-                       tonnes=value, 
-                       shipments=ships, 
-                       mdays=mdays))
-   } else 
-     return(data.frame(year=year, 
-                       month=month,  
-                       date=lubridate::ymd(paste(year,month, "15", sep="-")),
-                       tonnes=value,
-                       mdays=mdays))
- }
-```
+``` read_gladstone_ports<- function(year=NULL, month=NULL,fuel="Liquefied Natural Gas", country="Total")```
+
+scrapes data from the GPA html tables, utilising the package ```rvest```, noting that other commodities exported through the GPA, such as ```"Coal"```, can also be specified.
+
+In our drake file, ```read_gladstone_ports``` is only indirectly clled via the function ```update_gladstone```
 
 ## Errata
