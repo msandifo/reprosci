@@ -13,7 +13,7 @@ ggplot2::theme_set( hrbrthemes::theme_ipsum(axis="xy",
 ggplot2::theme_update(
   plot.title = element_text(size = rel(1.15),family = ffamily, angle=0),
   plot.subtitle = element_text(size = rel(1.), family = ffamily, colour="grey50", angle=0),
-  plot.caption = element_text(size = rel(.5),family = ffamily, colour="grey80", angle=0,hjust=1),
+  plot.caption = element_text(size = rel(.25),family = ffamily, colour="grey80", angle=0,hjust=1),
   panel.grid.major = element_line(colour = "grey85", size=.05,  linetype=1),
   panel.grid.minor =element_line(colour = "grey90", size=.0, linetype=1),
   axis.text= element_text(size = rel(1), angle=0 , family = ffamily)
