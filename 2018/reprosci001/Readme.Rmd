@@ -13,7 +13,7 @@ source('./src/functions.R')
 
 ## Summary
 
-Amongst the many factors that caused Australian east coast electricity wholesale prices to double between 2015 and 2016, is the opening of the east coast gas market to internatinal exports. 
+Amongst the many factors that caused Australian east coast electricity wholesale prices to double between 2015 and 2016, is the opening of the east coast gas market to internatinal exports, via the Port of Gladstone. 
 Here I explore time series of Gladstone Port Authority LNG export volumes, and NEM market dispatch prices to illustrate the correlations.
 LNG exports are expresed in annualised tonneage. NEM market prices are in AUD$ per megawatt hour.
 
@@ -23,12 +23,22 @@ LNG exports are expresed in annualised tonneage. NEM market prices are in AUD$ p
 
 LNG epxorts data are sourced from the [Gladstone Port Authority (GPA)  website](http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx). 
 
-NEM electricity prices are sourced from AEMO's half hourly rpice and demand files.
+NEM electricity prices are sourced from AEMO's half hourly price and demand csv files.
 
 
 ## Code
 
-The code base in managed using   the ```drake``` package.
+The code base is in ```r``` and is best managed with in managed within RStudio, using   the ```drake``` package.
+
+#### Package dependencies
+
+If not already installed, sourcing ```'./src/functions.R'``` automatically installs the package dependencies 
+```tidyverse```, ```ggplot2```, ```magrittr```, ```purrr```, ```stringr```, ```drake```, ```lubridate```, ```rvest```, ```rappdirs```,```data.table```, ```fasttime```, ```devtools```, ```wbstats``` 
+ from cran, and ```hrbrthemes``` from the github repo ```hrbrmstr/hrbrthemes```.
+
+
+
+#### Setup
 
 To start we  set some variables, such as the ```drake.path```, read in key functions (including the drake plan ```reproplan```) and adjust the ggplot theme.
 
