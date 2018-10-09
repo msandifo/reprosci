@@ -30,7 +30,14 @@ NEM electricity prices are sourced from AEMO's half hourly price and demand csv 
 
 The code base is in ```r``` and is best managed with in managed within RStudio, using   the ```drake``` package.
 
-#### Package dependencies
+The code can be executed by open the ```Rstudio``` project  ```reprosci001.Rproj```
+and sourcing 
+```{r echo=T, eval=F}
+source('drake011.R')
+```
+The details are summarised below 
+
+##### Package dependencies
 
 If not already installed, sourcing ```'./src/functions.R'``` automatically installs the package dependencies 
 ```tidyverse```, ```ggplot2```, ```magrittr```, ```purrr```, ```stringr```, ```drake```, ```lubridate```, ```rvest```, ```rappdirs```,```data.table```, ```fasttime```, ```devtools```, ```wbstats``` 
@@ -38,7 +45,7 @@ If not already installed, sourcing ```'./src/functions.R'``` automatically insta
 
 
 
-#### Setup
+##### Setup
 
 To start we  set some variables, such as the ```drake.path```, read in key functions (including the drake plan ```reproplan```) and adjust the ggplot theme.
 
@@ -54,7 +61,7 @@ source('./src/plots.R')
 source('./src/plan.R')
 ``` 
 
-#### Downloads
+##### Downloads
  
 ```{r echo=T, eval=F} 
 source('./src/downloads.R')
@@ -70,7 +77,7 @@ download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
 
 
 
-#### Drake plan
+##### Drake plan
 
 The code is organised and run/update via drake plan ```reproplan```` ( sourced via ```source('./src/plan.R')```)
 
@@ -106,7 +113,7 @@ print(head(readd(NEM.year)))
 
 
 
-#### Output
+##### Outputs
 
 ```{r echo=T, eval=F} 
 source('./src/downloads.R')

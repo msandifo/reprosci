@@ -24,7 +24,16 @@ demand csv files.
 The code base is in `r` and is best managed with in managed within
 RStudio, using the `drake` package.
 
-#### Package dependencies
+The code can be executed by open the `Rstudio` project
+`reprosci001.Rproj` and sourcing
+
+``` r
+source('drake011.R')
+```
+
+The details are summarised below
+
+##### Package dependencies
 
 If not already installed, sourcing `'./src/functions.R'` automatically
 installs the package dependencies `tidyverse`, `ggplot2`, `magrittr`,
@@ -32,7 +41,7 @@ installs the package dependencies `tidyverse`, `ggplot2`, `magrittr`,
 `rappdirs`,`data.table`, `fasttime`, `devtools`, `wbstats` from cran,
 and `hrbrthemes` from the github repo `hrbrmstr/hrbrthemes`.
 
-#### Setup
+##### Setup
 
 To start we set some variables, such as the `drake.path`, read in key
 functions (including the drake plan `reproplan`) and adjust the ggplot
@@ -50,7 +59,7 @@ source('./src/plots.R')
 source('./src/plan.R')
 ```
 
-#### Downloads
+##### Downloads
 
 ``` r
 source('./src/downloads.R')
@@ -68,7 +77,7 @@ function call
 download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
 ```
 
-#### Drake plan
+##### Drake plan
 
 The code is organised and run/update via drake plan `reproplan```` (
 sourced via`source(‘./src/plan.R’)\`\`\`)
@@ -125,7 +134,7 @@ Note that the drake plan `reproplan` includes
     ## 5  2014 2014-07-02  47.8      21501.
     ## 6  2015 2015-07-02  45.7      21746.
 
-#### Output
+##### Outputs
 
 ``` r
 source('./src/downloads.R')
