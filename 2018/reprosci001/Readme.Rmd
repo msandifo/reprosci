@@ -8,6 +8,7 @@ always_allow_html: yes
 knitr::opts_chunk$set(echo = FALSE,  message=FALSE, warning=FALSE)
  source('./src/theme.R')
 source('./src/functions.R')
+source('./src/plan.R')
 
 ```
 
@@ -72,15 +73,15 @@ download_aemo_current( local.path=local.path )
 
 #### Drake plan
 
-The code is organised and run/update via drake plan ```reproplan```` ( sourced via ```source('./src/downloads.R')```)
+The code is organised and run/update via drake plan ```reproplan``` ( sourced via ```source('./src/plan.R')```)
 
 ```{r echo=T, eval=F}
 drake::make( reproplan, force=T)
 ```
 
-The drake ```reproplan``` dependency structure can be easily visualised 
-```{r drake_plan, echo=TRUE, cache=TRUE}
-config <- drake::drake_config(reproplan001)
+The ```reproplan``` dependency structure can be easily visualised 
+```{r drake_plan, echo=TRUE, cache=T}
+config <- drake::drake_config(reproplan)
 graph <- drake::drake_graph_info(config, group = "status", clusters = "imported")
 drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
 ```
@@ -88,9 +89,9 @@ drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
 <img src="./figs/rmd_render_drake.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
 
-Note that the drake plan ```reproplan``` includes 
+Note that ```reproplan``` includes 
 
-* the directive ```lng = update_gladstone( local.path=local.path)``` which either reads the Gladstone export data from html tables as a data.frame  and stores ```lng``` to disk in   ```load(file.path(validate_directory(local.path, "gladstone"), "lng.Rdata"))``` or, if already downloaded, ```load(file.path(validate_directory(local.path, "gladstone"), "lng.Rdata"))```- see code details.
+* the directive ```lng = update_gladstone( local.path=local.path)``` which either reads the Gladstone export data from the relevant GPA html tables as a data.frame  and stores ```lng``` to disk in   ```load(file.path(validate_directory(local.path, "gladstone"), "lng.Rdata"))``` or, if already downloaded, ```load(file.path(validate_directory(local.path, "gladstone"), "lng.Rdata"))```- see code details.
 
 
 * statements to read the monthly AEMO csv files for each of the five NEM regions (NSW1, QLD1, SA1 TAS1, VIC1), and aggregate them as monthly ```NEM.month``` and annual ```NEM.year``` timeseries. 

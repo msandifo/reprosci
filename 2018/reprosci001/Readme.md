@@ -69,28 +69,28 @@ download_aemo_current( local.path=local.path )
 
 #### Drake plan
 
-The code is organised and run/update via drake plan `reproplan```` (
-sourced via`source(‘./src/downloads.R’)\`\`\`)
+The code is organised and run/update via drake plan `reproplan` (
+sourced via `source('./src/plan.R')`)
 
 ``` r
 drake::make( reproplan, force=T)
 ```
 
-The drake `reproplan` dependency structure can be easily visualised
+The `reproplan` dependency structure can be easily visualised
 
 ``` r
-config <- drake::drake_config(reproplan001)
+config <- drake::drake_config(reproplan)
 graph <- drake::drake_graph_info(config, group = "status", clusters = "imported")
 drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
 ```
 
 <img src="./figs/rmd_render_drake.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
-Note that the drake plan `reproplan` includes
+Note that `reproplan` includes
 
   - the directive `lng = update_gladstone( local.path=local.path)` which
-    either reads the Gladstone export data from html tables as a
-    data.frame and stores `lng` to disk in
+    either reads the Gladstone export data from the relevant GPA html
+    tables as a data.frame and stores `lng` to disk in
     `load(file.path(validate_directory(local.path, "gladstone"),
     "lng.Rdata"))` or, if already downloaded,
     `load(file.path(validate_directory(local.path, "gladstone"),
