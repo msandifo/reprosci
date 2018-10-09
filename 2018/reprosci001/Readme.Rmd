@@ -6,10 +6,8 @@ always_allow_html: yes
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE,  message=FALSE, warning=FALSE)
- source('./src/themes001.R')
-source('./src/functions001.R')
-
-  
+source('./src/theme.R')
+source('./src/functions.R')
 ```
 
 ## Summary
@@ -40,7 +38,9 @@ drake.path <- dirname(rstudioapi::getSourceEditorContext()$path )
 setwd(drake.path)
 source('./src/functions.R')
 source('./src/plan.R')
-source('./src/themes.R')
+source('./src/theme.R')
+source('./src/downloads.R')
+
 ``` 
  
 AEMO data files  are downloaded  to a local directory set by 

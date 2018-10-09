@@ -7,7 +7,7 @@ drake.path <-
 
 setwd(drake.path)
  
-source('./src/themes.R')
+source('./src/theme.R')
 source('./src/functions.R')
 source('./src/plan.R')
 source('./src/downloads.R')

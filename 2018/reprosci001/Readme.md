@@ -14,7 +14,7 @@ in annualised tonneage. NEM market prices are in AUD$ per megawatt hour.
 
 ## Data Sources
 
-LNG epxorts data are sourced from the [Gladstone Port Authority
+LNG epxorts data are sourced from the [Gladstone Port Authority (GPA)
 website](http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx).
 
 NEM electricity prices are sourced from AEMO’s half hourly rpice and
@@ -22,19 +22,20 @@ demand files.
 
 ## Code
 
-The code base uses the drake package.
+The code base in managed using the `drake` package.
 
 To start we set some variables, such as the `drake.path`, read in key
-functions (including the drake plan `reproplan001`) an set a ggplot
-theme.
+functions and the drake plan `reproplan001` and set a ggplot theme.
 
 ``` r
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
 local.path=NULL
 drake.path <- dirname(rstudioapi::getSourceEditorContext()$path )
 setwd(drake.path)
-source('./src/functions001.R')
-source('./src/themes001.R')
+source('./src/functions.R')
+source('./src/plan.R')
+source('./src/theme.R')
+source('./src/downloads.R')
 ```
 
 AEMO data files are downloaded to a local directory set by `local.path`
