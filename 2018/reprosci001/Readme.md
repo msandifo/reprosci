@@ -4,12 +4,12 @@
 ## Summary
 
 Amongst the many factors that caused Australian east coast electricity
-wholesale prices to double between 2015 and 2016, is the opening of the
-east coast gas market to internatinal exports, via the Port of
-Gladstone. Here I explore time series of Gladstone Port Authority LNG
-export volumes, and NEM market dispatch prices to illustrate the
-correlations. LNG exports are expresed in annualised tonneage. NEM
-market prices are in AUD$ per megawatt hour.
+wholesale prices to double ind 2016 was the opening of the east coast
+gas market to internatinal LNG exports, via the Port of Gladstone. Here
+I explore atime series of Gladstone Port Authority LNG export volumes,
+and NEM market dispatch prices to illustrate the correlations. LNG
+exports are expresed in annualised tonneage. NEM market prices are in
+AUD$ per megawatt hour.
 
 ## Package dependencies
 
@@ -127,18 +127,30 @@ Note that the drake plan `reproplan` includes
 
 #### Output
 
-The code generates three charts, output to `./figs` directory :
+The code generates three charts, output to `./figs` directory
+:
 
 ``` r
-setwd("./figs")
-ggsave("reprosci001.png",  readd(reprosci001.plot) ,width=8, height=5) 
-ggsave("reprosci002.png",  readd(reprosci002.plot) ,width=8, height=5) 
-ggsave("reprosci003.png",  readd(reprosci003.plot) ,width=8, height=5) 
+ggsave("./figs/reprosci001.png",  drake::readd(reprosci001.plot) ,width=8, height=5) 
+ggsave("./figs/reprosci002.png",  drake::readd(reprosci002.plot) ,width=8, height=5) 
+ggsave("./figs/reprosci003.png",  drake::readd(reprosci003.plot) ,width=8, height=5) 
 ```
 
-![](Readme_files/figure-gfm/repo001-1.png)<!-- -->
+``` r
+drake::readd(reprosci001.plot)
+```
+
+![](Readme_files/figure-gfm/repo001%20-1.png)<!-- -->
+
+``` r
+drake::readd(reprosci002.plot)
+```
 
 ![](Readme_files/figure-gfm/repo002-1.png)<!-- -->
+
+``` r
+drake::readd(reprosci003.plot)
+```
 
 ![](Readme_files/figure-gfm/repo003-1.png)<!-- -->
 
