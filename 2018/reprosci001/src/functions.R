@@ -72,7 +72,7 @@ download_aemo_aggregated <- function(states = c("NSW","QLD","SA", "TAS", "VIC"),
 #note spetember 2016 csv dates are ordered d.m.y as opposed to y.m.d in all others
 # rather opaque attempoted to reorder dates - could be radically simplified
 
-reorder_dmy <-function(my.dates){
+dmy_to_ymd <-function(my.dates){
   my.locs<-stringr::str_locate(my.dates, c("/" ))
   inds<-which(my.locs[,1]<4)
   #print(inds)
@@ -99,7 +99,7 @@ get_aemo_data<- function(local.path=NULL, state="NSW") {
   list.files(local.path) -> my.files
   my.files<-paste0(local.path, "/",my.files[stringr::str_detect(my.files,state) | stringr::str_detect(my.files,"201609")] )
     dt<-data.table::rbindlist(lapply( my.files, data.table::fread, colClasses= c("character", "character", "numeric","numeric","character"), drop="PERIODTYPE"))
-  dt$SETTLEMENTDATE<- reorder_dmy(dt$SETTLEMENTDATE) %>% fasttime::fastPOSIXct(  tz="GMT",required.components=3)
+  dt$SETTLEMENTDATE<- dmy_to_ymd(dt$SETTLEMENTDATE) %>% fasttime::fastPOSIXct(  tz="GMT",required.components=3)
   dt$month <- lubridate::month(dt$SETTLEMENTDATE)
   dt$year<- lubridate::year(dt$SETTLEMENTDATE)
  dt %>% subset(year<=lubridate::year(Sys.Date()) & year >= 2010 ) #nb. checks for errors with POSIXCt translation

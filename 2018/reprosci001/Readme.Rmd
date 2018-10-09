@@ -21,39 +21,40 @@ LNG exports are expresded in annualised tonneage. NEM market prices are in AUD$ 
 
 ## Data Sources
 
-LNG epxorts data are sourced from the [Gladstone Port Authority (GPA)  website](http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx). 
+* Gladstone LNG exports data are sourced from the [Gladstone Port Authority (GPA)  website](http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx). 
 
-NEM electricity prices are sourced from AEMO's half hourly price and demand csv files.
+* NEM electricity prices are sourced from AEMO's half hourly price and demand csv files.
 
+* Population data is sourced from the World bank via package ```wbstats```.
 
 ## Code
 
-The code base is in ```r``` and is best managed with in managed within RStudio, using   the ```drake``` package.
+The code base is in ```r``` and is managed  within RStudio, using   the ```drake``` package.
 
 The code can be executed by open the ```Rstudio``` project  ```reprosci001.Rproj```
 and sourcing 
+
 ```{r echo=T, eval=F}
-source('drake011.R')
+source('drake0001.R')
 ```
-The details are summarised below 
+Details of the steps invoked by ```drake001.R` are summarised below.
 
 ##### Package dependencies
 
-If not already installed, sourcing ```'./src/functions.R'``` automatically installs the package dependencies 
+```{r echo=T, eval=F}
+source('./src/packages.R')
+``` 
+checks for and, if absent, automatically installs  the following package dependencies 
 ```tidyverse```, ```ggplot2```, ```magrittr```, ```purrr```, ```stringr```, ```drake```, ```lubridate```, ```rvest```, ```rappdirs```,```data.table```, ```fasttime```, ```devtools```, ```wbstats``` 
  from cran, and ```hrbrthemes``` from the github repo ```hrbrmstr/hrbrthemes```.
 
 
-
 ##### Setup
 
-To start we  set some variables, such as the ```drake.path```, read in key functions (including the drake plan ```reproplan```) and adjust the ggplot theme.
+Set variables, such as the ```drake.path```, read in key data functions, the ggplot theme, plot functions the drake plan ```reproplan```.
 
 ```{r echo=T, eval=F}
-pkgconfig::set_config("drake::strings_in_dots" = "literals")
-local.path=NULL
-drake.path <- dirname(rstudioapi::getSourceEditorContext()$path )
-setwd(drake.path)
+source('./src/settings.R')
 source('./src/packages.R')
 source('./src/functions.R')
 source('./src/theme.R')
@@ -79,7 +80,7 @@ download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
 
 ##### Drake plan
 
-The code is organised and run/update via drake plan ```reproplan```` ( sourced via ```source('./src/plan.R')```)
+The code is organised and run/update via drake plan ```reproplan``` (loaded via ```source('./src/plan.R')```)
 
 ```{r echo=T, eval=F}
 drake::make( reproplan, force=T)
@@ -144,7 +145,7 @@ drake::readd(reprosci003.plot)
 
 ## Code details
 
-### Gladstone Port Authority (GPA)
+#### Gladstone Port Authority (GPA)
 
 The function call
 
@@ -152,6 +153,11 @@ The function call
 
 scrapes data from the GPA html tables, utilising the package ```rvest```, noting that other commodities exported through the GPA, such as ```"Coal"```, can also be specified.
 
-In our drake file, ```read_gladstone_ports``` is only indirectly clled via the function ```update_gladstone```
+The drake plan indirectly calls ```read_gladstone_ports```  via ```update_gladstone```
+
+#### NEM data
+
+While the monthly NEM csv files have time stamps ```SETTLEMENTDATE``` ordered ```ymd hms```, the September 2016 csv files have time stamps reversed `dmy hms`. The function ```dmy_to_ymd``` reorders the time stamps.
+
 
 ## Errata
