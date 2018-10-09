@@ -3,15 +3,13 @@
 
 ## Summary
 
-Amongst the many factors that caused Australian east coast electricity
-wholesale prices to double between 2015 and 2016, is the opening of the
-east coast gas market to internatinal exports, via the Port of
-Gladstone. Here I explore time series of Gladstone Port Authority LNG
-export volumes, and NEM market dispatch prices to illustrate the
-correlations. LNG exports are expresed in annualised tonneage. NEM
-market prices are in AUD$ per megawatt hour.
-
-## Package dependencies
+Amongst the many factors that caused the doubling of Australian east
+coast electricity wholesale prices in 2016, is the opening of the east
+coast gas market to international exports, via the Port of Gladstone.
+Time series of Gladstone Port Authority LNG export volumes, and NEM
+dispatch prices from AEMO allow the correlations to be illustrated. LNG
+exports are expresded in annualised tonneage. NEM market prices are in
+AUD$ per megawatt hour.
 
 ## Data Sources
 
@@ -45,8 +43,10 @@ pkgconfig::set_config("drake::strings_in_dots" = "literals")
 local.path=NULL
 drake.path <- dirname(rstudioapi::getSourceEditorContext()$path )
 setwd(drake.path)
-source('./src/theme.R')
+source('./src/packages.R')
 source('./src/functions.R')
+source('./src/theme.R')
+source('./src/plots.R')
 source('./src/plan.R')
 ```
 
@@ -56,32 +56,31 @@ source('./src/plan.R')
 source('./src/downloads.R')
 ```
 
-directs the downlaod of the AEMO csv data files to be downloaded into
-the local directory set by `local.path` By default `local.path=NULL` in
-which case data is downloaded via `rappdirs::user_cache_dir()` to a
-folder in the users cache directory (for macOSX, `~/Library/cache`) to
+downlaods monthly AEMO csv data files into a local directory set by
+`local.path` The default `local.path=NULL` uses
+`rappdirs::user_cache_dir()` to set the `local.path` to a folder in the
+users cache directory (for macOSX, `~/Library/cache`) to
 `file.path(local.path, aemo)`. `'./src/downloads.R'` is a wrapper on the
-function
-calls
+function call
+`download_aemo_aggregated`.
 
 ``` r
 download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
-download_aemo_current( local.path=local.path )
 ```
 
 #### Drake plan
 
 The code is organised and run/update via drake plan `reproplan```` (
-sourced via`source(‘./src/downloads.R’)\`\`\`)
+sourced via`source(‘./src/plan.R’)\`\`\`)
 
 ``` r
 drake::make( reproplan, force=T)
 ```
 
-The drake `reproplan` dependency structure can be easily visualised
+The drake `reproplan` dependency structure can be visualised
 
 ``` r
-config <- drake::drake_config(reproplan001)
+config <- drake::drake_config(reproplan)
 graph <- drake::drake_graph_info(config, group = "status", clusters = "imported")
 drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
 ```
@@ -90,7 +89,7 @@ drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
 
 Note that the drake plan `reproplan` includes
 
-  - the directive `lng = update_gladstone( local.path=local.path)` which
+  - a directive `lng = update_gladstone( local.path=local.path)`that
     either reads the Gladstone export data from html tables as a
     data.frame and stores `lng` to disk in
     `load(file.path(validate_directory(local.path, "gladstone"),
@@ -100,7 +99,8 @@ Note that the drake plan `reproplan` includes
 
   - statements to read the monthly AEMO csv files for each of the five
     NEM regions (NSW1, QLD1, SA1 TAS1, VIC1), and aggregate them as
-    monthly `NEM.month` and annual `NEM.year` timeseries.
+    monthly `NEM.month` and annual `NEM.year` timeseries, as summarised
+    below
 
 <!-- end list -->
 
@@ -127,7 +127,12 @@ Note that the drake plan `reproplan` includes
 
 #### Output
 
-The code generates three charts, output to `./figs` directory :
+``` r
+source('./src/downloads.R')
+```
+
+generates three `ggplot` charts, output to `./figs` directory, with
+themes prescribed in `./src/theme.R'` :
 
 ``` r
 setwd("./figs")
