@@ -1,7 +1,7 @@
-reprosci001 - Gladstone LNG
+reprosci001
 ================
 
-## Summary
+## Gladstone LNG
 
 Amongst the many factors that caused Australian east coast electricity
 wholesale prices to double ind 2016 was the opening of the east coast
@@ -10,8 +10,6 @@ I explore atime series of Gladstone Port Authority LNG export volumes,
 and NEM market dispatch prices to illustrate the correlations. LNG
 exports are expresed in annualised tonneage. NEM market prices are in
 AUD$ per megawatt hour.
-
-## Package dependencies
 
 ## Data Sources
 
