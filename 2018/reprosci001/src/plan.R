@@ -7,10 +7,10 @@ reproplan = drake::drake_plan(
   NSW1 = get_aemo_data(state='NSW'),# %>% padr::pad()
   VIC1 = get_aemo_data(state='VIC'),
   SA1  = get_aemo_data(state='SA'),
-  QLD1  =get_aemo_data(state='QLD'),
-  TAS1  =get_aemo_data(state='TAS'),
+  QLD1 = get_aemo_data(state='QLD'),
+  TAS1 = get_aemo_data(state='TAS'),
   aemo = data.table::rbindlist(list(NSW1,QLD1,SA1,TAS1,VIC1)) ,
-  gas.use= gas.use <-data.table::fread(paste0(drake.path, "/data/gas_generation.csv"))%>%
+  gas.use = gas.use <-data.table::fread(paste0(drake.path, "/data/gas_generation.csv"))%>%
     purrr::set_names(~ stringr::str_to_lower(.)) %>% 
     dplyr::mutate(date = lubridate::ymd(paste0(year,"-",month,"-15")),
                   sum = gas_ccgt+gas_ocgt+gas_steam,
