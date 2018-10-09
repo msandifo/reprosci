@@ -1,5 +1,5 @@
 ---
-title: "001-Gladstone LNG"
+title: "reprosci001 - Gladstone LNG"
 output: github_document
 always_allow_html: yes
 ---
@@ -118,7 +118,7 @@ ggsave("./figs/reprosci003.png",  drake::readd(reprosci003.plot) ,width=8, heigh
 ```
 
 
-```{r repo001 , echo=T }
+```{r repo001, echo=T }
 drake::readd(reprosci001.plot)
 ```
 

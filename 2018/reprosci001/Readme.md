@@ -1,4 +1,4 @@
-001-Gladstone LNG
+reprosci001 - Gladstone LNG
 ================
 
 ## Summary
@@ -140,7 +140,7 @@ ggsave("./figs/reprosci003.png",  drake::readd(reprosci003.plot) ,width=8, heigh
 drake::readd(reprosci001.plot)
 ```
 
-![](Readme_files/figure-gfm/repo001%20-1.png)<!-- -->
+![](Readme_files/figure-gfm/repo001-1.png)<!-- -->
 
 ``` r
 drake::readd(reprosci002.plot)
