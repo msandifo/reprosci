@@ -1,0 +1,31 @@
+---
+title: "reprosci"
+output: github_document
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+##  a.k.a Reproducible science
+
+In ```terminal```
+```{bash, echo=T, eval=F}
+cd ~/Downloads # or wherever
+git clone  https://github.com/msandifo/reprosci.git
+```
+
+#### 2018/reprosci001
+
+in ```terminal```
+```{bash, echo=T, eval=F}
+cd ~/Downloads/reprosci/2018/reprosci001 # or wherever n
+rm -r .drake 
+open reprosci001.Rproj 
+```
+In ```rstudio console```
+```{r, echo=T, eval=F}
+source("drake001.R")
+```
+for code explanation see  https://github.com/msandifo/reprosci/tree/master/2018/reprosci001
+
