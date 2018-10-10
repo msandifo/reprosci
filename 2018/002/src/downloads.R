@@ -12,27 +12,28 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
     head(-1)
   
   
-  QLD.year =  QLD.month %>% 
-    dplyr::group_by(year) %>% 
-    dplyr::summarise(date=mean(date) ,
-                     RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
-                     TOTALDEMAND= mean(TOTALDEMAND) )
+  # QLD.year =  QLD.month %>% 
+  #   dplyr::group_by(year) %>% 
+  #   dplyr::summarise(date=mean(date) ,
+  #                    RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
+  #                    TOTALDEMAND= mean(TOTALDEMAND) )
 
   lng = update_gladstone( local.path=local.path)  %>% subset( !is.na(tonnes))
   
-save( QLD.month, QLD.year, lng,file = paste0(drake.path,"/data/data.Rdata"))
+save( QLD.month, #QLD.year, 
+      lng, file = paste0(drake.path,"/data/data.Rdata"))
 
 } else {
   
  load(paste0(drake.path, "/data/data.Rdata"))
- day.dif <-Sys.Date()- (tail(NEM.month,2)[1,])$date  # %>% mutate(date= lubridate::ymd(year,month, "01")) # year and date of last records in NEM.month
+ day.dif <-Sys.Date()- (tail(QLD.month,2)[1,])$date  # %>% mutate(date= lubridate::ymd(year,month, "01")) # year and date of last records in NEM.month
 
  current.year <- lubridate::year(Sys.Date())
  current.month <- lubridate::month(Sys.Date())
  
 # <- lubridate::year(Sys.Date())
- last.month <- tail(NEM.month,2)$month[1]
- last.year <-  tail(NEM.month,2)$year[1]
+ last.month <- tail(QLD.month,2)$month[1]
+ last.year <-  tail(QLD.month,2)$year[1]
  next.year<- last.year
 while (day.dif >15+31) {  # 
      next.month<-  (last.month+1)
@@ -44,25 +45,26 @@ while (day.dif >15+31) {  #
                                          months=next.month,
                                          verbose=F,
                                          years=next.year,  states="QLD")
-    files <- tail(file.names, 1) %>% strtrim(10)
-    aemo= build_aemo(files=files)
-    QLD.month  = rbind(  QLD.month , aemo %>% 
+     QLD1 = get_aemo_data(state='QLD', files=file.names) 
+    
+    QLD.month  = rbind(  QLD.month , QLD1 %>% 
       dplyr::group_by(year, month) %>% 
       dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),
                        RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
                        TOTALDEMAND= sum(TOTALDEMAND)/length(TOTALDEMAND) )   %>%
       head(-1))
                                          
-    QLD.year  =   QLD.month  %>% 
-      dplyr::group_by(year) %>% 
-      dplyr::summarise(date=mean(date),
-                       RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
-                       TOTALDEMAND=mean(TOTALDEMAND))
+    # QLD.year  =   QLD.month  %>% 
+    #   dplyr::group_by(year) %>% 
+    #   dplyr::summarise(date=mean(date),
+    #                    RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
+    #                    TOTALDEMAND=mean(TOTALDEMAND))
     lng = update_gladstone( local.path=local.path)  %>% subset( !is.na(tonnes))
     
  
 }
- save( QLD.month, QLD.year,lng, file = paste0(drake.path,"/data/data.Rdata"))
+ save( QLD.month, #QLD.year,
+       lng, file = paste0(drake.path,"/data/data.Rdata"))
   
 }
   

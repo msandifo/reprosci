@@ -94,20 +94,28 @@ Note that `reproplan` includes
     "lng.Rdata"))`- see code details.
 
   - statements to read the monthly AEMO csv files for each of the NEM
-    region QLD1, and aggregate them as monthly `QLD.month` and annual
-    `QLD.year` timeseries.
+    region QLD1, and aggregate them as monthly `QLD.month` timeseries.
 
 <!-- end list -->
 
-    ## NULL
+    ## # A tibble: 6 x 5
+    ## # Groups:   year [1]
+    ##    year month date         RRP TOTALDEMAND
+    ##   <dbl> <dbl> <date>     <dbl>       <dbl>
+    ## 1  2007     1 2007-01-16  86.0       6281.
+    ## 2  2007     2 2007-02-14  39.9       6143.
+    ## 3  2007     3 2007-03-16  51.2       6322.
+    ## 4  2007     4 2007-04-15  78.8       5708.
+    ## 5  2007     5 2007-05-16  63.0       5731.
+    ## 6  2007     6 2007-06-15 218.        5830.
 
 #### Output
 
-The code generates three charts, output to `./figs` directory :
+Output charts using `ggplot` are saved to the `./figs` directory :
 
 ``` r
 p002<-drake::readd(p002)
-ggsave("./figs/p002_01.png",  p002$p1 ,width=8, height=5) 
+ggsave("./figs/p002_01.png",  p002$p1, width=8, height=5) 
 ```
 
 ## Code details
@@ -116,14 +124,34 @@ ggsave("./figs/p002_01.png",  p002$p1 ,width=8, height=5)
 
 The function call
 
-`read_gladstone_ports<- function(year=NULL, month=NULL,fuel="Liquefied
-Natural Gas", country="Total")`
+`read_gladstone_ports(year=NULL, month=NULL,fuel="Liquefied Natural
+Gas", country="Total")`
 
 scrapes data from the GPA html tables, utilising the package `rvest`,
 noting that other commodities exported through the GPA, such as
-`"Coal"`, can also be specified.
+`"Coal"`, can also be specified. TThe function call
 
-In our drake file, `read_gladstone_ports` is only indirectly clled via
-the function `update_gladstone`
+read\_gladstone\_ports\<- function(year=NULL, month=NULL,fuel=“Liquefied
+Natural Gas”, country=“Total”)
+
+scrapes data from the GPA html tables, utilising the package rvest,
+noting that other commodities exported through the GPA, such as “Coal”,
+can also be specified.
+
+The drake plan indirectly calls `read_gladstone_ports` via
+`update_gladstone`
+
+#### NEM data
+
+While the monthly NEM csv files have time stamps `SETTLEMENTDATE`
+ordered `ymd hms`, the September 2016 csv files have time stamps
+reversed `dmy hms`. The function `dmy_to_ymd` reorders the time stamps
+to \`\`ymd hms\`\`\`.
+
+NEM data
+
+While the monthly NEM csv files have time stamps SETTLEMENTDATE ordered
+ymd hms, the September 2016 csv files have time stamps reversed dmy hms.
+The function dmy\_to\_ymd reorders the time stamps.
 
 ## Errata

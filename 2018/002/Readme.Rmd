@@ -5,10 +5,17 @@ always_allow_html: yes
 ---
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = FALSE,  message=FALSE, warning=FALSE)
- source('./src/theme.R')
+ 
+drake.path<-"~/Dropbox/msandifo/documents/programming/r/twitter/2018/002/"
+full.repro<-F
+source('./src/settings.R')
+source('./src/theme.R')
 source('./src/functions.R')
 source('./src/plan.R')
+#load(paste0(drake.path, "/data/data.Rdata"))
+source('./src/downloads.R')
 
 ```
 
@@ -44,14 +51,12 @@ If not already installed, sourcing ```'./src/functions.R'``` automatically insta
 To start we  set some variables, such as the ```drake.path```, read in key functions (including the drake plan ```reproplan```) and adjust the ggplot theme.
 
 ```{r echo=T, eval=F}
-pkgconfig::set_config("drake::strings_in_dots" = "literals")
-local.path=NULL
-drake.path <- dirname(rstudioapi::getSourceEditorContext()$path )
-setwd(drake.path)
+source('./src/settings.R')
 source('./src/theme.R')
 source('./src/functions.R')
 source('./src/plan.R')
-
+source('./src/plots.R')
+ 
 ``` 
 
 #### Downloads
@@ -94,34 +99,28 @@ Note that ```reproplan``` includes
 * the directive ```lng = update_gladstone( local.path=local.path)``` which either reads the Gladstone export data from the relevant GPA html tables as a data.frame  and stores ```lng``` to disk in   ```load(file.path(validate_directory(local.path, "gladstone"), "lng.Rdata"))``` or, if already downloaded, ```load(file.path(validate_directory(local.path, "gladstone"), "lng.Rdata"))```- see code details.
 
 
-* statements to read the monthly AEMO csv files for each of the five NEM regions (NSW1, QLD1, SA1 TAS1, VIC1), and aggregate them as monthly ```NEM.month``` and annual ```NEM.year``` timeseries. 
+* statements to read the monthly AEMO csv files for each of the NEM region QLD1, and aggregate them as monthly ```QLD.month```  timeseries. 
 
-```{r  cache=TRUE}
-print(head(readd(NEM.month)))
+```{r  cache=FALSE}
+print(head(readd(QLD.month)))
+
 ```
 
-```{r  cache=TRUE}
-print(head(readd(NEM.year)))
-```
-
-
+ 
 
 
 #### Output
 
-The code generates three charts, output to ```./figs``` directory :
+Output charts using ```ggplot``` are saved to the ```./figs``` directory :
 
 ```{r  echo=TRUE, cache=TRUE}
- 
-ggsave("./figs/001_01.png",  drake::readd(reprosci001.plot) ,width=8, height=5) 
+p002<-drake::readd(p002)
+ggsave("./figs/p002_01.png",  p002$p1, width=8, height=5) 
+  
 ```
 
 
-```{r repo001, echo=T }
-p002<-drake::readd( p002)
-p002$p1
-```
- ```
+
 
 ## Code details
 
@@ -129,10 +128,26 @@ p002$p1
 
 The function call
 
-``` read_gladstone_ports<- function(year=NULL, month=NULL,fuel="Liquefied Natural Gas", country="Total")```
+``` read_gladstone_ports(year=NULL, month=NULL,fuel="Liquefied Natural Gas", country="Total")```
 
 scrapes data from the GPA html tables, utilising the package ```rvest```, noting that other commodities exported through the GPA, such as ```"Coal"```, can also be specified.
+TThe function call
 
-In our drake file, ```read_gladstone_ports``` is only indirectly clled via the function ```update_gladstone```
+read_gladstone_ports<- function(year=NULL, month=NULL,fuel="Liquefied Natural Gas", country="Total")
+
+scrapes data from the GPA html tables, utilising the package rvest, noting that other commodities exported through the GPA, such as "Coal", can also be specified.
+
+The drake plan indirectly calls ```read_gladstone_ports``` via ```update_gladstone```
+
+#### NEM data
+
+While the monthly NEM csv files have time stamps ```SETTLEMENTDATE``` ordered ```ymd hms```, the September 2016 csv files have time stamps reversed ```dmy hms```. The function ```dmy_to_ymd``` reorders the time stamps to ``ymd hms```.
+
+
+
+NEM data
+
+While the monthly NEM csv files have time stamps SETTLEMENTDATE ordered ymd hms, the September 2016 csv files have time stamps reversed dmy hms. The function dmy_to_ymd reorders the time stamps.
+
 
 ## Errata
