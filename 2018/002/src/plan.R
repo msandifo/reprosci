@@ -3,10 +3,6 @@
 #------
 
 reproplan = drake::drake_plan(
- load(file_in("./data/data.Rdata")),
-  
+  load(file_in("./data/data.Rdata")),
   p002 = plots(drake::readd(QLD.month))
-  
-  
-  
 )
