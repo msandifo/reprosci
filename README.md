@@ -39,7 +39,7 @@ open reprosci001.Rproj
 In `rstudio console`
 
 ``` r
-source("drake001.R")
+source("drake.R")
 ```
 
 More detailed code explanation can be found in the associated

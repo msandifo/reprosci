@@ -32,7 +32,7 @@ open reprosci001.Rproj
 ```
 In ```rstudio console```
 ```{r, echo=T, eval=F}
-source("drake001.R")
+source("drake.R")
 ```
 More detailed code explanation can be found in the associated ```readme.md``` in the releavnat github ```master/tree``` (e.g. https://github.com/msandifo/reprosci/tree/master/2018/reprosci001)
 
