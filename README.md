@@ -24,12 +24,13 @@ cd $DOWNLOAD_PATH
 git clone  https://github.com/msandifo/reprosci.git
 ```
 
-My repro repo’s are typcially identified by year (e.g. `2018`) and
-number (e.g. `001`), sometimes with a prefix (e.f. `repro001`)
+My `repro` repo’s are typcially identified by a year (e.g. `2018`) and a
+sequential numeric string starting `001`, sometimes with a prefix (e.g.
+`repro001`)
 
 #### Example - repro `2018/reprosci001`
 
-in `terminal`
+In `terminal`
 
 ``` bash
 cd $DOWNLOAD_PATH/reprosci/2018/reprosci001  
@@ -37,7 +38,7 @@ rm -r .drake
 open reprosci001.Rproj 
 ```
 
-In `rstudio console`
+In `RStudio console`
 
 ``` r
 source("drake.R")
