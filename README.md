@@ -1,7 +1,6 @@
-reprosci
-================
+# reprosci 
 
-## a.k.a Reproducible science
+(aka Reproducible science)
 
 In `terminal`
 

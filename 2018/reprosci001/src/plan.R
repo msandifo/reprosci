@@ -31,9 +31,9 @@ reproplan = drake::drake_plan(
                      TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND) )  ,
   
   
-  NEM.year = aemo %>% 
+  NEM.year = NEM.month  %>%  
     dplyr::group_by(year) %>% 
-    dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),
+    dplyr::summarise(date=mean(date), #SETTLEMENTDATE) %>% as.Date(),
                      RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
                      TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND)),
   reprosci001.plot= reprosci001(lng, NEM.month, NEM.year),
