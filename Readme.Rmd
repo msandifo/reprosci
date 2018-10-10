@@ -36,12 +36,12 @@ In ```RStudio console```
 source("drake.R")
 ```
 
-A full ```repro``` can be achieved by setting the ```full.repro=TRUE``` prior to  ```source("drake.R")```. This ensures downloads of relevant datasets and  full processing, as per ```./src/downloads.R```. T
+A full ```repro``` can be achieved by setting the ```full.repro=TRUE``` prior to  ```source("drake.R")```. This ensures downloads of relevant datasets and  full processing, as per ```./src/downloads.R```
 ```{r, echo=T, eval=F}
 full.repro=TRUE
 source("drake.R")
 ```
-The default ```full.repro=FALSE``` checks existing downloads, and perform only a incremental update, by checking for new files on remote servers and appending data.structures tpically stired in ```./data/data.Rdata```. 
+The default ```full.repro=FALSE``` checks existing downloads, and performs an incremental update downloading any new files on remote servers and, if needed, appending any data structures storred in ```./data``` such as ```./data/data.Rdata```. 
 
 More detailed code explanation can be found in the associated ```readme.md``` in the relevant github ```master/tree``` directory (e.g. https://github.com/msandifo/reprosci/tree/master/2018/reprosci001)
 
