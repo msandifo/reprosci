@@ -14,8 +14,9 @@ simulations emply other codes, such as `Basilisk`.
 
 #### Procedure
 
-In order to dowenload the reprosci code archive use your
-`terminal`
+The easist way to download the `reprosci` repo’s is to use the
+`terminal`. The Following applies for the `bash`
+shell.
 
 ``` bash
 export DOWNLOAD_PATH=~/Downloads #change path to whatever directory you want
@@ -41,6 +42,19 @@ In `rstudio console`
 ``` r
 source("drake.R")
 ```
+
+A full `repro` can be achieved by setting the `full.repro=TRUE` prior to
+`source("drake.R")`. This ensures downloads of relevant datasets and
+processing, as per `./src/downloads.R`. T
+
+``` r
+full.repro=TRUE
+source("drake.R")
+```
+
+The default `full.repro=FALSE` is to check for existing downlods, and
+perform only a incremental update, by checking for new files on remote
+servers.
 
 More detailed code explanation can be found in the associated
 `readme.md` in the releavnat github `master/tree`

@@ -13,7 +13,8 @@ The objective is to make the code available that allows the figures at @reprosci
 
 #### Procedure
 
-In order to dowenload the reprosci code archive  use your ```terminal```
+The easist way to download the ```reprosci``` repo's  is to use the ```terminal```. The Following applies for the ```bash``` shell.
+
 ```{bash, echo=T, eval=F}
 export DOWNLOAD_PATH=~/Downloads #change path to whatever directory you want
 cd $DOWNLOAD_PATH 
@@ -35,7 +36,7 @@ In ```rstudio console```
 source("drake.R")
 ```
 
-A full repro can be achieved by setting the ```full.repro=TRUE``` prior to  ```source(drake.R)```. This ensures downloads of relevant datasets and processing, as per ```./src/downloads.R```. T
+A full ```repro``` can be achieved by setting the ```full.repro=TRUE``` prior to  ```source("drake.R")```. This ensures downloads of relevant datasets and processing, as per ```./src/downloads.R```. T
 ```{r, echo=T, eval=F}
 full.repro=TRUE
 source("drake.R")
