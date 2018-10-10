@@ -1,4 +1,4 @@
-reprosci
+@reprosci
 ================
 
 ## a.k.a Reproducible science

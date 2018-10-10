@@ -1,5 +1,5 @@
 ---
-title: "reprosci"
+title: "@reprosci"
 output: github_document
 always_allow_html: yes
 ---
