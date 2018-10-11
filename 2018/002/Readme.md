@@ -1,14 +1,27 @@
 002
 ================
 
-## Gladstone LNG
+#### Updates
+
+###### 11-October
+
+  - update - output now shows Roma CSG production (AEMO Gas Bulletin
+    Board data)
+
+  - original - used Gladstone Port LNG export cargo data
+
+## LNG and coal seam gas impacts on electricity demand in Queensland
 
 Amongst the many factors that caused Australian east coast electricity
 wholesale prices to double ind 2016 was the opening of the east coast
-gas market to internatinal LNG exports, via the Port of Gladstone. Here
-I explore atime series of Gladstone Port Authority LNG export volumes,
-and QLD NEM market demand to illustrate the correlations. LNG exports
-are expresed in annualised tonneage. NEM demand in megawatts.
+gas market to internatinal LNG exports, via the Port of Gladstone. The
+as production uses to support the LNG exprst comes form the Coal Seam
+Gas fields at Roma. Here I explore a time series of ~~Gladstone Port
+Authority LNG export volumes~~ QLD CSG production volumes, and QLD NEM
+market demand to illustrate the correlations.
+
+Both CSG production and NEM demand in megawatts, in the former by
+converting the standard TJ/day by a factor of `11.5740741`
 
 ## Data Sources
 
@@ -29,7 +42,8 @@ If not already installed, sourcing `'./src/functions.R'` automatically
 installs the package dependencies `tidyverse`, `ggplot2`, `magrittr`,
 `purrr`, `stringr`, `drake`, `lubridate`, `rvest`,
 `rappdirs`,`data.table`, `fasttime`, `devtools`, `wbstats` , `zoo` from
-cran, and `hrbrthemes` from the github repo `hrbrmstr/hrbrthemes`.
+cran, and `hrbrthemes` from the github repos `hrbrmstr/hrbrthemes` and
+`msandifo/reprosci`
 
 #### Setup
 
@@ -115,8 +129,14 @@ Output charts using `ggplot` are saved to the `./figs` directory :
 
 ``` r
 p002<-drake::readd(p002)
-ggsave("./figs/p002_01.png",  p002$p1, width=8, height=5) 
+ggsave("./figs/p002_01.png",  p002$p1 ,width=8, height=5) 
+ggsave("./figs/p002_01o.png",  p002$p1.o ,width=8, height=5) 
 ```
+
+<img src="./figs/p002_01.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+
+where `./figs/p002_01o.png` is the original
+<img src="./figs/p002_01o.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
 ## Code details
 

@@ -1,4 +1,4 @@
-if (!exists(full.repro)) full.repro=F
+if (!exists("full.repro")) full.repro=F
 source('./src/settings.R')
 source('./src/theme.R')
 source('./src/functions.R')

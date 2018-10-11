@@ -186,7 +186,7 @@ read_gladstone_ports<- function(year=NULL,
    local.path=validate_directory(local.path, folder="gladstone")
    gladstone.file = paste0(local.path, "/", "lng.Rdata")
    if (!file.exists(gladstone.file)) {
-     read_gladstone_year(years=years ) -> lng
+     lng <-read_gladstone_year(years=years )  
     save(lng, file=gladstone.file )} else load(gladstone.file)
    lng
  }

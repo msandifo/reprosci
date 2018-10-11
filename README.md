@@ -12,6 +12,14 @@ processing and visualisation is achieved using `r`, and relies on the
 `RStudio` environment, which is strongly recommended. Some simulations
 employ other codes, such as `Basilisk`.
 
+#### Updates
+
+###### 11-October
+
+  - update - incorproarted AEMO GASBB production data for Roma CSG files
+
+  - original - used Gladstone Port LNG export cargo data
+
 #### Procedure
 
 The easist way to download the `reprosci` github repo is to use the
