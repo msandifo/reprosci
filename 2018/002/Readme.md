@@ -13,21 +13,21 @@
 ## LNG and coal seam gas impacts on electricity demand in Queensland
 
 Amongst the many factors that caused Australian east coast electricity
-wholesale prices to double ind 2016 was the opening of the east coast
-gas market to internatinal LNG exports, via the Port of Gladstone. The
-as production uses to support the LNG exprst comes form the Coal Seam
-Gas fields at Roma. Here I explore a time series of ~~Gladstone Port
-Authority LNG export volumes~~ QLD CSG production volumes, and QLD NEM
-market demand to illustrate the correlations.
+wholesale prices to double in 2016 was the opening of the east coast gas
+market to internatinal LNG exports, via the Port of Gladstone. The gas
+production supporting LNG export comes from the Coal Seam Gas (CSG)
+fields in the Roma production zone in QLD. Here I explore a time series
+of ~~Gladstone Port Authority LNG export volumes~~ Roma CSG production
+volumes, and QLD NEM market demand to illustrate the correlations.
 
 Both CSG production and NEM demand in megawatts, in the former by
 converting the standard TJ/day by a factor of `11.5740741`
 
 ## Data Sources
 
-Roma CSG production data sis derievd form AEMO’s archived [Gas Services
-Buletin Board actual flows
-dataset](https://www.aemo.com.au/-/media/Files/Gas/Natural_Gas_Services_Bulletin_Board/2018/GBB-2018-Docs/Archived-Data/ActualFlows.zip)
+Roma CSG production data is derievd from AEMO’s archived [Gas Services
+Bulletin Board actual
+flows](https://www.aemo.com.au/Gas/Gas-Bulletin-Board)
 
 \~~~LNG epxort data are sourced from the [Gladstone Port Authority (GPA)
 website](http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx).~~\~
@@ -81,7 +81,7 @@ calls
 reproscir::download_aemo_aggregated(year=2007:2018, months=1:12, local.path=local.path)
 ```
 
-AEMO GSBB data set is downlaoded, read and muatted with
+AEMO GASBB data set is downlaoded, read and muatted with
 
 ``` r
 gasbb <- reproscir::download_gasbb() %>%  
