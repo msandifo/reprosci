@@ -25,8 +25,12 @@ converting the standard TJ/day by a factor of `11.5740741`
 
 ## Data Sources
 
-LNG epxorts data are sourced from the [Gladstone Port Authority (GPA)
-website](http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx).
+Roma CSG production data sis derievd form AEMO’s archived [Gas Services
+Buletin Board actual flows
+dataset](https://www.aemo.com.au/-/media/Files/Gas/Natural_Gas_Services_Bulletin_Board/2018/GBB-2018-Docs/Archived-Data/ActualFlows.zip)
+
+\~~~LNG epxort data are sourced from the [Gladstone Port Authority (GPA)
+website](http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx).~~\~
 
 NEM demand are sourced from AEMO’s half hourly price and demand csv
 files.
@@ -74,8 +78,18 @@ function
 calls
 
 ``` r
-download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
-download_aemo_current( local.path=local.path )
+reproscir::download_aemo_aggregated(year=2007:2018, months=1:12, local.path=local.path)
+```
+
+AEMO GSBB data set is downlaoded, read and muatted with
+
+``` r
+gasbb <- reproscir::download_gasbb() %>%  
+    reproscir::read_gasbb( ) %>% 
+     reproscir::group_gasbb("Roma") %>% 
+    dplyr::mutate(year= lubridate::year(gasdate), month= lubridate::month(gasdate)) %>%
+    dplyr::group_by(year,month) %>%
+    dplyr::summarise(date=mean(gasdate), TOTALDEMAND = mean(reproscir::tjday_to_mw(actualquantity)))
 ```
 
 #### Drake plan
