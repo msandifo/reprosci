@@ -49,7 +49,7 @@ p01.o<-  ggplot2::ggplot(QLD.month  , aes(date, TOTALDEMAND/1000))+
         axis.title.y.left= element_text(  color = "red3"),
         axis.title.y.right= element_text(angle = -90, hjust = 0, color = "black"))+
   labs(subtitle="QLD electricity demand, Gladstone LNG exports", x=NULL, 
-       y="gigawatts", caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/002")+
+       y="gigawatts", caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/003")+
    theme(plot.caption=element_text(colour="grey80", size=8,hjust=1) )
 
 
@@ -64,6 +64,7 @@ p01.o <- p01.o+geom_vline(xintercept = lubridate::ymd(c("2012-07-01", "2014-07-1
     geom_text(data = data.frame(),aes(x=lubridate::ymd("2017-04-19"), y=7.2,
                                       label="Hazelwood\nclosure"), hjust=-0.,col="darkgreen", size=3)
    
+
 
 return (list(p1=p01, p1.o=p01.o))
 }

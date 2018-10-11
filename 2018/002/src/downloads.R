@@ -8,18 +8,13 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
                      TOTALDEMAND= sum(TOTALDEMAND)/length(TOTALDEMAND) )   %>%
   head(-1)
   lng = update_gladstone( local.path=local.path)  %>% subset( !is.na(tonnes))
-   
   gasbb <- reproscir::download_gasbb() %>%  
     reproscir::read_gasbb( ) %>% 
      reproscir::group_gasbb("Roma") %>% 
     dplyr::mutate(year= lubridate::year(gasdate), month= lubridate::month(gasdate)) %>%
     dplyr::group_by(year,month) %>%
     dplyr::summarise(date=mean(gasdate), TOTALDEMAND = mean(reproscir::tjday_to_mw(actualquantity)))
-  
   save( QLD.month, lng, gasbb , file = paste0(drake.path,"/data/data.Rdata"))
-  
-    
-  
 } else {
   load(paste0(drake.path, "/data/data.Rdata"))
   day.dif <-Sys.Date()- (tail(QLD.month,2)[1,])$date  # %>% mutate(date= lubridate::ymd(year,month, "01")) # year and date of last records in NEM.month
@@ -46,8 +41,7 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
       head(-1))
     lng = update_gladstone( local.path=local.path)  %>% subset( !is.na(tonnes))
 }
- save( QLD.month,lng, gasbb, file = paste0(drake.path,"/data/data.Rdata"))
- 
+save( QLD.month, lng, gasbb, file = paste0(drake.path,"/data/data.Rdata"))
 }
   
 
