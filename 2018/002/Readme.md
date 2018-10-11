@@ -25,15 +25,15 @@ converting the standard TJ/day by a factor of `11.5740741`
 
 ## Data Sources
 
-Roma CSG production data is derievd from AEMO’s archived [Gas Services
-Bulletin Board actual
-flows](https://www.aemo.com.au/Gas/Gas-Bulletin-Board)
+  - Roma CSG production data is derived from AEMO’s now archived [Gas
+    Services Bulletin Board actual
+    flows](https://www.aemo.com.au/Gas/Gas-Bulletin-Board)
 
 \~~~LNG epxort data are sourced from the [Gladstone Port Authority (GPA)
 website](http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx).~~\~
 
-NEM demand are sourced from AEMO’s half hourly price and demand csv
-files.
+  - NEM demand are sourced from AEMO’s half hourly price and demand csv
+    files.
 
 ## Code
 
@@ -101,7 +101,7 @@ sourced via `source('./src/plan.R')`)
 drake::make( reproplan, force=T)
 ```
 
-The `reproplan` dependency structure can be easily visualised
+The `reproplan` dependency structure
 
 ``` r
 config <- drake::drake_config(reproplan)
@@ -111,20 +111,19 @@ drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
 
 <img src="./figs/rmd_render_drake.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
-Note that `reproplan` includes
+Note that `reproplan` loads the `./data/data.Rdata` built by
+`./src/downloads.R`
 
-  - the directive `lng = update_gladstone( local.path=local.path)` which
-    either reads the Gladstone export data from the relevant GPA html
-    tables as a data.frame and stores `lng` to disk in
-    `load(file.path(validate_directory(local.path, "gladstone"),
-    "lng.Rdata"))` or, if already downloaded,
-    `load(file.path(validate_directory(local.path, "gladstone"),
-    "lng.Rdata"))`- see code details.
+~~\* the directive `lng = update_gladstone( local.path=local.path)`
+which either reads the Gladstone export data from the relevant GPA html
+tables as a data.frame and stores `lng` to disk in
+`load(file.path(validate_directory(local.path, "gladstone"),
+"lng.Rdata"))` or, if already downloaded,
+`load(file.path(validate_directory(local.path, "gladstone"),
+"lng.Rdata"))`- see code details.~~\~
 
-  - statements to read the monthly AEMO csv files for each of the NEM
-    region QLD1, and aggregate them as monthly `QLD.month` timeseries.
-
-<!-- end list -->
+\~~~\* statements to read the monthly AEMO csv files for each of the NEM
+region QLD1, and aggregate them as monthly `QLD.month` timeseries.~~\~
 
     ## # A tibble: 6 x 5
     ## # Groups:   year [1]

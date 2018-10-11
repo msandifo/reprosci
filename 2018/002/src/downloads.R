@@ -1,6 +1,6 @@
 if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
   file.names<-download_aemo_aggregated(year=2007:2018, months=1:12, local.path=local.path, states="QLD")
-  QLD1 = get_aemo_data(state='QLD') 
+  QLD1 = read_aemo_aggregated(state='QLD') 
   QLD.month = QLD1 %>% 
       dplyr::group_by(year, month) %>% 
       dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),
@@ -37,7 +37,7 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
                                          months=next.month,
                                          verbose=F,
                                          years=next.year,  states="QLD")
-    QLD1 = get_aemo_data(state='QLD', files=file.names) 
+    QLD1 = read_aemo_aggregated(state='QLD', files=file.names) 
     QLD.month  = rbind(  QLD.month , QLD1 %>% 
       dplyr::group_by(year, month) %>% 
       dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),

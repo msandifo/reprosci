@@ -1,7 +1,7 @@
 if (!exists("full.repro")) full.repro=F
 source('./src/settings.R')
 source('./src/theme.R')
-source('./src/functions.R')
+#source('./src/functions.R')
 source('./src/plan.R')
 source('./src/plots.R')
 source('./src/downloads.R')
