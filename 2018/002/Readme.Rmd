@@ -51,7 +51,7 @@ The code base is in ```r``` and is best managed with in managed within RStudio, 
 
 If not already installed, sourcing ```'./src/functions.R'``` automatically installs the package dependencies 
 ```tidyverse```, ```ggplot2```, ```magrittr```, ```purrr```, ```stringr```, ```drake```, ```lubridate```, ```rvest```, ```rappdirs```,```data.table```, ```fasttime```, ```devtools```, ```wbstats``` , ```zoo```
- from cran, and ```hrbrthemes``` from the github repos ```hrbrmstr/hrbrthemes``` and ```msandifo/reprosci```
+ from cran, and ```hrbrthemes``` from the github repos ```hrbrmstr/hrbrthemes``` and ```msandifo/reproscir```
 
 
 

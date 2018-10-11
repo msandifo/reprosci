@@ -43,7 +43,7 @@ installs the package dependencies `tidyverse`, `ggplot2`, `magrittr`,
 `purrr`, `stringr`, `drake`, `lubridate`, `rvest`,
 `rappdirs`,`data.table`, `fasttime`, `devtools`, `wbstats` , `zoo` from
 cran, and `hrbrthemes` from the github repos `hrbrmstr/hrbrthemes` and
-`msandifo/reprosci`
+`msandifo/reproscir`
 
 #### Setup
 
