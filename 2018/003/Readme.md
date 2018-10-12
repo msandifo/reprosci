@@ -1,7 +1,7 @@
 003
 ================
 
-## East Coast gas market supply balance and
+## East Coast gas market supply balance and NEM prices
 
 Amongst the many factors that caused Australian east coast electricity
 wholesale prices to double in 2016 was the opening of the east coast gas
@@ -12,7 +12,7 @@ the Roma production zone in QLD, changes the supply mix into the doemtoc
 market. Here I explore a time series of Gladstone Port Authority LNG
 export volume, Roma CSG production volumes, and NEM market prices.
 
-Gas production is in TJj/day and NEM prices in AUD$
+Gas production is in TJ/day and NEM prices in AUD$
 
 ## Data Sources
 
@@ -29,17 +29,18 @@ Gas production is in TJj/day and NEM prices in AUD$
 ## Caveats
 
 This repo contains a preprocessed dataset `./data/facility.Rdata`,
-containing GASBB facility data. Due to uprgading of AEMO’s GASBB data
-reprositry this not currently straightforward to reproduce from the raw
-data. The `gasbb.facility` data.frame contains the following info
+containing GASBB facility data. Due to an uprgading of AEMO’s GASBB data
+reprository this not - at the time of preparation - straightforward to
+reproduce from the raw data. The `gasbb.facility` data.frame contains
+the following info
 
 PlantID, PlantName, PlantType, Zone, OperatorName, LowRange, HiRange,
 Exempt, GasDayStartHour, ZoneId, OperatorId, LastUpdated, ReportDateTime
 
-with `gasbb.facility$PlantType` used to select the production facilities
-(as opposed to pipelines and storoage facilities, so as to calculate the
-gas market supply balance from AEMO’s archived [Gas Services Bulletin
-Board actual flows](https://www.aemo.com.au/Gas/Gas-Bulletin-Board) data
+with `gasbb.facility$PlantType` used to select the production, as
+opposed to pipelines and storage, facilities needed to extract a supply
+balance from AEMO’s archived [Gas Services Bulletin Board actual
+flows](https://www.aemo.com.au/Gas/Gas-Bulletin-Board) data.
 
 ## Code
 
