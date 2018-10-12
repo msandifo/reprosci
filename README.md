@@ -5,7 +5,7 @@
 
 #### The `repro` principle
 
-`if (!reproducible) FALSE else TRUE`
+`if (!reproducible_by(others)) FALSE else TRUE`
 
 More specifically, my objective is to make instructions available that
 allow the figures at @reprosci (<https://twitter.com/reprosci>) to be
