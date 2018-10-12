@@ -14,9 +14,10 @@ export volume, Roma CSG production volumes, and NEM market prices.
 
 Gas production is in TJ/day and NEM prices in AUD$.
 
-The proportion of ags production used to supprt gas LNG gas production
-and transoprt, the parasitic. load, is uncertain, and can be varied by
-changing the default value of 12% in `drake.R`
+I know of no public data relevant to the proportion of production used
+in LNG compresiosn and liquefaction and associated CSG activities. I
+assume a value of 12% for the parastitc load, which can be changed in
+the `drake.R`
 
 `parasitic.load=12`
 
