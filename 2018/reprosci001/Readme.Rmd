@@ -35,7 +35,7 @@ The code can be executed by open the ```Rstudio``` project  ```reprosci001.Rproj
 and sourcing 
 
 ```{r echo=T, eval=F}
-source('drake0001.R')
+source('drake001.R')
 ```
 Details of the steps invoked by ```drake001.R` are summarised below.
 
@@ -51,7 +51,7 @@ checks for and, if absent, automatically installs  the following package depende
 
 ##### Setup
 
-Set variables, such as the ```drake.path```, read in key data functions, the ggplot theme, plot functions the drake plan ```reproplan```.
+Sets variables, such as the ```drake.path```, reads in speciifc functions, a ggplot theme derived form ```hrbrthemes```, plot functions the drake plan ```reproplan```.
 
 ```{r echo=T, eval=F}
 source('./src/settings.R')
@@ -68,8 +68,11 @@ source('./src/plan.R')
 source('./src/downloads.R')
 ``` 
 
-downlaods monthly AEMO csv data files  into a local directory set by 
-``` local.path```
+Checks all primary data sources from relevant distribution sources and if not already present already downloaded, retrieves the new or updated versions. 
+
+In this case monthly price and demand csv data files form AEMO  into a local directory set by 
+``` local.path```.
+
 The default ``` local.path=NULL``` uses ```rappdirs::user_cache_dir()``` to set the ```local.path``` to a folder in the users cache directory (for macOSX, ```~/Library/cache```) to ```file.path(local.path, aemo)```.  ```'./src/downloads.R'```  is a wrapper on the function call ```download_aemo_aggregated```.
 
 ```{r echo=T, eval=F}
