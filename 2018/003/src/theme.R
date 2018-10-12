@@ -9,7 +9,8 @@ ggplot2::theme_set( hrbrthemes::theme_ipsum(axis="xy",
                                             base_size=base_size,
                                             grid=T,
                                             plot_margin = margin(10,10,10,10),
-                                            axis_title_size = base_size))
+                                            axis_title_size = base_size*.85,
+                                            axis_text_size = base_size*.75))
 ggplot2::theme_update(
   plot.title = element_text(size = rel(1.15),family = ffamily, angle=0),
   plot.subtitle = element_text(size = rel(1.), family = ffamily, colour="grey50", angle=0),

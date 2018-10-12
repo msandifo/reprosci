@@ -117,18 +117,7 @@ drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
 <img src="./figs/rmd_render_drake.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
 Note that `reproplan` loads the `./data/data.Rdata` built by
-`./src/downloads.R`
-
-~~\* the directive `lng = update_gladstone( local.path=local.path)`
-which either reads the Gladstone export data from the relevant GPA html
-tables as a data.frame and stores `lng` to disk in
-`load(file.path(validate_directory(local.path, "gladstone"),
-"lng.Rdata"))` or, if already downloaded,
-`load(file.path(validate_directory(local.path, "gladstone"),
-"lng.Rdata"))`- see code details.~~\~
-
-\~~~\* statements to read the monthly AEMO csv files for each of the NEM
-regions, and aggregate them as monthly `NEM.month` timeseries.~~\~
+`./src/downloads.R`, returning `Nem.month`
 
     ## # A tibble: 6 x 5
     ## # Groups:   year [1]
@@ -140,6 +129,24 @@ regions, and aggregate them as monthly `NEM.month` timeseries.~~\~
     ## 4  2008     4 2008-04-15  34.5      42901.
     ## 5  2008     5 2008-05-16  46.9      45248.
     ## 6  2008     6 2008-06-15  43.9      46719.
+
+and \`\`\`gasbb.prod.zone.month\`\`\`\`
+
+    ## # A tibble: 6 x 6
+    ## # Groups:   ZoneName, month [6]
+    ##   ZoneName      month  year actualquantity gasdate     roma
+    ##   <ord>         <dbl> <dbl>          <dbl> <date>     <dbl>
+    ## 1 Ballera           7  2008           39.8 2008-07-15     0
+    ## 2 Gippsland         7  2008          978.  2008-07-15     0
+    ## 3 Moomba            7  2008          371.  2008-07-15     0
+    ## 4 Port Campbell     7  2008          262.  2008-07-15     0
+    ## 5 Roma              7  2008          320.  2008-07-15     0
+    ## 6 Victoria          7  2008           65.3 2008-07-15     0
+
+where `gasbb.prod.zone.month$lng` is the component of `Roma` prodcution
+directed towards Gladstone LNG exports, assuming a 12% parasitic load
+applies (i.e. the gas used for LNG transport and compression, CSG
+produced water treatments etc. )
 
 #### Output
 
@@ -163,7 +170,7 @@ Gas", country="Total")`
 
 scrapes data from the GPA html tables, utilising the package `rvest`,
 noting that other commodities exported through the GPA, such as
-`"Coal"`, can also be specified. TThe function call
+`"Coal"`, can also be specified. The function call
 
 read\_gladstone\_ports\<- function(year=NULL, month=NULL,fuel=“Liquefied
 Natural Gas”, country=“Total”)
@@ -180,6 +187,6 @@ The drake plan indirectly calls `read_gladstone_ports` via
 While the monthly NEM csv files have time stamps `SETTLEMENTDATE`
 ordered `ymd hms`, the September 2016 csv files have time stamps
 reversed `dmy hms`. The function `dmy_to_ymd` reorders the time stamps
-to \`\`ymd hms\`\`\`.
+to `ymd hms`.
 
 ## Errata

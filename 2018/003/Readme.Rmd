@@ -111,19 +111,25 @@ drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
 <img src="./figs/rmd_render_drake.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
 
-Note that ```reproplan``` loads the ```./data/data.Rdata``` built by ```./src/downloads.R```
-
-~~* the directive ```lng = update_gladstone( local.path=local.path)``` which either reads the Gladstone export data from the relevant GPA html tables as a data.frame  and stores ```lng``` to disk in   ```load(file.path(validate_directory(local.path, "gladstone"), "lng.Rdata"))``` or, if already downloaded, ```load(file.path(validate_directory(local.path, "gladstone"), "lng.Rdata"))```- see code details.~~~
-
-
-~~~* statements to read the monthly AEMO csv files for each of the NEM regions, and aggregate them as monthly ```NEM.month```  timeseries.~~~ 
+Note that ```reproplan``` loads the ```./data/data.Rdata``` built by ```./src/downloads.R```, returning ```Nem.month```
 
 ```{r  cache=FALSE}
 print(head(readd(NEM.month)))
 
 ```
 
+and ```gasbb.prod.zone.month````
+
+ ```{r  cache=FALSE}
+print(head(readd(gasbb.prod.zone.month)))
+
+```
+
+where ```gasbb.prod.zone.month$lng``` is the component of ```Roma``` prodcution directed towards Gladstone LNG exports, assuming a  12% parasitic load applies (i.e. the gas used for LNG transport and compression,  CSG produced  water treatments etc. )
+
  
+
+
 
 
 #### Output
@@ -146,7 +152,7 @@ The function call
 ``` read_gladstone_ports(year=NULL, month=NULL,fuel="Liquefied Natural Gas", country="Total")```
 
 scrapes data from the GPA html tables, utilising the package ```rvest```, noting that other commodities exported through the GPA, such as ```"Coal"```, can also be specified.
-TThe function call
+The function call
 
 read_gladstone_ports<- function(year=NULL, month=NULL,fuel="Liquefied Natural Gas", country="Total")
 
@@ -156,7 +162,7 @@ The drake plan indirectly calls ```read_gladstone_ports``` via ```update_gladsto
 
 #### NEM data
 
-While the monthly NEM csv files have time stamps ```SETTLEMENTDATE``` ordered ```ymd hms```, the September 2016 csv files have time stamps reversed ```dmy hms```. The function ```dmy_to_ymd``` reorders the time stamps to ``ymd hms```.
+While the monthly NEM csv files have time stamps ```SETTLEMENTDATE``` ordered ```ymd hms```, the September 2016 csv files have time stamps reversed ```dmy hms```. The function ```dmy_to_ymd``` reorders the time stamps to ```ymd hms```.
 
 
 
