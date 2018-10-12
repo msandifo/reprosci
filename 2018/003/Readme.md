@@ -12,7 +12,13 @@ the Roma production zone in QLD, changes the supply mix into the doemtoc
 market. Here I explore a time series of Gladstone Port Authority LNG
 export volume, Roma CSG production volumes, and NEM market prices.
 
-Gas production is in TJ/day and NEM prices in AUD$
+Gas production is in TJ/day and NEM prices in AUD$.
+
+The proportion of ags production used to supprt gas LNG gas production
+and transoprt, the parasitic. load, is uncertain, and can be varied by
+changing the default value of 12% in `drake.R`
+
+`parasitic.load=12`
 
 ## Data Sources
 

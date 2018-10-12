@@ -1,4 +1,8 @@
 if (!exists("full.repro")) full.repro=F
+
+#set parasitc load 
+parasitic.load=12
+
 source('./src/settings.R')
 source('./src/theme.R')
 #source('./src/functions.R')
