@@ -182,10 +182,4 @@ ordered `ymd hms`, the September 2016 csv files have time stamps
 reversed `dmy hms`. The function `dmy_to_ymd` reorders the time stamps
 to \`\`ymd hms\`\`\`.
 
-NEM data
-
-While the monthly NEM csv files have time stamps SETTLEMENTDATE ordered
-ymd hms, the September 2016 csv files have time stamps reversed dmy hms.
-The function dmy\_to\_ymd reorders the time stamps.
-
 ## Errata
