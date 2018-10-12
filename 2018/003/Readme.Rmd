@@ -31,11 +31,19 @@ Gas production  is in TJj/day and NEM prices in AUD$
 
 ## Data Sources
 
-* Roma CSG production data is derived from AEMO's now archived [Gas Services Bulletin Board actual flows](https://www.aemo.com.au/Gas/Gas-Bulletin-Board)
+* East coast gas market  production data is derived from AEMO's now archived [Gas Services Bulletin Board actual flows](https://www.aemo.com.au/Gas/Gas-Bulletin-Board)
 
 * LNG export data are sourced from the [Gladstone Port Authority (GPA)  website](http://content1.gpcl.com.au/viewcontent/CargoComparisonsSelection/CargoComparisonsSelection.aspx)
 
 * NEM demand are sourced from AEMO's half hourly price and demand csv files.
+
+##  Caveats
+
+This repo contains a preprocessed dataset ```./data/facility.Rdata```, containing   GASBB facility data. Due to uprgading of AEMO's GASBB data reprositry this not currently straightforward to reproduce from the raw data. The ```gasbb.facility``` data.frame contains  the following info 
+
+`r load("./data/facility.Rdata"); names(gasbb.facility)`
+
+with ```gasbb.facility$PlantType``` used to select the production facilities (as opposed to pipelines and storoage facilities, so as to calculate the gas market supply balance from AEMO's  archived [Gas Services Bulletin Board actual flows](https://www.aemo.com.au/Gas/Gas-Bulletin-Board) data
 
 
 ## Code
