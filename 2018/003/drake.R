@@ -1,7 +1,7 @@
 if (!exists("full.repro")) full.repro=F
 
 #set parasitc load 
-parasitic.load=12
+parasitic.load=12  #percentage
 
 source('./src/settings.R')
 source('./src/theme.R')

@@ -15,7 +15,7 @@ volumes, and NEM market prices.
 Gas production is in TJ/day and NEM prices in AUD$.
 
 I know of no public data relevant to the proportion of production used
-in LNG compresiosn and liquefaction and associated CSG activities. I
+in LNG compression and liquefaction and associated CSG activities. I
 assume a value of 12% for the parastitc load, which can be changed via
 the `drake.R` file.
 
