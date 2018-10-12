@@ -7,10 +7,13 @@
 
 `if (!reproducible) FALSE else TRUE`
 
-My objective is to make instructions available that allow the figures at
-@reprosci (<https://twitter.com/reprosci>) to be reproduced, or
-`repro`’d using the primary (or raw) open source data as distributed
-by the relavant authorities.
+More specifically, my objective is to make instructions available that
+allow the figures at @reprosci (<https://twitter.com/reprosci>) to be
+reproduced, or `repro`’d using the primary (or raw) open source data as
+distributed by the relavant authorities.
+
+More personally, my hope is to cure a life-long addiction to `impetus`
+code.
 
 Some caveats apply, for example, where the raw data needs prepocessing
 in order to manage compute resources.
