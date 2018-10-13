@@ -79,7 +79,7 @@ Details of the steps invoked by \`\``drake.R` are summarised below.
 
   - `source('./src/plots.R')` plot functions  
 
-  - `source('./src/downloads.R')` directs the download of the releavnt
+  - `source('./src/downloads.R')` directs the download of the relevant
     data files to be downloaded into the local directory set by
     `local.path`. By default `local.path=NULL` in which case data is
     downloaded via `rappdirs::user_cache_dir()` to a folder in the users
@@ -116,9 +116,9 @@ Note that `reproplan` loads the `./data/data.Rdata` built by
 and `gasbb.prod.zone.month`
 
     ## # A tibble: 6 x 6
-    ## # Groups:   ZoneName, month [6]
-    ##   ZoneName      month  year actualquantity gasdate    gladstone
-    ##   <ord>         <dbl> <dbl>          <dbl> <date>         <dbl>
+    ## # Groups:   zonename, month [6]
+    ##   zonename      month  year actualquantity date       gladstone
+    ##   <chr>         <dbl> <dbl>          <dbl> <date>         <dbl>
     ## 1 Ballera           7  2008           39.8 2008-07-15         0
     ## 2 Gippsland         7  2008          978.  2008-07-15         0
     ## 3 Moomba            7  2008          371.  2008-07-15         0
