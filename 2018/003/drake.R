@@ -1,4 +1,4 @@
-if (!exists("full.repro")) full.repro=F
+full.repro=F
 
 parasitic.load=12  #set parasitc load as percentage
 
@@ -11,7 +11,7 @@ if (file.exists('./src/tables.R')) source('./src/tables.R')
 if (file.exists('./src/reports.R')) source('./src/reports.R') 
 
 source('./src/plan.R')
-if (full.repro) drake::clean(force=T)
+if (full.repro==TRUE) drake::clean(force=T)
 drake::make( reproplan )
 source('./src/outputs.R')
   
