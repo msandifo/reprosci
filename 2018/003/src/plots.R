@@ -16,8 +16,6 @@ plots <- function(NEM.month, gasbb.prod.zone.month) {
                                           )), ordered=TRUE)
   fill.cols <- c("plum4", "grey70", "darkblue" ,"lightblue4",  "lightblue","firebrick3", "green4")
 
-#  print(head(gasbb ))
-  #ggplot(gasbb %>%  reproscir::group_gasbb(), aes(gasdate, actualquantity* reproscir::tjday_to_mw()))+geom_line()
  p01<- ggplot(gasbb.prod.zone.month  , aes(date, actualquantity-gladstone*parasitic.load.n))+
     geom_area(data=gasbb.prod.zone.month %>% subset(zonename=="Roma"),aes(y=-gladstone*parasitic.load.n), fill="green4", alpha=.75)+
     geom_area(aes(fill=zonename),position = "stack",size=.02, col="white")+
@@ -29,7 +27,6 @@ plots <- function(NEM.month, gasbb.prod.zone.month) {
     geom_line(data=NEM.month %>% tail(-7), aes(date%>% reproscir::set_month_day(15), RRP*30-3500), col="grey20", size=.23)+
     annotate("text", lubridate::ymd("2017-03-01"), -1000, label=paste0("Gladstone LNG supply\n+", parasitic.load, "% parasitic load"), size=3, fontface =3,col="white" )+
     annotate("text", lubridate::ymd("2014-01-01"), 2300, label="Domestic supply", size=3 ,col="black",fontface =3 ) +
-    #scale_y_continuous(sec.axis = sec_axis(~.*reproscir::tjday_to_mw(1)/1e3, "gigawatts  (energy equiv.)"))+
     scale_y_continuous(sec.axis = sec_axis(~(.+3500)/30, "NEM $/MWhour"))+
     
     theme(axis.text.y.right = element_text(color = "black"),
