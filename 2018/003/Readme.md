@@ -3,21 +3,21 @@
 
 ## East Coast gas market supply balance and NEM prices
 
-Amongst the many factors that caused Australian east coast electricity
-wholesale prices to double in 2016 was the opening of the east coast gas
-market to internatinal LNG exports, via the Port of Gladstone. With gas
-production supporting LNG export derived from the Coal Seam Gas (CSG)
-fields in the Roma production zone in QLD, there have been consequences
-for the supply mix into the domestic market. Here I explore time series
-for Gladstone Port Authority LNG export volumes, east coast production
-volumes, and NEM market prices.
+the opening of the east coast gas market to internatinal LNG exports,
+via the Port of Gladstone, was one of many factors that accompanied a
+doubling Australian east coast electricity wholesale prices in 2016.
+With gas production supporting LNG export derived from the Coal Seam Gas
+(CSG) fields in the Roma production zone in QLD, there have been
+consequences for the supply mix into the domestic market. Here I explore
+time series for Gladstone Port Authority LNG export volumes, east coast
+production volumes, and NEM market prices.
 
 Gas production is in TJ/day and NEM prices in AUD$.
 
-I know of no public data relevant to the proportion of production used
-in LNG compression and liquefaction and associated CSG activities. I
-assume a value of 12% for the parastitc load, which can be changed via
-the `drake.R` file.
+I know of no public data relevant to the proportion of Roma CSG as
+production used in LNG compression and liquefaction and associated CSG
+activities. I assume a value of 12% for the parastitc load, which can be
+changed via the `drake.R` file.
 
 `parasitic.load=12`
 
@@ -51,69 +51,45 @@ flows](https://www.aemo.com.au/Gas/Gas-Bulletin-Board) data.
 
 ## Code
 
-The code base is in `r` and is best managed with in managed within
-RStudio, using the `drake` package.
+The code base is in `r` and is managed within RStudio, using the `drake`
+package.
 
-#### Package dependencies
-
-If not already installed, sourcing `'./src/functions.R'` automatically
-installs the package dependencies `tidyverse`, `ggplot2`, `magrittr`,
-`purrr`, `stringr`, `drake`, `lubridate`, `rvest`,
-`rappdirs`,`data.table`, `fasttime`, `devtools`, `wbstats` , `zoo` from
-cran, and `hrbrthemes` from the github repos `hrbrmstr/hrbrthemes` and
-`msandifo/reproscir`
-
-#### Setup
-
-To start we set some variables, such as the `drake.path`, read in key
-functions (including the drake plan `reproplan`) and adjust the ggplot
-theme.
+The code can be executed by opening the `Rstudio` project `003.Rproj`
+and sourcing `drake.R`.
 
 ``` r
-source('./src/settings.R')
-source('./src/theme.R')
-source('./src/functions.R')
-source('./src/plan.R')
-source('./src/plots.R')
+source('drake.R')
 ```
 
-#### Downloads
+Details of the steps invoked by \`\``drake.R` are summarised below.
 
-``` r
-source('./src/downloads.R')
-```
+  - `source('./src/packages.R')` checks for and automatically installs
+    missing package dependencies
+    <!-- ```tidyverse```, ```ggplot2```, ```magrittr```, ```purrr```, ```stringr```, ```drake```, ```lubridate```, ```rvest```, ```rappdirs```,```data.table```, ```fasttime```, ```devtools```, ```wbstats``` , ```zoo``` -->
+    <!--  from cran, and ```hrbrthemes```  and ```reproscir``` from the github repos ```hrbrmstr/hrbrthemes``` and ```msandifo/reproscir``` -->
 
-directs the downlaod of the AEMO csv data files to be downloaded into
-the local directory set by `local.path` By default `local.path=NULL` in
-which case data is downloaded via `rappdirs::user_cache_dir()` to a
-folder in the users cache directory (for macOSX, `~/Library/cache`) to
-`file.path(local.path, aemo)`. `'./src/downloads.R'` is a wrapper on the
-function
-calls
+  - `source('./src/settings.R')` sets variables, such as the
+    `drake.path`,
 
-``` r
-reproscir::download_aemo_aggregated(year=2007:2018, months=1:12, local.path=local.path)
-```
+  - `source('./src/functions.R')` reads in data processing functions not
+    in `reoroscir`
 
-AEMO GASBB data set is downlaoded, read
+  - `source('./src/theme.R')` sets the ggplot theme derived form
+    `hrbrthemes`
 
-``` r
-gasbb <- reproscir::download_gasbb() %>%  
-    reproscir::read_gasbb( ) 
-```
+  - `source('./src/plots.R')` plot functions  
 
-and then mutated and joined with theLNG data (see `./src/dowwnloads.R`)
+  - `source('./src/downloads.R')` directs the download of the releavnt
+    data files to be downloaded into the local directory set by
+    `local.path`. By default `local.path=NULL` in which case data is
+    downloaded via `rappdirs::user_cache_dir()` to a folder in the users
+    cache directory (for macOSX, `~/Library/cache`) to
+    `file.path(local.path, aemo)`.
 
-#### Drake plan
+  - `source('./src/plan.R')` defines the drake plan `reproplan` with the
+    dependency structure
 
-The code is organised and run/update via drake plan `reproplan` (
-sourced via `source('./src/plan.R')`)
-
-``` r
-drake::make( reproplan, force=T)
-```
-
-The `reproplan` dependency structure
+<!-- end list -->
 
 ``` r
 config <- drake::drake_config(reproplan)
@@ -137,27 +113,29 @@ Note that `reproplan` loads the `./data/data.Rdata` built by
     ## 5  2008     5 2008-05-16  46.9      45248.
     ## 6  2008     6 2008-06-15  43.9      46719.
 
-and \`\`\`gasbb.prod.zone.month\`\`\`\`
+and `gasbb.prod.zone.month`
 
     ## # A tibble: 6 x 6
     ## # Groups:   ZoneName, month [6]
-    ##   ZoneName      month  year actualquantity gasdate     roma
-    ##   <ord>         <dbl> <dbl>          <dbl> <date>     <dbl>
-    ## 1 Ballera           7  2008           39.8 2008-07-15     0
-    ## 2 Gippsland         7  2008          978.  2008-07-15     0
-    ## 3 Moomba            7  2008          371.  2008-07-15     0
-    ## 4 Port Campbell     7  2008          262.  2008-07-15     0
-    ## 5 Roma              7  2008          320.  2008-07-15     0
-    ## 6 Victoria          7  2008           65.3 2008-07-15     0
+    ##   ZoneName      month  year actualquantity gasdate    gladstone
+    ##   <ord>         <dbl> <dbl>          <dbl> <date>         <dbl>
+    ## 1 Ballera           7  2008           39.8 2008-07-15         0
+    ## 2 Gippsland         7  2008          978.  2008-07-15         0
+    ## 3 Moomba            7  2008          371.  2008-07-15         0
+    ## 4 Port Campbell     7  2008          262.  2008-07-15         0
+    ## 5 Roma              7  2008          320.  2008-07-15         0
+    ## 6 Victoria          7  2008           65.3 2008-07-15         0
 
-where `gasbb.prod.zone.month$lng` is the component of `Roma` prodcution
-directed towards Gladstone LNG exports, assuming a 12% parasitic load
+where `gasbb.prod.zone.month$gladstone` is the component of `Roma`
+production directed to Gladstone LNG exports, assuming a parasitic load
 applies (i.e. the gas used for LNG transport and compression, CSG
-produced water treatments etc. )
+produced water treatments etc. ) as set by `parasitic.load`
 
-#### Output
+  - \``source(drake::make( reproplan ))`
 
-Output charts using `ggplot` are saved to the `./figs` directory :
+  - `source('./src/ouputs.R')` output charts to the `./figs` directory :
+
+<!-- end list -->
 
 ``` r
 p003<-drake::readd(p003)

@@ -25,14 +25,14 @@ AUD$ per megawatt hour.
 
 ## Code
 
-The code base is in `r` and is managed within RStudio, using the `drake`
+The code is in `r` and is managed within RStudio, using the `drake`
 package.
 
-The code can be executed by open the `Rstudio` project
+The full code can be executed by open the `Rstudio` project
 `reprosci001.Rproj` and sourcing
 
 ``` r
-source('drake0001.R')
+source('drake001.R')
 ```
 
 Details of the steps invoked by \`\``drake001.R` are summarised below.
@@ -43,7 +43,7 @@ Details of the steps invoked by \`\``drake001.R` are summarised below.
 source('./src/packages.R')
 ```
 
-checks for and, if absent, automatically installs the following package
+check for and, if absent, automatically install the following package
 dependencies `tidyverse`, `ggplot2`, `magrittr`, `purrr`, `stringr`,
 `drake`, `lubridate`, `rvest`, `rappdirs`,`data.table`, `fasttime`,
 `devtools`, `wbstats` from cran, and `hrbrthemes` from the github repo
@@ -51,7 +51,7 @@ dependencies `tidyverse`, `ggplot2`, `magrittr`, `purrr`, `stringr`,
 
 ##### Setup
 
-Set variables, such as the `drake.path`, read in key data functions, the
+Set variables, such as the `drake.path`, read in speciifc functions, a
 ggplot theme, plot functions the drake plan `reproplan`.
 
 ``` r
@@ -65,32 +65,30 @@ source('./src/plan.R')
 
 ##### Downloads
 
+Check all primary data sources from relevant distribution sources and if
+not already present already downloaded, retrieve new or updated
+versions, into a local directory set by `local.path`.
+
 ``` r
 source('./src/downloads.R')
 ```
 
-downlaods monthly AEMO csv data files into a local directory set by
-`local.path` The default `local.path=NULL` uses
-`rappdirs::user_cache_dir()` to set the `local.path` to a folder in the
-users cache directory (for macOSX, `~/Library/cache`) to
-`file.path(local.path, aemo)`. `'./src/downloads.R'` is a wrapper on the
-function call
+The default `local.path=NULL` uses `rappdirs::user_cache_dir()` to set
+the `local.path` to a folder in the users cache directory (for macOSX,
+`~/Library/cache`) to `file.path(local.path, aemo)`.
+`'./src/downloads.R'` is a wrapper on the function call
 `download_aemo_aggregated`.
-
-``` r
-download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
-```
 
 ##### Drake plan
 
-The code is organised and run/update via drake plan `reproplan` (loaded
-via `source('./src/plan.R')`)
+organise code and run/update via drake plan `reproplan` (loaded via
+`source('./src/plan.R')`)
 
 ``` r
 drake::make( reproplan, force=T)
 ```
 
-The drake `reproplan` dependency structure can be visualised
+with the following dependency structure
 
 ``` r
 config <- drake::drake_config(reproplan)
@@ -100,43 +98,23 @@ drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
 
 <img src="./figs/rmd_render_drake.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
-Note that the drake plan `reproplan` includes
+<!-- Note that the drake plan ```reproplan``` includes  -->
 
-  - a directive `lng = update_gladstone( local.path=local.path)`that
-    either reads the Gladstone export data from html tables as a
-    data.frame and stores `lng` to disk in
-    `load(file.path(validate_directory(local.path, "gladstone"),
-    "lng.Rdata"))` or, if already downloaded,
-    `load(file.path(validate_directory(local.path, "gladstone"),
-    "lng.Rdata"))`- see code details.
+<!-- *  a directive ```lng = update_gladstone( local.path=local.path)```that either reads the Gladstone export data from html tables as a data.frame and stores ```lng``` to disk in   ```load(file.path(validate_directory(local.path, "gladstone"), "lng.Rdata"))``` or, if already downloaded, ```load(file.path(validate_directory(local.path, "gladstone"), "lng.Rdata"))```- see code details. -->
 
-  - statements to read the monthly AEMO csv files for each of the five
-    NEM regions (NSW1, QLD1, SA1 TAS1, VIC1), and aggregate them as
-    monthly `NEM.month` and annual `NEM.year` timeseries, as summarised
-    below
+<!-- * statements to read the monthly AEMO csv files for each of the five NEM regions (NSW1, QLD1, SA1 TAS1, VIC1), and aggregate them as monthly ```NEM.month``` and annual ```NEM.year``` timeseries, as summarised below -->
 
-<!-- end list -->
+<!-- ```{r  cache=TRUE} -->
 
-    ## # A tibble: 6 x 5
-    ## # Groups:   year [1]
-    ##    year month date         RRP TOTALDEMAND
-    ##   <dbl> <dbl> <date>     <dbl>       <dbl>
-    ## 1  2010     1 2010-01-16  75.1      23918.
-    ## 2  2010     2 2010-02-14  74.8      24549.
-    ## 3  2010     3 2010-03-16  25.6      23265.
-    ## 4  2010     4 2010-04-15  39.0      22157.
-    ## 5  2010     5 2010-05-16  29.5      23156.
-    ## 6  2010     6 2010-06-15  31.7      24560.
+<!-- print(head(readd(NEM.month))) -->
 
-    ## # A tibble: 6 x 4
-    ##    year date         RRP TOTALDEMAND
-    ##   <dbl> <date>     <dbl>       <dbl>
-    ## 1  2010 2010-07-01  35.5     116681.
-    ## 2  2011 2011-07-01  40.0     114661.
-    ## 3  2012 2012-06-30  44.6     111575.
-    ## 4  2013 2013-07-01  60.3     108779.
-    ## 5  2014 2014-07-01  47.8     107519.
-    ## 6  2015 2015-07-01  45.6     108735.
+<!-- ``` -->
+
+<!-- ```{r  cache=TRUE} -->
+
+<!-- print(head(readd(NEM.year))) -->
+
+<!-- ``` -->
 
 ##### Outputs
 

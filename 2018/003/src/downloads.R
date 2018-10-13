@@ -1,97 +1,38 @@
+#-----
+# 003 download
+#-----
+library(magrittr)
+#my.tz="GMT"
 
-my.tz="GMT"
-tm_to_tjd <-function(n,date) n*8.97/172/lubridate::days_in_month(date)
-set_month_day <-function(date, day=15) date+lubridate::days(day-lubridate::mday(date))
+file.names<-reproscir::download_aemo_aggregated(year=2008:2018, months=1:12, local.path=NULL)  #dowload aemo data
 
-
-
-file.names<-reproscir::download_aemo_aggregated(year=2008:2018, months=1:12, local.path=NULL)
-aemo= reproscir::read_aemo_aggregated()
-
-NEM.month = aemo %>% 
-  dplyr::group_by(year, month) %>% 
+NEM.month <- reproscir::read_aemo_aggregated() %>%  #read aemo data
+  dplyr::group_by(year, month) %>% #add grouping vars
   dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),
                    RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
-                   TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND) )   %>%
-  head(-1)
+                   TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND) )    # add summaries
 
+gladstone <- reproscir::update_gladstone( )  %>%  
+  dplyr::mutate(gasdate = date %>% reproscir::set_month_day(15),  # 
+                actualquantity = reproscir::lng_tm_to_tjd(tonnes, date)) #convert monthly lng export tonnage to TJ/day equivalent
 
-gld = reproscir::update_gladstone( )  %>% subset( !is.na(tonnes)) %>% 
-  dplyr::mutate(gasdate=date %>% set_month_day(15), actualquantity= tm_to_tjd(tonnes, date))
-# 
-# gasbb<- reproscir::download_gasbb() %>%  
-#   reproscir::read_gasbb( ) 
-# t1<-spread(test,  flowdirection, actualquanti )%>% glimpse()
+zones <- c("Roma", "Moomba", "Gippsland", "Port Campbell", "Ballera", "Victoria", "Sydney") #  gasbb_zones_delivery zones selection -see next
 
-load("./data/facility.Rdata")
-prod.ids<-(gasbb.facility %>% subset(PlantType=="PROD"))$PlantID
-stor.ids<-(gasbb.facility %>% subset(PlantType=="STOR"))$PlantID
-pipe.ids<-(gasbb.facility %>% subset(PlantType=="PIPE"))$PlantID
-
-gasbb.prod <-  reproscir::download_gasbb() %>%  
-  reproscir::read_gasbb( ) %>% 
-  subset(plantid %in% prod.ids  )
-
-gasbb.stor <-  reproscir::download_gasbb() %>%  
-  reproscir::read_gasbb( ) %>% 
-  subset(plantid %in% stor.ids  )
-
-gasbb.pipe <-  reproscir::download_gasbb() %>%  
-  reproscir::read_gasbb( ) %>% 
-  subset(plantid %in% pipe.ids  )
-
-
-gasbb.prod.zone<-rbind(gasbb.prod %>% 
-                         reproscir::group_gasbb("Roma")  %>% 
-                         dplyr::mutate(ZoneName="Roma"),
-                       gasbb.prod %>% 
-                         reproscir::group_gasbb("Moom") %>% 
-                         dplyr::mutate(ZoneName="Moomba"),
-                       gasbb.prod %>% 
-                         reproscir::group_gasbb("Gipps") %>% 
-                         dplyr::mutate(ZoneName="Gippsland"),
-                       gasbb.prod %>% 
-                         reproscir::group_gasbb("Port") %>% 
-                         dplyr::mutate(ZoneName="Port Campbell"),
-                       gasbb.prod %>% 
-                         reproscir::group_gasbb("Ball") %>% 
-                         dplyr::mutate(ZoneName="Ballera"), 
-                       gasbb.prod %>% 
-                         reproscir::group_gasbb("Vic") %>% 
-                         dplyr::mutate(ZoneName="Victoria"),
-                       gasbb.prod %>% 
-                         reproscir::group_gasbb("Syd")%>% 
-                         dplyr::mutate(ZoneName="Sydney")) 
-
-gasbb.prod.zone.month <- 
-  gasbb.prod.zone %>% subset(actualquantity<1e4) %>%
-  dplyr::mutate(month=lubridate::month(gasdate),year=lubridate::year(gasdate)) %>%
-  dplyr:: group_by(ZoneName, month, year) %>% 
+gasbb.prod.zone.month <- reproscir::download_gasbb() %>%  
+  reproscir::read_gasbb( ) %>% # group by zones
+  subset(actualquantity<1e4) %>% #remove some spurious records in gasbb raw data
+  subset(plantid %in%  reproscir::gasbb_ids("PROD")) %>%   #subset by production facilities using "./data/facility.Rdata"
+  reproscir::gasbb_zones_delivery(zones =zones)   %>%  # read gasbb data
+  dplyr::group_by(zonename, month, year) %>%  #set grouping variables
   dplyr::summarise(actualquantity=mean(actualquantity), 
-                   gasdate=mean(gasdate) %>% set_month_day(15)) %>% 
-  dplyr::arrange(gasdate)
-
-gasbb.prod.zone.month$ZoneName<- factor(gasbb.prod.zone.month$ZoneName, 
-                                        levels= (c( 
-                                          'Sydney',
-                                          'Ballera',
-                                          'Moomba','Victoria',
-                                          'Port Campbell',
-                                          'Gippsland',
-                                          'Roma'
-                                        )), ordered=TRUE)
-
-gasbb.prod.zone.gld.month<-dplyr::left_join( gasbb.prod.zone.month %>% subset(ZoneName=="Roma"), 
-                                      gld, by=c("gasdate", "month", "year")) %>% 
-  dplyr::arrange(gasdate)
-gasbb.prod.zone.gld.month$actualquantity.y[is.na(gasbb.prod.zone.gld.month$actualquantity.y)]<-0
-gasbb.prod.zone.month$roma =0
-gasbb.prod.zone.month$roma[gasbb.prod.zone.month$ZoneName=="Roma"] <-  gasbb.prod.zone.gld.month$actualquantity.y
-
+                   gasdate=mean(gasdate) %>% reproscir::set_month_day(15)) %>%  #summarise by grouping variables
+  dplyr::arrange(gasdate,zonename)   %>%  #arrange
+  dplyr::left_join(  gladstone, by=c("gasdate", "month", "year"), suffix= c("", ".gld")) %>%  # join with gld 
+  dplyr::arrange(gasdate) %>% #sort by date
+  dplyr::mutate(gladstone= dplyr::if_else(is.na(actualquantity.gld)| zonename !="Roma", 0 ,  actualquantity.gld))%>%   #mutate gladstone
+  dplyr::select(zonename,month,  year ,actualquantity ,gasdate , gladstone ) %>% #keep wanted info
+  dplyr::rename(date=gasdate) 
 
 save( NEM.month , gasbb.prod.zone.month,  file = paste0(drake.path,"/data/data.Rdata"))
- 
-  
-
 
 
