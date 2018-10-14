@@ -22,12 +22,12 @@ source('./src/downloads.R')
  
 ##  East Coast gas market supply balance and NEM prices
 
-the opening of the east coast gas market to internatinal LNG exports, via the Port of Gladstone, was one of  many factors that accompanied a doubling Australian east coast electricity wholesale prices in 2016.  With gas production  supporting LNG export derived from the Coal Seam Gas (CSG) fields in the Roma production zone in  QLD, there have been consequences for the supply mix into the domestic market.
+The opening of the east coast gas market to international LNG exports, via the Port of Gladstone, has been accompanied by a doubling Australian east coast electricity wholesale prices.  With gas production  supporting LNG export derived from the Coal Seam Gas (CSG) fields in the Roma production zone in  QLD, there have been consequences for the supply mix into the domestic market.
 Here I explore time series for Gladstone Port Authority LNG export volumes, east coast production volumes, and  NEM market prices.
 
-Gas production is in TJ/day and NEM prices in AUD$.
+Gas production is in TJ/day and NEM prices are in $AUD/MWhour and expressed as Volume weighted terms (VWP).
 
-I know of no public data relevant to the proportion of Roma CSG as production used in  LNG compression and liquefaction and associated CSG activities.     I assume a value of 12% for the parastitc load, which can be changed via the  ```drake.R``` file.
+There are no public data relevant to the proportion of Roma CSG gas production used in LNG compression and liquefaction and associated CSG activities.   I assume a value of 12% for the parastitc load, which can be changed by setting the ```parasitic.load``` in the  ```drake.R``` file.
 
 ```parasitic.load=12```
  
