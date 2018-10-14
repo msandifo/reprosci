@@ -38,8 +38,8 @@ changed via the `drake.R` file.
 This repo contains a preprocessed dataset `./data/facility.Rdata`,
 containing GASBB facility data. Due to an uprgading of AEMO’s GASBB data
 reprository this not - at the time of preparation - straightforward to
-reproduce from the raw data. The `gasbb.facility` data.frame contains
-the following info
+reproduce from the raw data. The `gasbb.facility` data frame contains
+the following columns
 
 PlantID, PlantName, PlantType, Zone, OperatorName, LowRange, HiRange,
 Exempt, GasDayStartHour, ZoneId, OperatorId, LastUpdated, ReportDateTime
@@ -52,7 +52,7 @@ flows](https://www.aemo.com.au/Gas/Gas-Bulletin-Board) data.
 ## Code
 
 The code base is in `r` and is managed within RStudio, using the `drake`
-package.
+package, and my `reoproscir` package on `github`.
 
 The code can be executed by opening the `Rstudio` project `003.Rproj`
 and sourcing `drake.R`.
@@ -65,16 +65,16 @@ Details of the steps invoked by \`\``drake.R` are summarised below.
 
   - `source('./src/packages.R')` checks for and automatically installs
     missing package dependencies
-    <!-- ```tidyverse```, ```ggplot2```, ```magrittr```, ```purrr```, ```stringr```, ```drake```, ```lubridate```, ```rvest```, ```rappdirs```,```data.table```, ```fasttime```, ```devtools```, ```wbstats``` , ```zoo``` -->
+    <!-- ```tidyverse```, ```ggplot2```, ```magrittr```, ```purrr```, ```stringr```, ```drake```, ```lubridate```, ```rvest```, ```rappdirs```,```data.table```, ```fasttime```, ```devtools```, ```wbstats```  -->
     <!--  from cran, and ```hrbrthemes```  and ```reproscir``` from the github repos ```hrbrmstr/hrbrthemes``` and ```msandifo/reproscir``` -->
 
   - `source('./src/settings.R')` sets variables, such as the
     `drake.path`,
 
   - `source('./src/functions.R')` reads in data processing functions not
-    in `reoroscir`
+    in `reproscir`
 
-  - `source('./src/theme.R')` sets the ggplot theme derived form
+  - `source('./src/theme.R')` sets the ggplot theme derived from
     `hrbrthemes`
 
   - `source('./src/plots.R')` plot functions  
@@ -92,6 +92,13 @@ Details of the steps invoked by \`\``drake.R` are summarised below.
 <!-- end list -->
 
 ``` r
+parasitic.load=12
+source('./src/settings.R')
+source('./src/theme.R')
+source('./src/functions.R')
+source('./src/plots.R')
+source('./src/plan.R')
+drake::make( reproplan )
 config <- drake::drake_config(reproplan)
 graph <- drake::drake_graph_info(config, group = "status", clusters = "imported")
 drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
@@ -104,7 +111,7 @@ Note that `reproplan` loads the `./data/data.Rdata` built by
 
     ## # A tibble: 6 x 5
     ## # Groups:   year [1]
-    ##    year month date         RRP TOTALDEMAND
+    ##    year month date         VWP TOTALDEMAND
     ##   <dbl> <dbl> <date>     <dbl>       <dbl>
     ## 1  2008     1 2008-01-16  36.4      44537.
     ## 2  2008     2 2008-02-15  28.1      43353.
@@ -140,38 +147,38 @@ produced water treatments etc. ) as set by `parasitic.load`
 ``` r
 p003<-drake::readd(p003)
 ggsave("./figs/p003_01.png",  p003$p1 ,width=8, height=5) 
+ggsave("./figs/p003_02.png",  p003$p2 ,width=8, height=5) 
+NEM.month <- drake::readd(NEM.month)
+gasbb.prod.zone.month <- drake::readd(gasbb.prod.zone.month)
+gladstone<- drake::readd(gladstone)
+save( NEM.month , gasbb.prod.zone.month, gladstone,  file = paste0(drake.path,"/data/data.Rdata"))
 ```
 
 <img src="./figs/p003_01.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+<img src="./figs/p003_02.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
-## Code details
+## Code Notes
 
 ### Gladstone Port Authority (GPA)
 
 The function call
 
-`read_gladstone_ports(year=NULL, month=NULL,fuel="Liquefied Natural
-Gas", country="Total")`
+`reproscir::read_gladstone_ports(year=NULL, month=NULL,fuel="Liquefied
+Natural Gas", country="Total")`
 
 scrapes data from the GPA html tables, utilising the package `rvest`,
 noting that other commodities exported through the GPA, such as
-`"Coal"`, can also be specified. The function call
+`"Coal"`, can also be specified.
 
-read\_gladstone\_ports\<- function(year=NULL, month=NULL,fuel=“Liquefied
-Natural Gas”, country=“Total”)
-
-scrapes data from the GPA html tables, utilising the package rvest,
-noting that other commodities exported through the GPA, such as “Coal”,
-can also be specified.
-
-The drake plan indirectly calls `read_gladstone_ports` via
-`update_gladstone`
+The drake plan indirectly calls `reproscir::read_gladstone_ports` via
+`reproscir::update_gladstone` in `get_gasbb_zone_month` in
+`./src/functions.R`
 
 #### NEM data
 
 While the monthly NEM csv files have time stamps `SETTLEMENTDATE`
 ordered `ymd hms`, the September 2016 csv files have time stamps
-reversed `dmy hms`. The function `dmy_to_ymd` reorders the time stamps
-to `ymd hms`.
+reversed `dmy hms`. The function `reproscir::dmy_to_ymd` reorders the
+time stamps to `ymd hms`.
 
 ## Errata

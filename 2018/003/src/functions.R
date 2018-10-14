@@ -1,17 +1,29 @@
+#--------------
+#import aemo aggregated, aggregate by NEM and summarise by month, year
+#--------------
 
-get_NEM_month <- function(){ 
-  reproscir::read_aemo_aggregated() %>%  #read aemo data
+get_NEM_month <- function(local.path=NULL,  files=NULL, folder="aemo"){ 
+  reproscir::read_aemo_aggregated(local.path=local.path,  files=files, folder=folder) %>%  #read aemo data
   dplyr::group_by(year, month) %>% #add grouping vars
   dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),
-                   RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
+                   VWP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
                    TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND) )    # add summaries
 }
 
-get_gladstone <- function() {
+#--------------
+#import gladstone LNG exports and convert to TJ/day 
+#--------------
+
+get_gladstone_month <- function() {
   reproscir::update_gladstone( )  %>%  
   dplyr::mutate(gasdate = date %>% reproscir::set_month_day(15),  # 
                 actualquantity = reproscir::lng_tm_to_tjd(tonnes, date)) #convert monthly lng export tonnage to TJ/day equivalent
 }
+
+#--------------
+#import gassbb archived adat (October 2018) and summarise by prodcution region, month
+#--------------
+
 
 get_gasbb_zone_month <- function(gladstone, zones = c("Roma", "Moomba", "Gippsland", "Port Campbell", "Ballera", "Victoria", "Sydney") #  gasbb_zones_delivery zones selection -see next
 ){

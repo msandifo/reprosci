@@ -24,10 +24,10 @@ plots <- function(NEM.month, gasbb.prod.zone.month) {
           subtitle=paste("Eastern gas market supply balance, NEM prices") ,
           caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/003") +
     theme(legend.position = "bottom")+
-    geom_line(data=NEM.month %>% tail(-7), aes(date%>% reproscir::set_month_day(15), RRP*30-3500), col="grey20", size=.23)+
+    geom_line(data=NEM.month %>% tail(-7), aes(date%>% reproscir::set_month_day(15), VWP*30-3500), col="grey20", size=.23)+
     annotate("text", lubridate::ymd("2017-03-01"), -1000, label=paste0("Gladstone LNG supply\n+", parasitic.load, "% parasitic load"), size=3, fontface =3,col="white" )+
     annotate("text", lubridate::ymd("2014-01-01"), 2300, label="Domestic supply", size=3 ,col="black",fontface =3 ) +
-    scale_y_continuous(sec.axis = sec_axis(~(.+3500)/30, "NEM $/MWhour"))+
+    scale_y_continuous(sec.axis = sec_axis(~(.+3500)/30, "VWP - $/MWhour"))+
     
     theme(axis.text.y.right = element_text(color = "black"),
           axis.title.y= element_text(  color = "red3"),
@@ -36,8 +36,25 @@ plots <- function(NEM.month, gasbb.prod.zone.month) {
     coord_cartesian(ylim=c(-3500,2200))+
     scale_x_date(expand = c(0.005,0)) 
   
- p01
+ 
 
+ p02<- ggplot(gasbb.prod.zone.month  , aes(date, actualquantity))+
+     geom_area(aes(fill=zonename),position = "stack",size=.02, col="white")+
+   scale_fill_manual(    values = fill.cols) +
+   labs (y = "supply balance - TJ/day", x=NULL, 
+         subtitle=paste("Eastern gas market supply, NEM prices") ,
+         caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/003") +
+   theme(legend.position = "bottom")+
+   geom_line(data=NEM.month %>% tail(-7), aes(date%>% reproscir::set_month_day(15), VWP*20 ), col="grey20", size=.23)+
+    scale_y_continuous(sec.axis = sec_axis(~(.+0)/20, "VWP - $/MWhour"))+
+   
+   theme(axis.text.y.right = element_text(color = "black"),
+         axis.title.y= element_text(  color = "red3"),
+         axis.text.y= element_text(  color = "red3"),                   
+         axis.title.y.right= element_text(angle = -90,   color = "black"))+
+   coord_cartesian(ylim=c(0,5400))+
+   scale_x_date(expand = c(0.005,0)) 
+ 
 
-return (list(p1=p01))
+return (list(p1=p01, p2=p02))
 }
