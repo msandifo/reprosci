@@ -24,7 +24,7 @@ plots <- function(NEM.month, gasbb.prod.zone.month) {
           subtitle=paste("Eastern gas market supply balance, NEM prices") ,
           caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/003") +
     theme(legend.position = "bottom")+
-    geom_line(data=NEM.month %>% tail(-7), aes(date%>% reproscir::set_month_day(15), VWP*30-3500), col="grey20", size=.23)+
+    geom_line(data=NEM.month %>% tail(-6) %>% head(-1), aes(date%>% reproscir::set_month_day(15), VWP*30-3500), col="grey20", size=.23)+
     annotate("text", lubridate::ymd("2017-03-01"), -1000, label=paste0("Gladstone LNG supply\n+", parasitic.load, "% parasitic load"), size=3, fontface =3,col="white" )+
     annotate("text", lubridate::ymd("2014-01-01"), 2300, label="Domestic supply", size=3 ,col="black",fontface =3 ) +
     scale_y_continuous(sec.axis = sec_axis(~(.+3500)/30, "VWP - $/MWhour"))+
@@ -45,7 +45,7 @@ plots <- function(NEM.month, gasbb.prod.zone.month) {
          subtitle=paste("Eastern gas market supply, NEM prices") ,
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/003") +
    theme(legend.position = "bottom")+
-   geom_line(data=NEM.month %>% tail(-7), aes(date%>% reproscir::set_month_day(15), VWP*20 ), col="grey20", size=.23)+
+   geom_line(data=NEM.month %>% tail(-6) %>% head(-1), aes(date%>% reproscir::set_month_day(15), VWP*20 ), col="grey20", size=.23)+
     scale_y_continuous(sec.axis = sec_axis(~(.+0)/20, "VWP - $/MWhour"))+
    
    theme(axis.text.y.right = element_text(color = "black"),
