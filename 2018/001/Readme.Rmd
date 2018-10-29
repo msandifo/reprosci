@@ -134,6 +134,6 @@ The function call
 
 scrapes data from the GPA html tables, utilising the package ```rvest```, noting that other commodities exported through the GPA, such as ```"Coal"```, can also be specified.
 
-In our drake file, ```read_gladstone_ports``` is only indirectly clled via the function ```update_gladstone```
+In our drake file, ```read_gladstone_ports``` is only indirectly called via the function ```update_gladstone```
 
 ## Errata
