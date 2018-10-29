@@ -100,5 +100,5 @@ p03<-  ggplot(gas, aes(date, mw/1000 ))+ geom_area(aes( fill=gas.type), alpha=.8
     labs(subtitle="NEM gas generation, thermal efficiency", x=NULL, 
          y=NULL, caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/001")
   
-  return (list(p1=p01,p2=p01,p3=p03))
+  return (list(p1=p01,p2=p02,p3=p03))
 }
