@@ -26,7 +26,7 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
     dplyr::group_by(year, month) %>% 
     dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),
                      RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
-                     TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND) )   %>%
+                     TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND)/2 )   %>%
     head(-1)
   
   
@@ -34,7 +34,7 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
     dplyr::group_by(year) %>% 
     dplyr::summarise(date=mean(date) ,
                      RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
-                     TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND))
+                     TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND)/2)
 
 lng = update_gladstone( local.path=local.path)  %>% subset( !is.na(tonnes))
 save( lng, gas.use, gas.tidy, NEM.month, NEM.year, file = paste0(drake.path,"/data/data.Rdata"))

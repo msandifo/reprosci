@@ -5,8 +5,12 @@
 plots<- function(lng=lng, NEM.month=NEM.month, NEM.year=NEM.year, gas, gas.use ) {
    
   (NEM.year %>% subset(year %in% c(2015,2017)))$RRP %>% diff() -> nem.diff.15.17.RRP
+  message((NEM.year %>% subset(year %in% c(2015,2017)))$RRP )
+  message( nem.diff.15.17.RRP)
   (NEM.year %>% subset(year %in% c(2017)))$TOTALDEMAND -> nem.17.TD
+  message( nem.17.TD)
   nem.diff.bill.dollars <-nem.diff.15.17.RRP*nem.17.TD*24*365/1e9
+  message( nem.diff.bill.dollars)
   
   # population data form world bank useing wbstats package
   pop<- wbstats::wb(country = c("AUS"), indicator = "SP.POP.TOTL", startdate = 2017, enddate = 2017)$value
