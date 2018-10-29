@@ -111,26 +111,18 @@ print(head(readd(NEM.year)))
 
 The code generates three charts, output to ```./figs``` directory :
 
-```{r  echo=TRUE, cache=TRUE}
+```{r  echo=TRUE, cache=TRUE, eval=F}
  
-ggsave("./figs/reprosci001.png",  drake::readd(reprosci001.plot) ,width=8, height=5) 
-ggsave("./figs/reprosci002.png",  drake::readd(reprosci002.plot) ,width=8, height=5) 
-ggsave("./figs/reprosci003.png",  drake::readd(reprosci003.plot) ,width=8, height=5) 
+ggsave("./figs/p001_01.png",   p001$p1 ,width=8, height=5) 
+ggsave("./figs/p001_02.png",    p001$p2 ,width=8, height=5) 
+ggsave("./figs/p001_03.png",   p001$p3,width=8, height=5) 
 ```
 
 
-```{r repo001, echo=T }
-drake::readd(reprosci001.plot)
-```
+<img src="./figs/p001_01.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+<img src="./figs/p001_02.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+<img src="./figs/p001_03.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
-
-```{r repo002, echo=T}
-drake::readd(reprosci002.plot)
-```
-
-```{r repo003, echo=T}
-drake::readd(reprosci003.plot)
-```
 
 ## Code details
 

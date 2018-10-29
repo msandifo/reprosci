@@ -1,19 +1,24 @@
 if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
-  file.names<-download_aemo_aggregated(year=2007:2018, months=1:12, local.path=local.path, states="QLD")
-  QLD1 = read_aemo_aggregated(state='QLD') 
+  message("---->> updating aemo aggregated")
+  
+  file.names<-reproscir::download_aemo_aggregated(year=2007:2018, months=1:12, local.path=local.path, states="QLD")
+  QLD1 = reproscir::read_aemo_aggregated(state='QLD') 
   QLD.month = QLD1 %>% 
       dplyr::group_by(year, month) %>% 
       dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),
                      RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
                      TOTALDEMAND= sum(TOTALDEMAND)/length(TOTALDEMAND) )   %>%
   head(-1)
-  lng = update_gladstone( local.path=local.path)  %>% subset( !is.na(tonnes))
+  message("---->> updating lng")
+  lng = reproscir::update_gladstone( local.path=local.path)  %>% subset( !is.na(tonnes))
+  message("---->> updating gassb")
   gasbb <- reproscir::download_gasbb() %>%  
-    reproscir::read_gasbb( ) %>% 
+     reproscir::read_gasbb( ) %>% 
+     subset(flowdirection=="DELIVERY") %>%  #exclude pipeline "RECEIPTS"
      reproscir::group_gasbb("Roma") %>% 
     dplyr::mutate(year= lubridate::year(gasdate), month= lubridate::month(gasdate)) %>%
     dplyr::group_by(year,month) %>%
-    dplyr::summarise(date=mean(gasdate), TOTALDEMAND = mean(reproscir::tjday_to_mw(actualquantity)))
+    dplyr::summarise(date=mean(gasdate), TOTALDEMAND = mean(reproscir::tjd_to_mw(actualquantity)))
   save( QLD.month, lng, gasbb , file = paste0(drake.path,"/data/data.Rdata"))
 } else {
   load(paste0(drake.path, "/data/data.Rdata"))
@@ -27,12 +32,12 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
      next.month<-  (last.month+1)
     if (next.month==13) {next.month<- 1; next.year<- next.year+1}
     day.dif<- day.dif- (lubridate::ymd(paste0(current.year,"-",current.month, "-15")) %>% lubridate::days_in_month())
-    file.names<-download_aemo_aggregated(
+    file.names<-reproscir::download_aemo_aggregated(
                                          local.path=local.path,
                                          months=next.month,
                                          verbose=F,
                                          years=next.year,  states="QLD")
-    QLD1 = read_aemo_aggregated(state='QLD', files=file.names) 
+    QLD1 = reproscir::read_aemo_aggregated(state='QLD', files=file.names) 
     QLD.month  = rbind(  QLD.month , QLD1 %>% 
       dplyr::group_by(year, month) %>% 
       dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),
