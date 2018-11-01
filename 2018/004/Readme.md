@@ -9,16 +9,16 @@ population indicators for select countries.
 ## Data Sources
 
   - [BP statistical-review of energy, 2018
-    edition](https://www.bp.com/content/dam/bp/en/corporate/excel/energy-economics/statistical-review/bp-stats-review-2018-all-data.xlsx)
-    reports CO2-equivalent emissions in million tonnes per year (sheet
-    57).
+    edition](https://www.bp.com/content/dam/bp/en/corporate/excel/energy-economics/statistical-review/bp-stats-review-2018-all-data.xlsx).
+    Here I exract the CO2-equivalent emissions in million tonnes per
+    year (sheet 57).
 
   - [IMF world energy
-    outlook](https://www.imf.org/external/pubs/ft/weo/2018/01/weodata/WEOApr2018all.xls)
-    reports  
-    population data (LP) in millions and, as a comparitive measure of
-    economic performance, GDP in purchasing power parity terms (PPPGDP);
-    in billions international dollars.
+    outlook](https://www.imf.org/external/pubs/ft/weo/2018/01/weodata/WEOApr2018all.xls).
+    Here I extract population data (LP, reproted in millions) and, as a
+    comparitive measure of economic performance, GDP in purchasing power
+    parity terms (PPPGDP, reported in billions of international
+    dollars).
 
 ## Caveats
 
