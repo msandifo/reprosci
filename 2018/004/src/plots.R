@@ -4,7 +4,7 @@ library(ggplot2)
 #---------------------
 plots <- function(m.data) {
 
-  p01<-ggplot(m.data  , aes(x=1000*value/value.x ,y=perCap,  colour=region, label= round(perCap,1)))+ 
+  p01<-ggplot(m.data  , aes(x=1000*gdp/pop ,y=perCap,  colour=region, label= round(perCap,1)))+ 
     geom_path(arrow = arrow(angle=25,length=unit(.081, "inches"),type = "closed"))+ 
     geom_point(data= m.data %>% subset(year==2009), colour="white", size=2)+
     geom_point(data= m.data %>% subset(year==2009), show.legend = F, size=1)+
@@ -29,7 +29,7 @@ plots <- function(m.data) {
   
   m.filt.data.ref = m.data %>% subset(year>2004 & region %ni% c("China", "Indonesia",   "India")) %>% 
     dplyr::group_by(region ) %>%
-    dplyr::mutate(year=year,perCap=perCap/head(perCap,1)*100 , value.y=value.y/head(value.y,1)*100) 
+    dplyr::mutate(year=year,perCap=perCap/head(perCap,1)*100 , co2=co2/head(co2,1)*100) 
     
   
  p02<-ggplot( m.filt.data.ref, aes(x=year ,y=perCap,  colour=region,  label= paste0(round(perCap,0), "%")))+ 
@@ -58,11 +58,12 @@ plots <- function(m.data) {
  
  
  
-p03 <-ggplot( m.filt.data.ref, aes(x=year ,y=value.y,  colour=region,  label= paste0(round(value.y,0), "%")))+ 
+p03 <-ggplot( m.filt.data.ref, aes(x=year ,y=co2,  colour=region,  label= paste0(round(co2,0), "%")))+ 
      geom_path(arrow = arrow(angle=25,length=unit(.081, "inches"),type = "closed"))+ 
      geom_point(data=  m.filt.data.ref %>% subset(year==2009), colour="white", size=2)+
      geom_point(data=  m.filt.data.ref %>% subset(year==2009), show.legend = F, size=1)+
-     geom_text(data= m.filt.data.ref %>% subset(year==2017) %>% dplyr::mutate(value.y = ifelse(region %in% c("Japan","Germany"),NA, value.y )), aes(x=2017.1), size=4,
+     geom_text(data= m.filt.data.ref %>% subset(year==2017) %>% dplyr::mutate(co2 = ifelse(region %in% c("Japan","Germany"),NA, co2 )),
+               aes(x=2017.1), size=4,
                show.legend = F, 
                hjust=0
                #  

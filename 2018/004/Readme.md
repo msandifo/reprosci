@@ -4,7 +4,7 @@
 ## Energy sector emissions
 
 National comparisons of energy sector emissions as a fucntion of
-economic and population indicators
+economic and population indicators.
 
 ## Data Sources
 
@@ -78,13 +78,13 @@ drake::render_drake_graph(graph, file="figs/rmd_render_drake.png")
 Note that `reproplan` porcesses the files downloaded by
 `./src/downloads.R`, returning `merged.data`
 
-    ##      region year value.x  value.y   value   perCap
-    ## 1 Australia 1980  14.802 223.3988 155.129 15.09247
-    ## 2 Australia 1981  15.039 225.1242 176.614 14.96936
-    ## 3 Australia 1982  15.289 226.1770 187.689 14.79344
-    ## 4 Australia 1983  15.484 225.1885 194.174 14.54330
-    ## 5 Australia 1984  15.677 234.8467 213.825 14.98034
-    ## 6 Australia 1985  15.901 235.7469 232.708 14.82592
+    ##      region year    pop      co2     gdp   perCap
+    ## 1 Australia 1980 14.802 223.3988 155.129 15.09247
+    ## 2 Australia 1981 15.039 225.1242 176.614 14.96936
+    ## 3 Australia 1982 15.289 226.1770 187.689 14.79344
+    ## 4 Australia 1983 15.484 225.1885 194.174 14.54330
+    ## 5 Australia 1984 15.677 234.8467 213.825 14.98034
+    ## 6 Australia 1985 15.901 235.7469 232.708 14.82592
 
   - `source(drake::make( reproplan ))`
 

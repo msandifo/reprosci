@@ -14,7 +14,8 @@ reproplan = drake::drake_plan(
   co2.data = reproscir::BP_all(verbose=F, sheet=57, countries=countries, fuel="CO2 emissions", units="Tonnes"),
    merged.data =merge(pop.data, co2.data$data[,1:3], by=c("region","year")) %>% 
     merge(gdp.data, by=c("region","year")) %>% 
-    dplyr::mutate(perCap = value.y/value.x, year = as.numeric(year)),
+    dplyr::mutate(perCap = value.y/value.x, year = as.numeric(year)) %>%
+    dplyr::rename(pop=value.x, co2=value.y, gdp=value),
   
   p004 = plots( merged.data )
   

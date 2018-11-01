@@ -22,7 +22,7 @@ source('./src/downloads.R')
  
 ##  Energy sector emissions
 
-National comparisons of energy sector emissions as a fucntion of economic  and population indicators
+National comparisons of energy sector emissions as a fucntion of economic  and population indicators.
 
 
  
