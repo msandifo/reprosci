@@ -12,7 +12,7 @@ plots <- function(m.data) {
               show.legend = F, vjust=1. ,hjust=-.05  )+
     labs(y="Per capita energy sector emissions\ntonnes per year", 
          x= "Per Capita GDP-PPP",
-         subtitle= 'data sourced from BP & IMF, 1980-2017',
+         subtitle= 'Energy sector data sourced from BP, population from IMF',
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")+
     guides(colour=guide_legend(ncol=1 )) +
     theme(legend.position = c(.95, .75),  
@@ -21,20 +21,71 @@ plots <- function(m.data) {
           legend.background = element_rect(fill="transparent", size=0., colour="transparent" ),
           legend.title = element_blank())+
     
-    scale_x_continuous(labels = scales::dollar )
- # p01<- ggplot(m.data , aes(x=1000*value/value.x ,y=perCap,  colour=region, label= round(perCap,1)))+ 
- #    geom_path(arrow = arrow(angle=25,length=unit(.081, "inches"),type = "closed"))+ 
- #    geom_point(data= m.data %>% subset(year==2009), colour="white", size=2)+
- #    geom_point(data= m.data %>% subset(year==2009), show.legend = F, size=1)+
- #    geom_text(data= m.data %>% subset(year==2017), size=4,
- #              show.legend = F, vjust=1. ,hjust=-.05  )+
- #    labs(y="Per capita emissions - energy sector", 
- #         x= "Per Capita GDP-PPP", 
- #         title= paste('data sourced from BP & IMF,', max(m.data$year), "-", min(m.data$year),'inclusive'))+
- #    theme(legend.position = c(.9,.8),  legend.title = element_blank())+
- #    guides(colour=guide_legend(ncol=2,byrow=F)) +
- #    scale_x_continuous(labels = function(x) paste0("s",x) )
+    scale_x_continuous(labels = scales::dollar ) 
+  
+  
+  m.data %>% subset(region %ni% c("Indonesia",   "India")) -> m.filt.data 
+  
+  
+  m.filt.data.ref = m.data %>% subset(year>2004 & region %ni% c("China", "Indonesia",   "India")) %>% 
+    dplyr::group_by(region ) %>%
+    dplyr::mutate(year=year,perCap=perCap/head(perCap,1)*100 , value.y=value.y/head(value.y,1)*100) 
+    
+  
+ p02<-ggplot( m.filt.data.ref, aes(x=year ,y=perCap,  colour=region,  label= paste0(round(perCap,0), "%")))+ 
+      geom_path(arrow = arrow(angle=25,length=unit(.081, "inches"),type = "closed"))+ 
+      geom_point(data=  m.filt.data.ref %>% subset(year==2009), colour="white", size=2)+
+      geom_point(data=  m.filt.data.ref %>% subset(year==2009), show.legend = F, size=1)+
+      geom_text(data= m.filt.data.ref %>% subset(year==2017), aes(x=2017.2),size=4,
+                show.legend = F,
+                hjust = 0 
+                #label.size=0  
+                #  fontface = 'bold', 
+                #color = 'white',
+                # box.padding = unit(0.35, "lines"),
+                # point.padding = unit(0.75, "lines")
+      )+
+      labs(y="% change per capita energy sector emissions\n relative to 2005",x=NULL, 
+           subtitle= 'Energy sector data sourced from BP, population from IMF',
+           caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")+
+    guides(colour=guide_legend(ncol=2 )) +
+    theme(legend.position = c(.19, .25),  
+         legend.text = element_text( size = 12),
+         legend.key = element_rect(colour = "transparent", fill = "transparent"),
+         legend.background = element_rect(fill="transparent", size=0., colour="transparent" ),
+         legend.title = element_blank())+
+   scale_x_continuous(limits=c(2005,2017.25),  breaks=seq(2005, 2017,2))
+ 
+ 
+ 
+p03 <-ggplot( m.filt.data.ref, aes(x=year ,y=value.y,  colour=region,  label= paste0(round(value.y,0), "%")))+ 
+     geom_path(arrow = arrow(angle=25,length=unit(.081, "inches"),type = "closed"))+ 
+     geom_point(data=  m.filt.data.ref %>% subset(year==2009), colour="white", size=2)+
+     geom_point(data=  m.filt.data.ref %>% subset(year==2009), show.legend = F, size=1)+
+     geom_text(data= m.filt.data.ref %>% subset(year==2017) %>% dplyr::mutate(value.y = ifelse(region %in% c("Japan","Germany"),NA, value.y )), aes(x=2017.1), size=4,
+               show.legend = F, 
+               hjust=0
+               #  
+               #  fontface = 'bold' 
+               #color = 'white',
+               # box.padding = unit(0.15, "lines"),
+               # point.padding = unit(0.5, "lines")
+     )+
+     labs(y="% change energy sector emissions\n relative to 2005",x=NULL, 
+          subtitle= 'Energy sector data sourced from BP',
+          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")+
+     theme(legend.position = "bottom",  legend.title = element_blank())+
+     guides(colour=guide_legend(nrow=1,byrow=TRUE))  +
+     guides(colour=guide_legend(ncol=2 )) +
+     theme(legend.position = c(.19, .25),  
+        legend.text = element_text( size = 12),
+        legend.key = element_rect(colour = "transparent", fill = "transparent"),
+        legend.background = element_rect(fill="transparent", size=0., colour="transparent" ),
+        legend.title = element_blank())+
+     scale_x_continuous(limits=c(2005,2017.25),  breaks=seq(2005, 2017,2))
+ 
+
  #  
 
-return (list(p1=p01 ))
+return (list(p1=p01, p2=p02, p3=p03 ))
 }
