@@ -93,9 +93,11 @@ p04= reproscir::plot_IMF_BP(percent=F)$p1+labs(  y="annual % change energy secto
   
 p05= reproscir::plot_IMF_BP("Australia", percent=T)$p1+labs(   y="annual % change energy sector emissions", subtitle= 'Australia',
                                          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")
+p06= reproscir::plot_IMF_BP("US", percent=T)$p1+labs(   y="annual % change energy sector emissions", subtitle= 'United States',
+                                                               caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")
 
 
  #  
 
-return (list(p1=p01, p2=p02, p3=p03, p4=p04, p5=p05 ))
+return (list(p1=p01, p2=p02, p3=p03, p4=p04, p5=p05, p6=p06 ))
 }
