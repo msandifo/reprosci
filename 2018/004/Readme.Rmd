@@ -38,7 +38,7 @@ Comparisons of energy sector emissions as a function of economic  and population
  
 ## Code
 
-The code base is in ```r``` and is managed  within RStudio, using  the  ```drake```  package, and my ```reoproscir``` package on ```github```  obtained with ```devtools::install_github("msandifo/reproscir")```. _Note this package is very much a  work in progress, and is installed automagically, so it will likely need reinstalling._
+The code base is in ```r``` and is managed  within RStudio, using  the  ```drake```  package, and my ```reoproscir``` package on ```github```  obtained with ```devtools::install_github("msandifo/reproscir")```. _Note this package is very much a  work in progress, and while it  is installed automagically,it will likely need reinstalling with _```devtools::install_github("msandifo/reproscir")```.
 
 The code can be executed by opening the ```Rstudio``` project  ```004.Rproj```
 and sourcing ```drake.R```.

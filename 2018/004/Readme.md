@@ -10,13 +10,13 @@ population indicators for select countries.
 
   - [BP statistical-review of energy, 2018
     edition](https://www.bp.com/content/dam/bp/en/corporate/excel/energy-economics/statistical-review/bp-stats-review-2018-all-data.xlsx).
-    The BP data is distributed as an Excel spreadheet. Here I use the
+    The BP data is distributed as an Excel spreadsheet. Here I use the
     CO2-equivalent emissions in million tonnes per year (sheet 57),
     reading it using the `readxl` package.
 
   - [IMF world energy
     outlook](https://www.imf.org/external/pubs/ft/weo/2018/01/weodata/WEOApr2018all.xls).
-    The IMF WEO is distreibuted as ab Excel spreadhseet. Here I use the
+    The IMF WEO is distributed as an Excel spreadsheet. Here I use the
     population data (LP, reported in millions) and, as a comparative
     measure of economic performance, GDP in purchasing power parity
     terms (PPPGDP, reported in billions of international dollars).
@@ -28,8 +28,9 @@ population indicators for select countries.
 The code base is in `r` and is managed within RStudio, using the `drake`
 package, and my `reoproscir` package on `github` obtained with
 `devtools::install_github("msandifo/reproscir")`. *Note this package is
-very much a work in progress, and is installed automagically, so it will
-likely need reinstalling.*
+very much a work in progress, and while it is installed automagically,it
+will likely need reinstalling with
+*`devtools::install_github("msandifo/reproscir")`.
 
 The code can be executed by opening the `Rstudio` project `004.Rproj`
 and sourcing `drake.R`.
