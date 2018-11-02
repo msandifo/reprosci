@@ -23,7 +23,7 @@ plots <- function(m.data) {
     
     scale_x_continuous(labels = scales::dollar ) 
   
-  
+   print (head(m.data))
   m.data %>% subset(region %ni% c("Indonesia",   "India")) -> m.filt.data 
   
   
@@ -86,7 +86,16 @@ p03 <-ggplot( m.filt.data.ref, aes(x=year ,y=co2,  colour=region,  label= paste0
      scale_x_continuous(limits=c(2005,2017.25),  breaks=seq(2005, 2017,2))
  
 
+p04= reproscir::plot_IMF_BP(percent=F)$p1+labs(  y="annual % change energy sector emissions",
+                                        subtitle= 'The emissions lock - Total World',
+                                  caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")
+  
+  
+p05= reproscir::plot_IMF_BP("Australia", percent=T)$p1+labs(   y="annual % change energy sector emissions", subtitle= 'Australia',
+                                         caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")
+
+
  #  
 
-return (list(p1=p01, p2=p02, p3=p03 ))
+return (list(p1=p01, p2=p02, p3=p03, p4=p04, p5=p05 ))
 }

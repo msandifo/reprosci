@@ -1,8 +1,7 @@
-full.repro=F
-
-parasitic.load=12  #set parasitc load as percentage
+full.repro=T
 
 source('./src/settings.R')
+source('./src/packages.R')
 source('./src/theme.R')
 source('./src/functions.R')
 source('./src/downloads.R')

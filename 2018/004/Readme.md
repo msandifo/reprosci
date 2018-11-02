@@ -10,15 +10,16 @@ population indicators for select countries.
 
   - [BP statistical-review of energy, 2018
     edition](https://www.bp.com/content/dam/bp/en/corporate/excel/energy-economics/statistical-review/bp-stats-review-2018-all-data.xlsx).
-    Here I exract the CO2-equivalent emissions in million tonnes per
-    year (sheet 57).
+    The BP data is distrubed as an Excel spreadheet. Here I use the
+    CO2-equivalent emissions in million tonnes per year (sheet 57),
+    reading it using the `readxl` package.
 
   - [IMF world energy
     outlook](https://www.imf.org/external/pubs/ft/weo/2018/01/weodata/WEOApr2018all.xls).
-    Here I extract population data (LP, reproted in millions) and, as a
-    comparitive measure of economic performance, GDP in purchasing power
-    parity terms (PPPGDP, reported in billions of international
-    dollars).
+    The IMF WEO is distreibuted as ab Excel spreadhseet. Here I use the
+    population data (LP, reported in millions) and, as a comparitive
+    measure of economic performance, GDP in purchasing power parity
+    terms (PPPGDP, reported in billions of international dollars).
 
 ## Caveats
 
@@ -103,11 +104,15 @@ p004<-drake::readd(p004)
 ggsave("./figs/p004_01.png",  p004$p1 ,width=8, height=5) 
 ggsave("./figs/p004_02.png",  p004$p2 ,width=8, height=5) 
 ggsave("./figs/p004_03.png",  p004$p2 ,width=8, height=5) 
+ggsave("./figs/p004_04.png",  p004$p2 ,width=8, height=5) 
+ggsave("./figs/p004_05.png",  p004$p2 ,width=8, height=5) 
 ```
 
 <img src="./figs/p004_01.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 <img src="./figs/p004_02.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 <img src="./figs/p004_03.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+<img src="./figs/p004_04.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+<img src="./figs/p004_05.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
 ## Code Notes
 
