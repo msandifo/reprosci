@@ -86,14 +86,14 @@ p03 <-ggplot( m.filt.data.ref, aes(x=year ,y=co2,  colour=region,  label= paste0
      scale_x_continuous(limits=c(2005,2017.25),  breaks=seq(2005, 2017,2))
  
 
-p04= reproscir::plot_IMF_BP(percent=F)$p1+labs(  y="annual % change energy sector emissions",
-                                        subtitle= 'The emissions lock - Total World',
+p04= reproscir::plot_IMF_BP(percent=F)$p1+labs(  
+                                        subtitle= 'Total World',
                                   caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")
   
   
-p05= reproscir::plot_IMF_BP("Australia", percent=T)$p1+labs(   y="annual % change energy sector emissions", subtitle= 'Australia',
+p05= reproscir::plot_IMF_BP("Australia", percent=T)$p1+labs(   subtitle= 'Australia',
                                          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")
-p06= reproscir::plot_IMF_BP("US", percent=T)$p1+labs(   y="annual % change energy sector emissions", subtitle= 'United States',
+p06= reproscir::plot_IMF_BP("US", percent=T)$p1+labs(     subtitle= 'United States',
                                                                caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")
 
 

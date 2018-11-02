@@ -100,11 +100,18 @@ ggsave("./figs/p004_04.png",  p004$p2 ,width=8, height=5)
 ggsave("./figs/p004_05.png",  p004$p2 ,width=8, height=5) 
 
  ```
-<img src="./figs/p004_01.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+   
+### Time series (1981-2017)
+ 
+ <img src="./figs/p004_01.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 <img src="./figs/p004_02.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 <img src="./figs/p004_03.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+   
+### Regressing emissions growth  against economic growth 
+   
 <img src="./figs/p004_04.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 <img src="./figs/p004_05.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+<img src="./figs/p004_06.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
  
 ## Code Notes
