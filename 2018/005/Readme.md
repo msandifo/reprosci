@@ -1,23 +1,25 @@
 005
 ================
 
-## Description
+## Norway v Australia
 
-Norway and Australia are both major exporters of fossil fuels. Despite
-similar balances in the early 1990’s, the structural budget balances
-have changed dramatically since then, due to a range of factors.
-Including rather different commodity mixes (more oil and gas in Norway,
-more coal in Australia which ahs net oil imports) , but also very
-different petroleum royalty/taxation regimes (see [Paul Cleary’s
+Norway and Australia are both major exporters of fossil fuels. Since the
+early 90’s Australian fossil energy exports have increased 370% measured
+on an energy basis, whereas Norway has increased by 200%. Despite this,
+the structural budget balances of the two countries have diverged
+dramatically since the early 1990’s, in favour of Norway. The resaons
+include rather different commodity mixes (more oil and gas in Norway,
+more coal in Australia which increasingly relies on net oil imports).
+But, more importantly, the two countries have employed very different
+petroleum/mineral royalty and taxation regimes (see [Paul Cleary’s
 *Trillion dollar baby*, BlackInc Books,
-2016](https://www.blackincbooks.com.au/books/trillion-dollar-baby)).
-These charts illustrate how the energy export and government financial
-outlooks have evolved for both countries. Depsite a three-fold increase
-in fossil fuel exports (in energ equivalent terms) since 1990, Australia
-now has a very signficant structral deficit with interest of around
-US$12 billion per year. Meanwhile, Norway whose exports have increased
-by about 170% since 1990, has contributed US$120,000 per person to its
-sovereign wealth fund.
+2016](https://www.blackincbooks.com.au/books/trillion-dollar-baby)). The
+analysis here uses open-sourced data to illustrate how energy exports
+and government financial balances have evolved in both countries. Key
+points \* Despite the 370% increase in fossil fuel exports (in energy
+equivalent terms) since 1990, Australia has accrued very significant
+structural deficit accumulating an interest bill of around US$12 billion
+per year.
 
 ## Data Sources
 
@@ -31,9 +33,9 @@ sovereign wealth fund.
     outlook](https://www.imf.org/external/pubs/ft/weo/2018/01/weodata/WEOApr2018all.xls).
     The IMF WEO is distributed as an Excel spreadsheet. Here I use the
     population data (LP, reported in millions) and, as a measure of
-    goverenrment revenue and expenditure (`GGXCNL` and `GGXONLB`),
-    reported in billions in local currency terms. The valeus are
-    converetd to US$ using `NGDPDPC` and `NGDPPC`. interest is
+    government revenue and expenditure (`GGXCNL` and `GGXONLB`),
+    reported in billions in local currency terms. The values are
+    converted to US$ using `NGDPDPC` and `NGDPPC`. interest is
     calculated as `GGXONLB-GGXONLB` where
     
       - `GGXONLB` Primary net lending/borrowing is net lending
@@ -89,11 +91,10 @@ Details of the steps invoked by \`\``drake.R` are summarised below.
   - `source('./src/plots.R')` plot functions
 
   - `source('./src/downloads.R')` directs the download of the relevant
-    data files to be downloaded into the local directory set by
-    `local.path`. By default `local.path=NULL` in which case data is
-    downloaded via `rappdirs::user_cache_dir()` to a folder in the users
-    cache directory (for macOSX, `~/Library/cache`) to
-    `file.path(local.path, aemo)`.
+    data files to a local directory set by `local.path`. By default
+    `local.path=NULL` in which case data is downloaded via
+    `rappdirs::user_cache_dir()` to a folder in the users cache
+    directory (for macOSX, `~/Library/cache`).
 
   - `source('./src/plan.R')` defines the drake plan `reproplan` with the
     dependency structure
@@ -114,7 +115,7 @@ drake::render_drake_graph(graph, file='figs/rmd_render_drake.png')
 
 <img src='./figs/rmd_render_drake.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
-Note that `reproplan` porcesses the files downloaded by
+Note that `reproplan` processes the files downloaded by
 `./src/downloads.R`, returning `merged.data`
 
     ## # A tibble: 6 x 10
