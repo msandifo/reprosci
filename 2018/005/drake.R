@@ -3,7 +3,7 @@
 
     source('./src/settings.R')
     source('./src/packages.R')
-    source('./src/themes.R')
+    source('./src/theme.R')
     source('./src/functions.R')
     source('./src/downloads.R')
     if (file.exists('./src/plots.R')) source('./src/plots.R')

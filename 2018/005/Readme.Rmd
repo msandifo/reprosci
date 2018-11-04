@@ -22,7 +22,7 @@ source('./src/downloads.R')
 
 ##  Description
 
-Norway and Australia are both major exporters of fossil fuels. Despite similar balances in the early 1990's, the structural budget balances have changed dramatically since then, due to a range of factors. Including rather different commodity mixes (more oil and gas in Norway, more coal in Australia which ahs net oil imports) , but also very different petroleum royalty/taxation regimes (see [Paul Cleary's Trillion dollar baby, BlackInc Books, 2017](https://www.blackincbooks.com.au/books/trillion-dollar-baby)).
+Norway and Australia are both major exporters of fossil fuels. Despite similar balances in the early 1990's, the structural budget balances have changed dramatically since then, due to a range of factors. Including rather different commodity mixes (more oil and gas in Norway, more coal in Australia which ahs net oil imports) , but also very different petroleum royalty/taxation regimes (see [Paul Cleary's _Trillion dollar baby_, BlackInc Books, 2016](https://www.blackincbooks.com.au/books/trillion-dollar-baby)).
 These charts illustrate how the energy export and government financial outlooks have evolved for both countries. Depsite a three-fold increase in fossil fuel exports (in energ equivalent terms)  since 1990, Australia now has a very signficant structral deficit with interest of around US$12 billion per year. Meanwhile, Norway whose exports have increased by about 170% since 1990, has contributed US$120,000  per person to its sovereign wealth fund.
 
 
@@ -79,7 +79,7 @@ drake::render_drake_graph(graph, file='figs/rmd_render_drake.png')
 
 <img src='./figs/rmd_render_drake.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
-Note that ```reproplan``` porcesses the files downloaded  by ```./src/downloads.R```, returning ```merged.data```
+Note that ```reproplan``` processes the files downloaded  by ```./src/downloads.R```, returning ```merged.data```
 ```{r  cache=FALSE}
 print(head(readd(merged.data)))
 

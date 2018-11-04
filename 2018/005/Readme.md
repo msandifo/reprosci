@@ -9,8 +9,8 @@ have changed dramatically since then, due to a range of factors.
 Including rather different commodity mixes (more oil and gas in Norway,
 more coal in Australia which ahs net oil imports) , but also very
 different petroleum royalty/taxation regimes (see [Paul Cleary’s
-Trillion dollar baby, BlackInc
-Books, 2017](https://www.blackincbooks.com.au/books/trillion-dollar-baby)).
+*Trillion dollar baby*, BlackInc Books,
+2016](https://www.blackincbooks.com.au/books/trillion-dollar-baby)).
 These charts illustrate how the energy export and government financial
 outlooks have evolved for both countries. Depsite a three-fold increase
 in fossil fuel exports (in energ equivalent terms) since 1990, Australia
