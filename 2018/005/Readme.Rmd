@@ -20,7 +20,7 @@ source('./src/downloads.R')
 load("data/data.Rdata")
 perc.increases<-merged.data %>% 
   dplyr::group_by(region) %>%  
-  dplyr::summarise( perc = tail(ff.prod.mtoe-ff.cons.mtoe,1)/head(ff.prod.mtoe-ff.cons.mtoe,1)*100)
+  dplyr::summarise( perc = (tail(ff.prod.mtoe-ff.cons.mtoe,1)-head(ff.prod.mtoe-ff.cons.mtoe,1))/head(ff.prod.mtoe-ff.cons.mtoe,1)*100)
 net  <-merged.data %>% 
   dplyr::group_by(region) %>%  
   dplyr::summarise(total=tail(GGXCNL.cum*US.exchange,1), per.cap = tail(GGXCNL.cum*US.exchange/LP,1))
@@ -28,8 +28,14 @@ net  <-merged.data %>%
 
 ##  Norway v Australia
 
-Norway and Australia are both major exporters of fossil fuels. Since the early 90's Australian fossil energy exports have increased `r paste0(signif(perc.increases[1,2], 2), "%")` measured on an energy basis,  whereas Norway has increased by `r paste0(signif(perc.increases[2,2], 2), "%")`. Despite this, the structural budget balances of the two countries have diverged dramatically since the early 1990's, in favour of Norway. The resaons include rather different commodity mixes (more oil and gas in Norway, more coal in Australia which increasingly relies on net oil imports). But, more importantly, the two countries have employed very different petroleum/mineral royalty and taxation regimes (see [Paul Cleary's _Trillion dollar baby_, BlackInc Books, 2016](https://www.blackincbooks.com.au/books/trillion-dollar-baby)).
-The analysis here uses open-sourced data  to illustrate how  energy exports and government financial balances have evolved in both countries. Key points
+Norway and Australia are both major exporters of fossil fuels. Since the early 90's Australian fossil energy exports have increased `r paste0(signif(perc.increases[1,2], 2), "%")` measured on an energy basis,  whereas Norway has increased by `r paste0(signif(perc.increases[2,2], 2), "%")`. Despite this, the structural budget balances of the two countries have diverged dramatically since the early 1990's, in favour of Norway. Factors include 
+
+* rather different commodity mixes (more oil and gas in Norway, more coal in Australia which increasingly relies on net oil imports) and , more importantly, 
+
+* very different petroleum/mineral royalty and taxation regimes (see [Paul Cleary's _Trillion dollar baby_, BlackInc Books, 2016](https://www.blackincbooks.com.au/books/trillion-dollar-baby)).
+
+The analysis here uses open-sourced data  to illustrate how  energy exports and government financial balances have evolved in both countries. Key points:
+
 * Despite the  `r paste0(signif(perc.increases[1,2], 2), "%")` increase in fossil fuel exports (in energy equivalent terms)  since 1990, Australia  has accrued very significant structural deficit accumulating an interest bill of around US$12 billion per year.
 
 

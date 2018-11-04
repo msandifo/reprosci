@@ -4,22 +4,28 @@
 ## Norway v Australia
 
 Norway and Australia are both major exporters of fossil fuels. Since the
-early 90’s Australian fossil energy exports have increased 370% measured
-on an energy basis, whereas Norway has increased by 200%. Despite this,
+early 90’s Australian fossil energy exports have increased 270% measured
+on an energy basis, whereas Norway has increased by 97%. Despite this,
 the structural budget balances of the two countries have diverged
-dramatically since the early 1990’s, in favour of Norway. The resaons
-include rather different commodity mixes (more oil and gas in Norway,
-more coal in Australia which increasingly relies on net oil imports).
-But, more importantly, the two countries have employed very different
-petroleum/mineral royalty and taxation regimes (see [Paul Cleary’s
-*Trillion dollar baby*, BlackInc Books,
-2016](https://www.blackincbooks.com.au/books/trillion-dollar-baby)). The
-analysis here uses open-sourced data to illustrate how energy exports
-and government financial balances have evolved in both countries. Key
-points \* Despite the 370% increase in fossil fuel exports (in energy
-equivalent terms) since 1990, Australia has accrued very significant
-structural deficit accumulating an interest bill of around US$12 billion
-per year.
+dramatically since the early 1990’s, in favour of Norway. Factors
+include
+
+  - rather different commodity mixes (more oil and gas in Norway, more
+    coal in Australia which increasingly relies on net oil imports) and
+    , more importantly,
+
+  - very different petroleum/mineral royalty and taxation regimes (see
+    [Paul Cleary’s *Trillion dollar baby*, BlackInc Books,
+    2016](https://www.blackincbooks.com.au/books/trillion-dollar-baby)).
+
+The analysis here uses open-sourced data to illustrate how energy
+exports and government financial balances have evolved in both
+countries. Key points:
+
+  - Despite the 270% increase in fossil fuel exports (in energy
+    equivalent terms) since 1990, Australia has accrued very significant
+    structural deficit accumulating an interest bill of around US$12
+    billion per year.
 
 ## Data Sources
 
