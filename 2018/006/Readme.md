@@ -26,14 +26,14 @@ package, and my `reoproscir` package on `github` obtained with
 `devtools::install_github('msandifo/reproscir')`. *Note this package is
 very much a work in progress, and while it is installed automagically if
 not present, if it had been previously installed it will likely need
-updating with *`devtools::install_github('msandifo/reproscir')`.
+updating with* `devtools::install_github('msandifo/reproscir')`.
 
-Future energy consuption projected are implemented with the function
-`reproscir::project_cagr` (project with compounding annual growth rate)
-which makes nice use of the wonderful functional capabilities of the
-`purrr` package with the statement `purrr::imap_dbl(rep(1,n), ~.x*((1.+
-gr/100)^.y))` where `n` is the length in years of the projection and
-`gr` is the annual growth rate.
+Future energy consumption projections are implemented with the function
+`reproscir::project_cagr` (\_project with compounding annual growth
+rate\_) which takes advantage of the wonderful functional programming
+capabilities of the `purrr` package in the statement
+`purrr::imap_dbl(rep(1,n), ~.x*((1.+ gr/100)^.y))` where `n` is the
+length in years of the projection and `gr` is the annual growth rate.
 
 The code can be executed by opening the `Rstudio` project `006.Rproj`
 and sourcing `drake.R`.
@@ -60,11 +60,11 @@ Details of the steps invoked by `drake.R` are summarised below.
   - `source('./src/plots.R')` plot functions
 
   - `source('./src/downloads.R')` directs the download of the relevant
-    data files to be downloaded into the local directory set by
-    `local.path`. By default `local.path=NULL` in which case data is
-    downloaded via `rappdirs::user_cache_dir()` to a folder in the users
-    cache directory (for macOSX, `~/Library/cache`) to
-    `file.path(local.path, aemo)`.
+    data files into a local directory set by `local.path`. By default
+    `local.path=NULL` in which case data is downloaded via
+    `rappdirs::user_cache_dir()` to a folder in the users cache
+    directory (for macOSX, `~/Library/cache`) to `file.path(local.path,
+    aemo)`. Data files will only be downloaded if not already.
 
   - `source('./src/plan.R')` defines the drake plan `reproplan`
 
