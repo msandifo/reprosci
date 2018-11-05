@@ -13,7 +13,9 @@ for one of my first public references.
   - [BP statistical-review of energy, 2018
     edition](https://www.bp.com/content/dam/bp/en/corporate/excel/energy-economics/statistical-review/bp-stats-review-2018-all-data.xlsx).
     The BP data is distributed as an Excel spreadsheet. Here I use the
-    primary energy consumption data.
+    primary energy consumption data. To obtain the sheet number (=2) we
+    apply `sheet = reproscir::BP_sheets(search
+    =c("prim","consumption"))$sheet`
 
 ## Caveats
 
@@ -22,9 +24,16 @@ for one of my first public references.
 The code base is in `r` and is managed within RStudio, using the `drake`
 package, and my `reoproscir` package on `github` obtained with
 `devtools::install_github('msandifo/reproscir')`. *Note this package is
-very much a work in progress, and while it is installed automagically,it
-will likely need reinstalling with
-*`devtools::install_github('msandifo/reproscir')`.
+very much a work in progress, and while it is installed automagically if
+not present, if it had been previously installed it will likely need
+updating with *`devtools::install_github('msandifo/reproscir')`.
+
+Future energy consuption projected are implemented with the function
+`reproscir::project_cagr` (project with compounding annual growth rate)
+which makes nice use of the wonderful functional capabilities of the
+`purrr` package with the statement `purrr::imap_dbl(rep(1,n), ~.x*((1.+
+gr/100)^.y))` where `n` is the length in years of the projection and
+`gr` is the annual growth rate.
 
 The code can be executed by opening the `Rstudio` project `006.Rproj`
 and sourcing `drake.R`.
