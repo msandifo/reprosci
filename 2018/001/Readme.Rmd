@@ -1,5 +1,5 @@
 ---
-title: "reproscir/2018/001"
+title: "reprosci/2018/001"
 output: github_document
 always_allow_html: yes
 ---
