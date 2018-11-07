@@ -15,7 +15,10 @@ get_NEM_month <- function(local.path=NULL,  files=NULL, folder="aemo"){
 #--------------
 
 get_gladstone_month <- function() {
+  library(rvest)
+ 
   reproscir::update_gladstone( )  %>%  
+    rbind( reproscir::read_gladstone_ports())%>%
   dplyr::mutate(gasdate = date %>% reproscir::set_month_day(15),  # 
                 actualquantity = reproscir::lng_tm_to_tjd(tonnes, date)) #convert monthly lng export tonnage to TJ/day equivalent
 }

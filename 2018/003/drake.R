@@ -1,4 +1,4 @@
-full.repro=F
+full.repro=T
 
 parasitic.load=12  #set parasitc load as percentage
 
