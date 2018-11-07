@@ -33,7 +33,7 @@ reprocessed  from my original from circa 2009, when I started using the term. Se
 
 The code base is in ```r``` and is managed  within RStudio, using  the  ```drake```  package, and my ```reoproscir``` package on ```github```  obtained with ```devtools::install_github('msandifo/reproscir')```. _Note this package is very much a  work in progress, and while it  is installed automagically if not present, if it had been previously installed it will likely need updating with_ ```devtools::install_github('msandifo/reproscir')```.
 
-Future energy consumption projections are implemented with the function ```reproscir::project_cagr``` (_project with compounding annual growth rate_)  which takes advantage of the wonderful functional programming capabilities of the  ```purrr``` package in the statement  ```purrr::imap_dbl(rep(1,n), ~.x*((1.+ gr/100)^.y))``` where ```n``` is the length in years of the projection and ```gr``` is the annual growth rate.
+Future energy consumption projections are implemented with the function ```reproscir::project_cagr``` (_project with compounding annual growth rate_)  which takes advantage of the wonderful functional programming capabilities of the  ```purrr``` package in the statement  ```purrr::imap_dbl(rep(1,n), ~.x*((1.+ gr/100)^.y))``` where ```n``` is the length in years of the projection and ```gr``` is the annual growth rate.[1]
 
 The code can be executed by opening the ```Rstudio``` project  ```006.Rproj```
 and sourcing ```drake.R```.
@@ -92,5 +92,12 @@ p006<-drake::readd(p006)
 
 
 ## Code Notes
+ [1] An alterative is using  ```haskell``` like list comprehensions  implemented in ```reposcir``` as 
+ 
+ ```{r  echo=TRUE, cache=FALSE, eval=T}
+cg.n<-reproscir::cagr( tail(drake::readd(merged.data),50))
+reproscir::set[1*((1.+ cg.n/100)^x)| x <- 1:30, x ]
+```
+following the approach suggetsed by [Konrad Rudolph](https://gist.github.com/klmr/35a13344080e71bf8c34)
 
 ## Errata

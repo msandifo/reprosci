@@ -33,7 +33,8 @@ Future energy consumption projections are implemented with the function
 rate\_) which takes advantage of the wonderful functional programming
 capabilities of the `purrr` package in the statement
 `purrr::imap_dbl(rep(1,n), ~.x*((1.+ gr/100)^.y))` where `n` is the
-length in years of the projection and `gr` is the annual growth rate.
+length in years of the projection and `gr` is the annual growth
+rate.\[1\]
 
 The code can be executed by opening the `Rstudio` project `006.Rproj`
 and sourcing `drake.R`.
@@ -113,5 +114,22 @@ p006<-drake::readd(p006)
 <img src='./figs/p006_01.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 ## Code Notes
+
+\[1\] An alterative is using `haskell` like list comprehensions
+implemented in `reposcir` as
+
+``` r
+cg.n<-reproscir::cagr( tail(drake::readd(merged.data),50))
+reproscir::set[1*((1.+ cg.n/100)^x)| x <- 1:30, x ]
+```
+
+    ##  [1] 1.023663 1.047885 1.072681 1.098064 1.124047 1.150645 1.177872
+    ##  [8] 1.205744 1.234275 1.263481 1.293379 1.323983 1.355313 1.387383
+    ## [15] 1.420212 1.453818 1.488219 1.523435 1.559483 1.596385 1.634160
+    ## [22] 1.672828 1.712412 1.752932 1.794411 1.836872 1.880337 1.924831
+    ## [29] 1.970378 2.017002
+
+following the approach suggetsed by [Konrad
+Rudolph](https://gist.github.com/klmr/35a13344080e71bf8c34)
 
 ## Errata

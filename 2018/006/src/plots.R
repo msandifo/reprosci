@@ -4,7 +4,7 @@ library(ggplot2)
 #---------------------
 plots <- function(cons.ton.world,  all.black=T) {
 
-  cg.n<-reproscir::cagr(cons.ton.world)
+  cg.n<-reproscir::cagr( tail(cons.ton.world,50))
   cg.10<-reproscir::cagr(tail(cons.ton.world,10))
   cons.ton.world.proj<- reproscir::project_cagr(cons.ton.world , n=82)
   cons.ton.world.proj.10<- reproscir::project_cagr(tail(cons.ton.world,10) , n=82)
@@ -21,10 +21,10 @@ plots <- function(cons.ton.world,  all.black=T) {
     geom_hline(yintercept=18*tw2h,   colour=colours[2], size=.3)+
     geom_line(data=cons.ton.world.proj %>% head(51),aes(x=year, y=value),
               position="jitter", colour="white", size=2.25)+
-    geom_line(data=cons.ton.world.proj %>% head(51),aes(x=year, y=value),
-              position="jitter", colour=colours[4], size=.95)+
     geom_line(data=cons.ton.world.proj.10,aes(x=year, y=value),
               position="jitter",  colour="white", size=2.25)+
+    geom_line(data=cons.ton.world.proj %>% head(51),aes(x=year, y=value),
+              position="jitter", colour=colours[4], size=.95)+
     geom_line(data=cons.ton.world.proj.10,aes(x=year, y=value),
               position="jitter", colour=colours[4], size=.95)+
     geom_line(aes(x=year, y=value),col=colours[2], size=1.7, alpha=1)+
