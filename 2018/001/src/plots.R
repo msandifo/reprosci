@@ -4,12 +4,12 @@
 #---------------------
 plots<- function(lng=lng, NEM.month=NEM.month, NEM.year=NEM.year, gas, gas.use ) {
    
-  (NEM.year %>% subset(year %in% c(2015,2017)))$RRP %>% diff() -> nem.diff.15.17.RRP
-  message((NEM.year %>% subset(year %in% c(2015,2017)))$RRP )
-  message( nem.diff.15.17.RRP)
+  (NEM.year %>% subset(year %in% c(2015,2017)))$VWP %>% diff() -> nem.diff.15.17.VWP
+  message((NEM.year %>% subset(year %in% c(2015,2017)))$VWP )
+  message( nem.diff.15.17.VWP)
   (NEM.year %>% subset(year %in% c(2017)))$TOTALDEMAND -> nem.17.TD
   message( nem.17.TD)
-  nem.diff.bill.dollars <-nem.diff.15.17.RRP*nem.17.TD*24*365/1e9
+  nem.diff.bill.dollars <-nem.diff.15.17.VWP*nem.17.TD*24*365/1e9
   message( nem.diff.bill.dollars)
   
   # population data form world bank useing wbstats package
@@ -21,12 +21,12 @@ plots<- function(lng=lng, NEM.month=NEM.month, NEM.year=NEM.year, gas, gas.use )
   # --------------------
   # graphics routines
   # --------------------
-  #ggplot(NEM.month, aes(date, RRP))+geom_line()
+  #ggplot(NEM.month, aes(date, VWP))+geom_line()
   
   
   
-p01<-  ggplot(lng  , aes(date, tonnes/1e6/mdays*365))+ geom_line(data=NEM.month , aes(y=RRP/5 ), size=.3, col="red2" )+
-    geom_smooth(data=NEM.month , aes(y=RRP/5), size=0, span=.25,  fill="red3",alpha=.1)+ 
+p01<-  ggplot(lng  , aes(date, tonnes/1e6/mdays*365))+ geom_line(data=NEM.month , aes(y=VWP/5 ), size=.3, col="red2" )+
+    geom_smooth(data=NEM.month , aes(y=VWP/5), size=0, span=.25,  fill="red3",alpha=.1)+ 
     scale_y_continuous(sec.axis = sec_axis(~.*5, "NEM - $/MW hour") )+
     coord_cartesian(ylim=c(0,25))+
     theme(axis.text.y.right = element_text(color = "red3"),
@@ -44,14 +44,14 @@ p01<-  ggplot(lng  , aes(date, tonnes/1e6/mdays*365))+ geom_line(data=NEM.month 
                                       label="Hazelwood\nclosure"), hjust=-0.,col="darkgreen", size=3)+
     geom_label(data = data.frame(),aes(x=lubridate::ymd("2017-06-30"), y=5,
                                        label=paste0("2017 cf 2015\n+$",
-                                                    round(nem.diff.15.17.RRP*nem.17.TD*24*365/1e9, 1),
+                                                    round(nem.diff.15.17.VWP*nem.17.TD*24*365/1e9, 1),
                                                     " billion\n~ $", signif(nem.diff.dollars.person,2), 
                                                     " per cap.")), 
                col="Red3", size=4)+
     geom_smooth(data=NEM.month %>%subset(year == 2015 | year==2017) ,
-                aes(y=RRP/5, group=year), method="lm", formula=y~1, size=2.,  colour="white",  se=F)+
+                aes(y=VWP/5, group=year), method="lm", formula=y~1, size=2.,  colour="white",  se=F)+
     geom_smooth(data=NEM.month %>%subset(year == 2015 | year==2017) ,
-                aes(y=RRP/5, group=year), method="lm", formula=y~1, size=.7,  colour="red3",  se=F)+
+                aes(y=VWP/5, group=year), method="lm", formula=y~1, size=.7,  colour="red3",  se=F)+
     geom_smooth(size=0, span=.35)+
     geom_line(size=.15)+ 
     geom_point(size=1.25, colour="white")+
@@ -74,7 +74,7 @@ p02 <-ggplot(gas, aes(date, mw/1000 ))+geom_area(aes( fill=gas.type), alpha=.85,
                                       label="Hazelwood\nclosure"), hjust=-0.,col="darkgreen", size=3)+
     theme(legend.position = "bottom")
   
-p02 <- p02  +geom_line(data=NEM.month %>% subset(date< max( gas$date)+months(1)), aes(y=RRP*20/1000))+
+p02 <- p02  +geom_line(data=NEM.month %>% subset(date< max( gas$date)+months(1)), aes(y=VWP*20/1000))+
     coord_cartesian(ylim=c(0,3.200))+
     scale_y_continuous(sec.axis = sec_axis(~.*.05*1000, "NEM - $/MW hour") )+
     theme(axis.text.y.left = element_text(color = "red3"),

@@ -1,4 +1,4 @@
-if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
+if (!file.exists(paste0(drake.path, "/data/data.Rdata"))  ){
   file.names<-download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
 #download_aemo_current( local.path=local.path )
   # NSW1 = get_aemo_data(state='NSW') # %>% padr::pad()
@@ -20,12 +20,12 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
                   mw= value*1e3/(mdays*24)*12, 
                   gas.type=stringr::str_remove_all(gas.type, "gas_")) 
   
-  # nb 5 regions being summed so lenegth is 5x number of time increments
+  # nb 5 regions being summed so length is 5x number of time increments
   
   NEM.month = aemo %>% 
     dplyr::group_by(year, month) %>% 
     dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),
-                     RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
+                     VWP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
                      TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND)/2 )   %>%
     head(-1)
   
@@ -33,7 +33,7 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
   NEM.year =  NEM.month %>% 
     dplyr::group_by(year) %>% 
     dplyr::summarise(date=mean(date) ,
-                     RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
+                     VWP = sum(VWP*TOTALDEMAND)/sum(TOTALDEMAND), 
                      TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND)/2)
 
 lng = update_gladstone( local.path=local.path)  %>% subset( !is.na(tonnes))
@@ -64,15 +64,15 @@ while (day.dif >15+30+6) {  #note that GPA  Cargo sttas are usuall not posted un
     NEM.month = rbind(NEM.month, aemo %>% 
       dplyr::group_by(year, month) %>% 
       dplyr::summarise(date=mean(SETTLEMENTDATE) %>% as.Date(),
-                       RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
-                       TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND) )   %>%
+                       VWP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
+                       TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND)/2 )   %>%
       head(-1))
                                          
     NEM.year = NEM.month %>% 
       dplyr::group_by(year) %>% 
       dplyr::summarise(date=mean(date),
-                       RRP = sum(RRP*TOTALDEMAND)/sum(TOTALDEMAND), 
-                       TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND))
+                       VWP = sum(VWP*TOTALDEMAND)/sum(TOTALDEMAND), 
+                       TOTALDEMAND=5*sum(TOTALDEMAND)/length(TOTALDEMAND)/2)
     
     lng <-rbind(lng, read_gladstone_ports(year=next.year, month=next.month, fuel="Liquefied Natural Gas", country="Total" ) )
 }
