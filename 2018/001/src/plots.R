@@ -27,7 +27,7 @@ plots<- function(lng=lng, NEM.month=NEM.month, NEM.year=NEM.year, gas, gas.use )
   
 p01<-  ggplot(lng  , aes(date, tonnes/1e6/mdays*365))+ geom_line(data=NEM.month , aes(y=VWP/5 ), size=.3, col="red2" )+
     geom_smooth(data=NEM.month , aes(y=VWP/5), size=0, span=.25,  fill="red3",alpha=.1)+ 
-    scale_y_continuous(sec.axis = sec_axis(~.*5, "NEM - $/MW hour") )+
+    scale_y_continuous(sec.axis = sec_axis(~.*5, "NEM VWP - $/MW hour") )+
     coord_cartesian(ylim=c(0,25))+
     theme(axis.text.y.right = element_text(color = "red3"),
           axis.title.y.right= element_text(angle = -90, hjust = 0, color = "red3"),
@@ -76,7 +76,7 @@ p02 <-ggplot(gas, aes(date, mw/1000 ))+geom_area(aes( fill=gas.type), alpha=.85,
   
 p02 <- p02  +geom_line(data=NEM.month %>% subset(date< max( gas$date)+months(1)), aes(y=VWP*20/1000))+
     coord_cartesian(ylim=c(0,3.200))+
-    scale_y_continuous(sec.axis = sec_axis(~.*.05*1000, "NEM - $/MW hour") )+
+    scale_y_continuous(sec.axis = sec_axis(~.*.05*1000, "NEM VWP - $/MW hour") )+
     theme(axis.text.y.left = element_text(color = "red3"),
           axis.title.y.left= element_text(  color = "red3"),
           axis.title.y.right= element_text(angle = -90, hjust = 0, color = "black"))+

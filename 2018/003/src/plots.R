@@ -45,14 +45,15 @@ plots <- function(NEM.month, gasbb.prod.zone.month) {
          subtitle=paste("Eastern gas market supply, NEM prices") ,
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/003") +
    theme(legend.position = "bottom")+
-   geom_line(data=NEM.month %>% tail(-6) %>% head(-1), aes(date%>% reproscir::set_month_day(15), VWP*20 ), col="grey20", size=.23)+
-    scale_y_continuous(sec.axis = sec_axis(~(.+0)/20, "VWP - $/MWhour"))+
+   geom_line(data=NEM.month %>% tail(-6) %>% head(-1), aes(date%>% reproscir::set_month_day(15), VWP*30 ), col="grey20", size=.23)+
+   coord_cartesian(ylim=c(0,5400))+
+   scale_y_continuous(sec.axis = sec_axis(~./30, "VWP - $/MWhour"))+
    
    theme(axis.text.y.right = element_text(color = "black"),
          axis.title.y= element_text(  color = "red3"),
          axis.text.y= element_text(  color = "red3"),                   
          axis.title.y.right= element_text(angle = -90,   color = "black"))+
-   coord_cartesian(ylim=c(0,5400))+
+
    scale_x_date(expand = c(0.005,0)) 
  
 

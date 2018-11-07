@@ -1,4 +1,4 @@
-reprosci001
+reproscir/2018/001
 ================
 
 ## Gladstone LNG
@@ -128,9 +128,9 @@ Note that `reproplan` includes
 The code generates three charts, output to `./figs` directory :
 
 ``` r
-ggsave("./figs/p001_01.png",   p001$p1 ,width=8, height=5) 
-ggsave("./figs/p001_02.png",    p001$p2 ,width=8, height=5) 
-ggsave("./figs/p001_03.png",   p001$p3,width=8, height=5) 
+ggsave("./figs/p001_01.png", p001$p1, width=8, height=5) 
+ggsave("./figs/p001_02.png", p001$p2, width=8, height=5) 
+ggsave("./figs/p001_03.png", p001$p3, width=8, height=5) 
 ```
 
 <img src="./figs/p001_01.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
@@ -154,3 +154,7 @@ In our drake file, `read_gladstone_ports` is only indirectly called via
 the function `update_gladstone`
 
 ## Errata
+
+  - 8/11/2018 corrected calculation of net and per capita revenue
+    differences (2017, 2015) using VWP (volume weighted (VWP) rather
+    than avearge (RRP) prices.
