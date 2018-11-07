@@ -5,11 +5,11 @@ reprosci/2018/001
 
 Amongst the many factors that caused Australian east coast electricity
 wholesale prices to double ind 2016 was the opening of the east coast
-gas market to internatinal LNG exports, via the Port of Gladstone. Here
-I explore atime series of Gladstone Port Authority LNG export volumes,
+gas market to international LNG exports, via the Port of Gladstone. Here
+I explore a time series of Gladstone Port Authority LNG export volumes,
 and NEM market dispatch prices to illustrate the correlations. LNG
 exports are expresed in annualised tonneage. NEM market prices are in
-AUD$ per megawatt hour.
+volume weighted terms in AUD$ per megawatt hour.
 
 ## Data Sources
 
@@ -54,7 +54,7 @@ source('./src/plan.R')
 source('./src/downloads.R')
 ```
 
-directs the downlaod of the AEMO csv data files to be downloaded into
+directs the download of the AEMO csv data files to be downloaded into
 the local directory set by `local.path` By default `local.path=NULL` in
 which case data is downloaded via `rappdirs::user_cache_dir()` to a
 folder in the users cache directory (for macOSX, `~/Library/cache`) to
