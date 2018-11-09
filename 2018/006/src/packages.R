@@ -6,7 +6,8 @@
   #---------------------
 
   `%ni%` = Negate(`%in%`)
-  cran.depend <- c('tidyverse', 'lubridate', 'rvest', 'rappdirs','data.table', 'fasttime', 'magrittr', 'devtools', 'wbstats', 'ggplot2', 'templates' )
+  cran.depend <- c('tidyverse', 'lubridate', 'rvest', 'rappdirs','data.table', 
+                   'fasttime', 'magrittr', 'devtools', 'wbstats', 'ggplot2', 'templates' , 'rstudioapi')
   plic <- installed.packages()
   cran.installs <-cran.depend[cran.depend  %ni% plic]
   if (length(cran.installs >0)) install.packages(cran.installs)
