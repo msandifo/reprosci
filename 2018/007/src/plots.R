@@ -34,7 +34,7 @@ plots <- function(cg.ch4,
       ggrepel::geom_label_repel(data=cg.ch4.cpt.groupings, colour="black" , aes(x=date,y=value+3, label=nlabels), 
                                 nudge_y=40,nudge_x=.55,fill="white", size=2.2,  segment.size=.15)+
     labs(  subtitle= "the methane enigma #1a"  )+
-    theme(legend.position = NULL)
+    theme(legend.position = "None")
   
   
   

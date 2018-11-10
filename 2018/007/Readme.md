@@ -3,42 +3,50 @@
 
 ## The methane enigma
 
-Since 2006, atmospheric methane levels have begun to rise alarmingly.
-This follows a significant pause in growth from 2000-2005, and period of
-reducing growth rates. The records from Australia’s Cape Grim
-Observatory show the year on year growth September 2017 to September
-2018 is 0.64% (cf 0.6 for CO2).
-<!-- `{diff(rbind( tail(  cg.ch4,13) %>% head(1),tail( cg.ch4,1) )$value)/(tail(  cg.ch4,2) %>% head(1))$value*100` -->
+Since 2006, atmospheric methane levels have been rising alarmingly. This
+follows a significant pause in growth from 2000-2005, and before that, a
+period of reducing growth rates since the early 90’s. The record from
+Australia’s Cape Grim Observatory show the year on year growth September
+2017 to September 2018 is 0.64% (cf 0.6 for CO2). This latest period of
+extremem growth started around February 2017.
+<!-- `{diff(rbind( tail(  cg.ch4,13) %>% head(1),tail( cg.ch4,1) )$value)/(tail(  cg.ch4,2) %>% head(1))$value*100` 
 
-To be added … Some notes about global warming potential.
+To be added ... Some notes about global warming potential.-->
 
-The increase in growth rates after 2006 is dramatic and concerning, and
-has been the subject of considerable discussion in recent literature.
-The increase coincides in time with the remarkable developments in
-*shale gas* (or *unconventinal gas*) production in the US, which have
-seen a dramatic increase in US natural gas production as well as US
-*unconventional oil* or *“tight” oil* production.
+The increase in growth rates after 2006 is concerning, and has been the
+subject of considerable discussion in recent literature. It coincides in
+time with the remarkable developments in *shale gas* (or *unconventinal
+gas*) production in the US, which have seen a dramatic increase in US
+natural gas production as well as US *unconventional oil* or *“tight”
+oil* production. For example, the recent increases since Feb 2017, were
+accompanied by a massive increase in US gas production, up almost 10%.
 
-However, the causal relationship between the two is not at all clear,
-because while atmospheric levels of methane have rise the isotopic ratio
-of the methane has trended to lighter ratios (more negative C13/C12
-ratios).
+However, the causal relationship between the two is not at all clear
+because, while atmospheric levels of methane have rise the isotopic
+ratio of the methane has trended to lighter ratios (more negative
+C13/C12 ratios). Thermogenic methane produced from shale gas is
+istopically similar, or slighly heavier than, atmospheric.
 
-Noting that correlation is not causation, this post explores chnages in
-the correlation between several datasets that make for a very
-interesting reassessment of the.
+Noting that correlation is not causation, this post explores changes in
+the correlation between several datasets that make for further
+reassessment of the relationships.
 
-There is a significant correlation between the *rate of growth* in CH4
-and US gas production.
+I note that since around 2005 there is a very significant correlation
+between the *rate of growth* in CH4 and US gas production. This was not
+the case prior to 2000.
 
-  - The correlation is not with the volume of gas produced, but the rate
-    of increase in volume, which suggests any plausible causation must
-    associate with the way gas fields are developed.
+  - Most interstingly, the correlation is not with the volume of gas
+    produced, but the rate of increase in volume, which suggests any
+    plausible causation must associate with the way gas fields are
+    developed.
 
   - We might ask questions about what happens more broadly in the
-    production cycle. For example *coal seam gas* (CSG) in the US has
-    dramatically reduced production because of cost pressures from the
-    shale gas.
+    production cycle. For example *coal seam gas* (CSG) production in
+    the US has dramatically reduced because of cost pressures from the
+    shale gas. CSG methane has isotopically much lighter CH4 than
+    thermogenic. Leakage rates from abandoned CSG/CBM fields need only
+    be a minor proportion of fugitives from shale gas, in order to drive
+    isotope ratios down.
 
 ## Data Sources
 
