@@ -42,9 +42,19 @@ and US gas production.
 
 ## Data Sources
 
-  - to be added
+  - US gas volumes form US energy Infroamtion Agency (EIA)
+  - Cape grim Observatoy data from CSIRO
+  - US rig cout data from Baker Hughes
 
 ## Caveats
+
+  - not fuly reproducible yet as I am developing a `data.yml`
+    specification in read via the `reropscir` package to implement the
+    data downloads. This still needs some generics to work for others. I
+    am working on this and it will be coming soon …
+  - BakerHughes rig count data is distributed as a binary xlsb (binary)
+    format. For conversion to `.xlsz` so it cna be read via packages
+    like `readxl`, I use the soffice cli (from the libreoffice suite)
 
 ## Code
 

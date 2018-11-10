@@ -27,13 +27,14 @@ plots <- function(cg.ch4,
    
   
   p01a <- p01  + 
-      geom_vline(xintercept=my.cpts$date , size=.3, colour="red", linetype=2 )+
+      geom_vline(xintercept=my.cpts$date , size=.1, colour="grey50", linetype=1 )+
       geom_point(data=cg.ch4.cpt.groupings, colour="white", size=3 )+
       geom_point(data=cg.ch4.cpt.groupings, colour="black" )+
       geom_text( data=my.cpts, colour="black" ,  aes(x=date,y=1585, label=labels ), size=2.2, angle=90,vjust=-.5)+
       ggrepel::geom_label_repel(data=cg.ch4.cpt.groupings, colour="black" , aes(x=date,y=value+3, label=nlabels), 
-                                nudge_y=25,fill="white", size=2.2,  segment.size=.25)+
-    labs(  subtitle= "the methane enigma #1a"  )
+                                nudge_y=40,nudge_x=.55,fill="white", size=2.2,  segment.size=.15)+
+    labs(  subtitle= "the methane enigma #1a"  )+
+    theme(legend.position = NULL)
   
   
   
@@ -52,7 +53,7 @@ plots <- function(cg.ch4,
    
   
   p02a =   p02 +  
-      geom_vline(xintercept=my.cpts$date , size=.3, colour="red", linetype=2 )+
+      geom_vline(xintercept=my.cpts$date , size=.1, colour="grey50", linetype=1)+
       geom_point(data=us.cpt.groupings, colour="white", size=3 )+
       geom_point(data=us.cpt.groupings, colour="black" )+
       geom_text( data=my.cpts, colour="black" ,  aes(x=date,y=1.585, label=labels ), size=2.2, angle=90,vjust=-.5)+
@@ -100,16 +101,17 @@ plots <- function(cg.ch4,
                  x="Cape Grim growth rate\nannualised",
                  y="US natural gas growth rate\nannualised ",
                  caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/007") +
-    geom_text( data=my.cpt.data[1,], x=.05, y=9.5, 
-               label= paste0("Jul `99 - Apr `15, r-squared = ",  round(cptfits[[2]],2)) , 
+    geom_text( data=my.cpt.data[1,], x=.05, y=7.5, 
+               label= paste0("2000+ , r-squared = ",  round(cptfits[[2]],2)) , 
                colour="firebrick2",
                size=5, 
                hjust=0 )+
-    geom_text( data=my.cpt.data[1,], x=.05, y=11.5, 
-               label= paste0("Jul `87 - Jul `99, r-squared = ",  round(cptfits[[1]],2)) , 
+    geom_text( data=my.cpt.data[1,], x=.05, y=8.5, 
+               label= paste0("2000-, r-squared = ",  round(cptfits[[1]],2)) , 
                colour="royalblue4",
                size=5, 
-               hjust=0 )
+               hjust=0 )+
+    coord_cartesian(ylim=c(-1,9))
   
 return (list(p1=p01, p1a=p01a, p2=p02 ,p2a=p02a, p3=p03, p4=p04))
 }
