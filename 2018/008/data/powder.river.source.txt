@@ -1,0 +1,13 @@
+# Powder River cbm/csg production data from the Wyoming survey
+
+The data file ```powder.river.source.csv``` is manually constructed
+go to ~~~http://wogcc.state.wy.us/coalbedchart.cfm~~~
+http://pipeline.wyo.gov/legacywogcce.cfm
+
+follow links
+* data
+* coal bed
+* coal bed production
+* coal bed production by month (PRB only)
+	
+update ```powder.river.source.csv``` by copy and paste any additional date items from the bottom of the web table. 

@@ -1,0 +1,130 @@
+- name: eia.us.ng.withdrawals.annual
+  category: energy, gas
+  agency: Energy Information Agency
+  region: us
+  link: https://www.eia.gov/dnav/ng/xls/NG_PROD_SUM_DC_NUS_MMCF_A.xls
+  directory: /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/
+  file: NG_PROD_SUM_DC_NUS_MMCF_A.xls
+  type:
+    format: xls
+    units: annual.million.cubic.feet
+    record.names: date, gross, gas.wells, oil.wells, shale, cbm,  repressure,  flared.vented,
+      non.hydrocarbon, marketed, liquids, dry.gas
+  r: fname <-paste0(my.data.yaml$directory, my.data.yaml$file); print(fname); my.data
+    <-readxl::read_xls(fname, skip=2, sheet=2 , col_types=c("date", rep("numeric",11)))
+    %>% dplyr::mutate(Date=as.Date(Date)); names(my.data)<- stringr::str_split(my.data.yaml$type$record.names,",")[[1]]
+    %>% stringr::str_to_lower() %>% stringr::str_squish( )
+  ggplot: read_data("eia.us.ng.withdrawals.annual", data=T) %>% add_trends(index=3)
+    %>% ggplot( aes(x=ddate, y=us/1000)) + geom_line(size=.2)+ geom_line(aes(y=trend/1000),
+    colour="red")+ labs(x=NULL, y="bcf per year", subtitle="US annual gas production,
+    EIA")
+  station:
+    name: EIA-US-Gas
+    acronym: USGV
+    country: US
+  comment: Note - using wget and in2csv  (csvkit) to transform xls to csv
+  legend: data sourced from Energy Information Agency
+- name: eia.us.ng.withdrawals.month
+  category: energy, gas
+  agency: Energy Information Agency
+  region: us
+  link: http://www.eia.gov/dnav/ng/xls/NG_PROD_SUM_A_EPG0_FGW_MMCF_M.xls
+  directory: /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/
+  file: NG_PROD_SUM_A_EPG0_FGW_MMCF_M.xls
+  wget: wget -O /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/NG_PROD_SUM_A_EPG0_FGW_MMCF_M.xls   http://www.eia.gov/dnav/ng/xls/NG_PROD_SUM_A_EPG0_FGW_MMCF_M.xls
+  csvkit: in2csv --sheet 'Data 1' /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/NG_PROD_SUM_A_EPG0_FGW_MMCF_M.xls
+    > /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/NG_PROD_SUM_A_EPG0_FGW_MMCF_M.csv
+  type:
+    format: xls
+    units: monthly.million.cubic.feet
+    record.names: date,US,Alaska,Arkansas,California,Colorado,Gulf.Mexico,Kansas,Louisiana,Montana,New.Mexico,North.Dakota,Ohio,Oklahoma,Pennsylvania,Texas,Utah,West.Virginia,Wyoming
+  r: my.data <-read.csv(paste0(my.data.yaml$directory,stringr::str_replace(my.data.yaml$file,
+    "M.xls", "M.csv")),skip=3 ); names(my.data)<- stringr::str_split(my.data.yaml$type$record.names,",")[[1]]
+    %>% stringr::str_to_lower(); my.data$date <- as.Date( my.data[,1] -2, origin =
+    "1900-01-01") ; my.data <- my.data[, c(ncol(my.data), (1:(ncol(my.data)-1)))];
+    my.data <- my.data %>% subset(!is.na(us))
+  ggplot: read_data("eia.us.ng.withdrawals.month", data=T) %>% add_trends(index=3)
+    %>% ggplot( aes(x=ddate, y=us/1000)) + geom_line(size=.2)+ geom_line(aes(y=trend/1000),
+    colour="red")+ labs(x=NULL, y="bcf per month", subtitle="US gas production, EIA")
+  station:
+    name: EIA-US-Gas
+    acronym: USGV
+    country: US
+  comment: Note - using wget and in2csv  (csvkit) to transform xls to csv
+  legend: data sourced from Energy Information Agency
+- name: eia.us.cbm.withdrawals.annual
+  category: energy, gas, coalbed methane, csg, withdrawals
+  agency: Energy Information Agency
+  region: us
+  link: https://www.eia.gov/dnav/ng/xls/NG_PROD_SUM_A_EPG0_FGC_MMCF_A.xls
+  directory: /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/
+  file: NG_PROD_SUM_A_EPG0_FGC_MMCF_A.xls
+  wget: wget -O /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data//NG_PROD_SUM_A_EPG0_FGC_MMCF_A.xls   https://www.eia.gov/dnav/ng/xls/NG_PROD_SUM_A_EPG0_FGC_MMCF_A.xls
+  csvkit: in2csv --sheet 'Data 1' /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/NG_PROD_SUM_A_EPG0_FGC_MMCF_A.xls
+    > /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/NG_PROD_SUM_A_EPG0_FGC_MMCF_A.csv
+    --no-inference
+  type:
+    format: xls
+    units: annual.million.cubic.feet
+    record.names: date,US,Alaska,Alaska.onshore,Arkansas,California,Colorado,Gulf.of.Mexico,Kansas,Louisiana,Louisiana.onshore,Montana,New.Mexico,North.Dakota,Ohio,Oklahoma,Pennsylvania,Texas,Texas.Offshore,Utah,West.Virginia,Wyoming
+  r: 'my.data <- read_excel(paste0(my.data.yaml$directory,my.data.yaml$file),sheet=2,skip=2);
+    print(colnames(my.data));  names(my.data)<- stringr::str_split(my.data.yaml$type$record.names,
+    ",")[[1]] ; #  my.data[,1] <-as.Date( my.data[,1] -2, origin = "1900-01-01");
+    #my.data <- my.data %>% subset(!is.na(us)) '
+  station:
+    name: EIA-US-Gas-CBM-annual-withdrawals
+  acronym: USGV
+  country: US
+  comment: Note - using wget and in2csv  (csvkit) to transform xls to csv
+  legend: data sourced from Energy Information Agency
+- name: eia.us.cbm.withdrawals.month
+  category: energy, gas, coalbed methane, csg, withdrawals
+  agency: Energy Information Agency
+  region: us
+  link: https://www.eia.gov/dnav/ng/xls/NG_PROD_SUM_A_EPG0_FGC_MMCF_M.xls
+  directory: /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/
+  file: NG_PROD_SUM_A_EPG0_FGC_MMCF_M.xls
+  wget: wget -O /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data//NG_PROD_SUM_A_EPG0_FGC_MMCF_M.xls   https://www.eia.gov/dnav/ng/xls/NG_PROD_SUM_A_EPG0_FGC_MMCF_M.xls
+  csvkit: in2csv --sheet 'Data 1' /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/NG_PROD_SUM_A_EPG0_FGC_MMCF_M.xls
+    > /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/NG_PROD_SUM_A_EPG0_FGC_MMCF_M.csv
+    --no-inference
+  type:
+    format: xls
+    units: monthly.million.cubic.feet
+    record.names: date,US,Alaska,Arkansas,California,Colorado,Gulf.of.Mexico,Kansas,Louisiana,Montana,New.Mexico,North.Dakota,Ohio,Oklahoma,Pennsylvania,Texas,Utah,West.Virginia,Wyoming
+  r: my.data <- read_excel(paste0(my.data.yaml$directory,my.data.yaml$file),sheet=2,skip=2);
+    names(my.data)<- stringr::str_split(my.data.yaml$type$record.names, ",")[[1]];
+    my.data <- my.data[, c(1, ncol(my.data), 2:(length(my.data)-1))]; my.data %>%
+    subset(!is.na(US))
+  station:
+    name: EIA-US-Gas-CBM-monthly-withdrawals
+  acronym: USGV
+  country: US
+  comment: Note - using wget and in2csv  (csvkit) to transform xls to csv
+  legend: data sourced from Energy Information Agency
+- name: eia.us.cbm.annual
+  category: energy, gas, coalbed methane, csg
+  agency: Energy Information Agency
+  region: us
+  link: https://www.eia.gov/dnav/ng/xls/NG_PROD_COALBED_S1_A.xls
+  directory: /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/
+  file: NG_PROD_COALBED_S1_A.xls
+  wget: wget -O /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data//NG_PROD_COALBED_S1_A.xls   https://www.eia.gov/dnav/ng/xls/NG_PROD_COALBED_S1_A.xls
+  csvkit: in2csv --sheet 'Data 1' /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/NG_PROD_COALBED_S1_A.xls
+    > /Volumes/data/Dropbox/msandifo/documents/programming/r/twitter/2018/008/data/NG_PROD_COALBED_S1_A.csv
+    --no-inference
+  type:
+    format: xls
+    units: annual.billion.cubic.feet
+    record.names: Date,US,Alabama,Alaska.(with.Total.Offshore),Arkansas,California.(with.State.off),Colorado,Florida,Kansas,Kentucky,Louisiana.(with.State.Offshore),Louisiana--North,Louisiana--South.Onshore,Louisiana--State.Offshore,Michigan,Mississippi.(with.State.off),Montana,New.Mexico,New.Mexico--East,New.Mexico--West,New.York,North.Dakota,Ohio,Oklahoma,Pennsylvania,Texas.(with.State.Offshore),Texas--RRC.District.1,Texas--RRC.District.2.Onshore,Texas--RRC.District.3.Onshore,Texas--RRC.District.4.Onshore,Texas--RRC.District.5,Texas--RRC.District.6,Texas--RRC.District.7B,Texas--RRC.District.7C,Texas--RRC.District.8,Texas--RRC.District.8A,Texas--RRC.District.9,Texas--RRC.District.10,Texas--State.Offshore,Utah,Virginia,West.Virginia,Wyoming,Lower.48.Federal.Offshore,Lower.48.States,Eastern.States,Western.States,Other.State.Reserves.Based.Production
+  r: 'my.data <- read_excel(paste0(my.data.yaml$directory,my.data.yaml$file),sheet=2,skip=2);
+    print(colnames(my.data)); print(length(stringr::str_split(my.data.yaml$type$record.names,
+    ",")[[1]]) ); names(my.data)<- stringr::str_split(my.data.yaml$type$record.names,
+    ",")[[1]] ; #  my.data[,1] <-as.Date( my.data[,1] -2, origin = "1900-01-01");
+    #my.data <- my.data %>% subset(!is.na(us)) '
+  station:
+    name: EIA-US-Gas-CBM
+  acronym: USGV
+  country: US
+  comment: Note - using wget and in2csv  (csvkit) to transform xls to csv
+  legend: data sourced from Energy Information Agency
