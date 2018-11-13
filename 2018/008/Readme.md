@@ -4,20 +4,21 @@
 ## U.S. Coal Bed methane - boom and bust
 
 For a while, in the 1990’s and early 2000’s, coal bed methane was the
-market darling for US gas producers. Producion in the Powder River Basin
-in Wyoming and the San Juan Basin in the four corners skyrocketed. By
-2008, CBM accounted for around 8% of the US methane production.
+market darling of US gas producers. Production in the Powder River Basin
+(PRB), in Wyoming, and the San Juan Basin, in the four corners,
+skyrocketed. By 2008, the CBM fields accounted for around 8% of the US
+methane production.
 
-But the last 10 years have not been kind fro CBM investors, with CBM
-fields progressively losing market share to shale gas the rise of which
-has been simply extraordinary since 2006. Shale gas now makes up for
-more than 50% of total US gas production, and has rendered the CBM
-basins as heartbreak country. PPRB CBM production has dropped to just
+But the last 10 years have not been kind to CBM investors, with CBM
+fields progressively losing market share to shale gas, the rise of which
+sicne 2006 has been nothing short of extraordinary. Shale gas now makes
+up for more than 50% of total US gas production, and has rendered the
+CBM basins heartbreak country. PRB CBM production has dropped to just
 20% of its peak in just 10 years.
 
-In the mid 200’ there were over 20000 CBM wells, increasing at a rate of
-more than 2000 a year. The story of demise is documented in [Coalbed
-Methane: Boom, Bust and Hard
+In the mid 2000’s there were over 20000 CBM wells in the PRB, increasing
+at a rate of more than 2000 a year. The story of demise is documented in
+[Coalbed Methane: Boom, Bust and Hard
 Lessons](https://www.wyohistory.org/encyclopedia/coalbed-methane-boom-bust-and-hard-lessons)
 
 As at mid November, 2018, there were 3584 abandoned or orphaned wells,
@@ -32,6 +33,8 @@ see also
 [here](https://trib.com/business/energy/ultra-petroleum-eyes-horizontal-in-wyoming-s-pinedale-field/article_646672a1-e15a-5e1b-accb-c7d8ee93fece.html#tncms-source=infinity-scroll-summary-siderail-latest)
 and
 [here](https://www.bloomberg.com/opinion/articles/2018-09-10/powder-river-basin-shale-oil-is-having-a-moment)
+
+… [a recurring story](https://www.hcn.org/issues/214/10823)
 
 ## Data Sources
 
