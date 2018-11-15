@@ -34,11 +34,14 @@ reproplan = drake::drake_plan(
   gas.con.t = reproscir::BP_all(verbose=F, sheet=27, countries="Australia", years=1969:2017 , units="mtoe", data=T ) %>% 
     dplyr::mutate(time= dplyr::case_when(year < 2005 ~ "low", year >=2005~ "high")),
    
-  oil.con = reproscir::BP_all(verbose=F, sheet=9, countries="Australia", years=1969:2017 , units="bcm", data=T ) %>% 
+  oil.con = reproscir::BP_all(verbose=F, sheet=10, countries="Australia", years=1969:2017 , units="mtoe", data=T ) %>% 
     dplyr::mutate(time= dplyr::case_when(year < 2005 ~ "low", year >=2005~ "high")),
+  coal.con = reproscir::BP_all(verbose=F, sheet=36, countries="Australia", years=1969:2017 , units="mtoe", data=T ) %>% 
+    dplyr::mutate(time= dplyr::case_when(year < 2005 ~ "low", year >=2005~ "high")),
+  
   
 #rint(nem.year.te.2005),
   #merged.data =merge(x,y)
-  p010 = plots( nem.month ,nem.year, gas.con, gas.prod , gas.con.t, oil.con )
+  p010 = plots( nem.month ,nem.year, gas.con, gas.prod , gas.con.t, oil.con, coal.con )
 
 )

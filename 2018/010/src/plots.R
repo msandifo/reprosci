@@ -2,7 +2,7 @@ library(ggplot2)
 # --------------------
 # ggplot routines
 #---------------------
-plots <- function(nem.month , nem.year,gas.con, gas.prod, gas.con.t, oil.con ) {
+plots <- function(nem.month , nem.year,gas.con, gas.prod, gas.con.t, oil.con , coal.con) {
 
     nem.2005 = nem.month %>%
      subset(year==2005 & n=="total.corrected")  %>%
@@ -155,7 +155,7 @@ p03a<-ggplot(gas.con.t %>% subset(year>1980), aes(year, value- gas.con.t.2005, c
   scale_colour_manual(values=rev(my.cols))+
   scale_fill_manual(values=rev(my.cols))+
   labs(y="gas consumption - mtoe, cf. 2005", x=NULL, 
-       subtitle="A ministerial energy primer #1\nAustralian gas consumption, BP Statistical Review 2018",
+       subtitle="A ministerial energy primer #3\nAustralian gas consumption, BP Statistical Review 2018",
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   theme(legend.position="None")
 
@@ -213,11 +213,45 @@ p05<-ggplot(oil.con %>% subset(year>1980), aes(year, value- oil.con.2005, col=ti
   annotate("text", x=2013, y=5, label= paste0(oil.growth.rate[2], "% p.a."), size=4, col=my.cols[2])+
   scale_colour_manual(values=rev(my.cols))+
   scale_fill_manual(values=rev(my.cols))+
-  labs(y="oil consumption - million tonnes, cf. 2005", x=NULL, 
-       subtitle="A ministerial energy primer #1\nAustralian oil consumption, BP Statistical Review 2018",
+  labs(y="oil consumption - mtoe, cf. 2005", x=NULL, 
+       subtitle="A ministerial energy primer #2\nAustralian oil consumption, BP Statistical Review 2018",
+       caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
+  theme(legend.position="None")
+
+coal.con.2005 <-coal.con$value[coal.con$year==2005]
+coal.growth.rate <- c(round(lm(value/coal.con.2005 ~year, coal.con %>% subset(year<=2005  &year>1980))$coef[2]*100,1),
+                      round(lm(value/coal.con.2005 ~year, coal.con %>% subset(year>=2005))$coef[2]*100,1))
+
+mtoc2co2e= 3.96
+
+p06<-ggplot(coal.con %>% subset(year>1980), aes(year, value- coal.con.2005, col=time, fill=time))+
+  geom_smooth(  se=T,   size=.2, method="lm", alpha=.3) +
+  #  geom_smooth( data= oil.con %>% subset(year>1980 & year<2005), se=T, colour="white", fill="grey50", size=.2, method="lm", alpha=.3) +
+  # geom_smooth( data= oil.con %>% subset(year> 2004), se=T, colour="white", fill="darksalmon", size=.2, method="lm", alpha=.3) +
+  geom_line(size=.3 ) +
+  geom_point(colour="white", size=2 ) +
+  geom_point(size=1.5)+
+  scale_y_continuous(sec.axis = sec_axis(~.*mtoc2co2e, "CO2 emissions - million tonnes, cf. 2005") )+
+  theme(axis.text.y.right = element_text(color = my.cols[2]),
+        
+        axis.title.y.right= element_text(angle = -90, hjust = 1, color = my.cols[2]))+
+  # annotate("text", x=1995, y=8, label= "oil consumption added\n ", size=6, col="red3")+
+  annotate("text", x=2006, y=-12, label= paste("coal consumption removed\n~", signif(abs(tail(coal.con$value,1)-coal.con.2005 )*mtoc2co2e,2) ,"million tonnes CO2-e\n in 2017  cf. 2005"), 
+           fontface =3, size=4, col=my.cols[2])+
+  annotate("text", x=2011, y=-24, label= paste("assuming", mtoc2co2e,"tonnes CO2\nfor every oil equiv. tonne coal"), fontface=3, size=2.5, col="grey70")+
+  
+  #  scale_y_continuous(labels=scales::percent_format(accuracy = 1))+
+  geom_hline(yintercept = 0,  size=.25 ,linetype=2)+
+  # annotate("text", x=2016.7, y=.4, label= "2005 level", size=3)+
+  annotate("text", x=1989, y=-11, label= paste0(coal.growth.rate[1], "% p.a."), size=4, col=my.cols[1])+
+  annotate("text", x=2014, y=-2, label= paste0(coal.growth.rate[2], "% p.a."), size=4, col=my.cols[2])+
+  scale_colour_manual(values=rev(my.cols))+
+  scale_fill_manual(values=rev(my.cols))+
+  labs(y="coal consumption - mtoe, cf. 2005", x=NULL, 
+       subtitle="A ministerial energy primer #4\nAustralian coal consumption, BP Statistical Review 2018",
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   theme(legend.position="None")
 
 
-return (list(p1=p01,p1a=p01a,  p1b=p01b, p2=p02, p3=p03 , p3a=p03a , p4=p04 ,p5=p05))
+return (list(p1=p01,p1a=p01a,  p1b=p01b, p2=p02, p3=p03 , p3a=p03a , p4=p04 ,p5=p05, p6=p06))
 }
