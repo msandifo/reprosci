@@ -18,7 +18,7 @@ source('./src/downloads.R')
 
 ##  Australian energy emissions and consumption snapshots
 
-Including demand for electricty in the NEM (Austrlaian east coast electricity market supplying around ~80% of Australians)
+Including demand for electricty in the NEM (Australian east coast electricity market supplying around ~80% of Australians), and gas demand and emsiisons associated with LNG exports and othe ruses 
 
 ## Data Sources
 
@@ -28,7 +28,7 @@ Including demand for electricty in the NEM (Austrlaian east coast electricity ma
 
 ##  Caveats
 
-* AEMO emsiisons are preprocessed applying a correction factor of +2.5% applied to recorded valeus prior to 2105. following a change in methodology reported here)
+* AEMO emisssons (CDEII) data are preprocessed applying a correction factor of +2.5% to reported values prior June 2014,  following a change in methodology (as reported here)[https://www.aemo.com.au/Electricity/National-Electricity-Market-NEM/Settlements-and-payments/Settlements/Carbon-Dioxide-Equivalent-Intensity-Index]
 
 ## Code
 
