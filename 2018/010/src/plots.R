@@ -2,7 +2,7 @@ library(ggplot2)
 # --------------------
 # ggplot routines
 #---------------------
-plots <- function(nem.month , nem.year,gas.con, gas.prod ) {
+plots <- function(nem.month , nem.year,gas.con, gas.prod, gas.con.t, oil.con ) {
 
     nem.2005 = nem.month %>%
      subset(year==2005 & n=="total.corrected")  %>%
@@ -55,6 +55,38 @@ plots <- function(nem.month , nem.year,gas.con, gas.prod ) {
    scale_linetype_manual(values=my.linetypes, guide=F)+
    theme(legend.position=c(.85,.85), legend.title=element_blank())
  
+ 
+ nem.year.te.2005 = nem.year$te[nem.year$year==2005 &nem.year$n=="total.corrected" ]
+ nem.year.te.2017 = nem.year$te[nem.year$year==2017 &nem.year$n=="total.corrected" ]
+ #(nem.year.te.2005-nem.year.te.2017)*365/1e6
+ 
+ 
+ p01b <- ggplot(nem.year %>% subset(year>2000 & n=="total.corrected"), aes(year, (te- nem.year.te.2005)*365/1e6, col=time, fill=time))+
+   #  geom_smooth( data=nem.year %>% subset(year>2007 & n=="total.corrected"), se=T, method="lm", size=.2,   alpha=.1 ) +
+   # geom_smooth( data=nem.year %>% subset(year<=2008 & n=="total.corrected"), se=T, method="lm", size=.2,   alpha=.1 ) +
+   #  geom_smooth( data= oil.con %>% subset(year>1980 & year<2005), se=T, colour="white", fill="grey50", size=.2, method="lm", alpha=.3) +
+   # geom_smooth( data= oil.con %>% subset(year> 2004), se=T, colour="white", fill="darksalmon", size=.2, method="lm", alpha=.3) +
+   geom_line(size=.3 ) +
+   geom_point(colour="white", size=2 ) +
+   geom_point(size=1.5)  +
+   # annotate("text", x=1995, y=8, label= "oil consumption added\n ", size=6, col="red3")+
+   annotate("text", x=2016, y=-5, label= paste("electrical power system\n CO2-e emissions reduced by \n~", 
+                                               signif((nem.year.te.2005 -nem.year.te.2017)*365/1e6,2) ,"million tonnes \n in 2017  cf. 2005*"), 
+            fontface =3, size=4, col=my.cols[2])+
+   annotate("text", x=2004, y=-25, label= "*due to both decarbonisation and demand destruction", fontface=3, size=2.5, col="grey70")+
+   
+   #  scale_y_continuous(labels=scales::percent_format(accuracy = 1))+
+   geom_hline(yintercept = 0,  size=.25 ,linetype=2)+
+   # annotate("text", x=2016.7, y=.4, label= "2005 level", size=3)+
+   # annotate("text", x=1989, y=-4, label= paste0(oil.growth.rate[1], "% p.a."), size=4, col=my.cols[1])+
+   # annotate("text", x=2013, y=5, label= paste0(oil.growth.rate[2], "% p.a."), size=4, col=my.cols[2])+
+   scale_colour_manual(values=rev(my.cols))+
+   scale_fill_manual(values=rev(my.cols))+
+   labs(y="million tonnes Co2-e, cf. 2005", x=NULL, 
+        subtitle="A ministerial energy primer #1\nNEM electrical power generation, AEMO",
+        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
+   theme(legend.position="None")
+ 
   
 p02<- ggplot(nem.month, aes(date, te/nem.2005$te, col=n, size=n, linetype=n))+
   geom_smooth(data=nem.month %>% subset(n=="total.corrected") %>% dplyr::ungroup() %>%dplyr::mutate(year=factor(year)),
@@ -91,6 +123,43 @@ p03<- ggplot(gas.con %>% subset(year>1980), aes(year, value/gas.con.2005))+
        subtitle="Australian gas consumption, BP Statistical review, 2018",
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")
 
+
+gas.con.t.2005 <-gas.con.t$value[gas.con.t$year==2005]
+growth.rate.t <- c(round(lm(value/gas.con.t.2005 ~year, gas.con.t %>% subset(year<=2005  &year>1980))$coef[2]*100,1),
+                   round(lm(value/gas.con.t.2005 ~year, gas.con.t %>% subset(year>=2005))$coef[2]*100,1))
+
+
+mtogas2co2e= 2.35
+
+p03a<-ggplot(gas.con.t %>% subset(year>1980), aes(year, value- gas.con.t.2005, col=time, fill=time))+
+  geom_smooth(  se=T,   size=.2, method="lm", alpha=.3) +
+  #  geom_smooth( data= oil.con %>% subset(year>1980 & year<2005), se=T, colour="white", fill="grey50", size=.2, method="lm", alpha=.3) +
+  # geom_smooth( data= oil.con %>% subset(year> 2004), se=T, colour="white", fill="darksalmon", size=.2, method="lm", alpha=.3) +
+  geom_line(size=.3 ) +
+  geom_point(colour="white", size=2 ) +
+  geom_point(size=1.5)+
+  scale_y_continuous(sec.axis = sec_axis(~.*mtogas2co2e, "CO2 emissions - million tonnes, cf. 2005") )+
+  theme(axis.text.y.right = element_text(color = my.cols[2]),
+        
+        axis.title.y.right= element_text(angle = -90, hjust = 1, color = my.cols[2]))+
+  # annotate("text", x=1995, y=8, label= "oil consumption added\n ", size=6, col="red3")+
+  annotate("text", x=2006, y=12, label= paste("gas consumption added\n~", signif((tail(gas.con.t$value,1)-gas.con.t.2005 )*mtogas2co2e,2) ,"million tonnes CO2-e\n in 2017  cf. 2005"), 
+           fontface =3, size=4, col=my.cols[2])+
+  annotate("text", x=2011, y=-11, label= paste("assuming,",mtogas2co2e,"tonnes CO2\nfor every  tonne oil equiv. gas"), fontface=3, size=2.5, col="grey70")+
+  
+  #  scale_y_continuous(labels=scales::percent_format(accuracy = 1))+
+  geom_hline(yintercept = 0,  size=.25 ,linetype=2)+
+  # annotate("text", x=2016.7, y=.4, label= "2005 level", size=3)+
+  annotate("text", x=1989, y=-4, label= paste0( growth.rate.t[1], "% p.a."), size=4, col=my.cols[1])+
+  annotate("text", x=2013, y=8, label= paste0( growth.rate.t[2], "% p.a."), size=4, col=my.cols[2])+
+  scale_colour_manual(values=rev(my.cols))+
+  scale_fill_manual(values=rev(my.cols))+
+  labs(y="gas consumption - mtoe, cf. 2005", x=NULL, 
+       subtitle="A ministerial energy primer #1\nAustralian gas consumption, BP Statistical Review 2018",
+       caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
+  theme(legend.position="None")
+
+
 gas.prod.2005 <-gas.prod$value[gas.prod$year==2005]
 
 gas.lng <- gas.con%>% subset(year>1980)
@@ -116,5 +185,39 @@ p04<-ggplot(gas.lng%>% subset(year>1980), aes(year, (value-gas.lng.2005 )*.735 )
   xlim(c(1987,2017))
 
 
-return (list(p1=p01,p1a=p01a, p2=p02, p3=p03  , p4=p04 ))
+oil.con.2005 <-oil.con$value[oil.con$year==2005]
+oil.growth.rate <- c(round(lm(value/oil.con.2005 ~year, oil.con %>% subset(year<=2005  &year>1980))$coef[2]*100,1),
+                     round(lm(value/oil.con.2005 ~year, oil.con %>% subset(year>=2005))$coef[2]*100,1))
+
+mto2co2e= 3.07
+p05<-ggplot(oil.con %>% subset(year>1980), aes(year, value- oil.con.2005, col=time, fill=time))+
+  geom_smooth(  se=T,   size=.2, method="lm", alpha=.3) +
+  #  geom_smooth( data= oil.con %>% subset(year>1980 & year<2005), se=T, colour="white", fill="grey50", size=.2, method="lm", alpha=.3) +
+  # geom_smooth( data= oil.con %>% subset(year> 2004), se=T, colour="white", fill="darksalmon", size=.2, method="lm", alpha=.3) +
+  geom_line(size=.3 ) +
+  geom_point(colour="white", size=2 ) +
+  geom_point(size=1.5)+
+  scale_y_continuous(sec.axis = sec_axis(~.*mto2co2e, "CO2 emissions - million tonnes, cf. 2005") )+
+  theme(axis.text.y.right = element_text(color = my.cols[2]),
+        
+        axis.title.y.right= element_text(angle = -90, hjust = 1, color = my.cols[2]))+
+  # annotate("text", x=1995, y=8, label= "oil consumption added\n ", size=6, col="red3")+
+  annotate("text", x=2002, y=7, label= paste("oil consumption added\n~", signif((tail(oil.con$value,1)-oil.con.2005 )*mto2co2e,2) ,"million tonnes CO2-e\n in 2017  cf. 2005"), 
+           fontface =3, size=4, col=my.cols[2])+
+  annotate("text", x=2011, y=-11, label= paste("assuming",mto2co2e,"tonnes CO2\nfor per tonne oil equiv."), fontface=3, size=2.5, col="grey70")+
+  
+  #  scale_y_continuous(labels=scales::percent_format(accuracy = 1))+
+  geom_hline(yintercept = 0,  size=.25 ,linetype=2)+
+  # annotate("text", x=2016.7, y=.4, label= "2005 level", size=3)+
+  annotate("text", x=1989, y=-4, label= paste0(oil.growth.rate[1], "% p.a."), size=4, col=my.cols[1])+
+  annotate("text", x=2013, y=5, label= paste0(oil.growth.rate[2], "% p.a."), size=4, col=my.cols[2])+
+  scale_colour_manual(values=rev(my.cols))+
+  scale_fill_manual(values=rev(my.cols))+
+  labs(y="oil consumption - million tonnes, cf. 2005", x=NULL, 
+       subtitle="A ministerial energy primer #1\nAustralian oil consumption, BP Statistical Review 2018",
+       caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
+  theme(legend.position="None")
+
+
+return (list(p1=p01,p1a=p01a,  p1b=p01b, p2=p02, p3=p03 , p3a=p03a , p4=p04 ,p5=p05))
 }
