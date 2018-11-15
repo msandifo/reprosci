@@ -98,6 +98,8 @@ p010<-drake::readd(p010)
 
 <img src='./figs/p010_01a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
+<img src='./figs/p010_01b.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+
 <img src='./figs/p010_02.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 Australian gas consumption is rising becaus eof LNG production, with
@@ -106,7 +108,7 @@ every 1 tonne of LNG exported that adds about 0.3 tonnes to domestic
 emissions (molecular weight of CO2=44,
 CH4=16)
 
-<img src='./figs/p010_03.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+\#<img src='./figs/p010_03a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 With BP estimating LNG exports at 75.9 bcm (= 55 million tonnes), that
 gives yields a total of 17 million tinnes CO2 emissions, with an
@@ -114,6 +116,7 @@ increase of 12 million tonnes over 2005
 levels.
 
 <img src='./figs/p010_04.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+<img src='./figs/p010_05.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 ## Code Notes
 
