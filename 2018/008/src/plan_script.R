@@ -3,21 +3,30 @@
 # billion or million
 library(magrittr)
 library(lubridate)
+library(reproscir) 
+ms_yaml_setup( outname="./data/data008.yaml",
+               data.sets = c("eia.us.ng.withdrawals.annual",
+                             "eia.us.ng.withdrawals.month",
+                             "eia.us.cbm.withdrawals.annual" ,
+                             "eia.us.cbm.withdrawals.month",
+                             "eia.us.cbm.annual")
+)
+Sys.getenv("R_DATAYAML")
+#Sys.setenv(R_DATAYAML= "./data/data008.yaml")
 yaml.sets <-reproscir::list_data_sets()
 yaml.sets
-eia.us.cbm.mon <-reproscir::read_data("eia.us.cbm.withdrawals.month",data=T ) %>%
-  dplyr::rename(cbm=US) %>%
-  dplyr::mutate( date=as.Date(date)) #shoul correctly adjust for days inmonth
+eia.us.cbm.mon = reproscir::read_data("eia.us.cbm.withdrawals.month",data=T ) %>%
+  dplyr::rename(cbm=us )
 tail(eia.us.cbm.mon,10)
-eia.us.cbm.ann<-reproscir::read_data("eia.us.cbm.withdrawals.annual" ,data=T) %>%
-  dplyr::rename(cbm=US, date=Date) %>%
-  dplyr::mutate( date=as.Date(date)) 
 
-eia.us.ng.mon<-reproscir::read_data("eia.us.ng.withdrawals.month", data=T )[,c(1,3)]%>% 
-  dplyr::rename(us.gas=us) %>%
-  dplyr::mutate(us.gas=us.gas, date=as.Date(date)) #shoul correctly adjust for days inmonth
+eia.us.cbm.ann=reproscir::read_data("eia.us.cbm.withdrawals.annual" ,data=T) %>%
+  dplyr::rename(cbm=us)  
 
-eia.us.ng.ann<-reproscir::read_data("eia.us.ng.withdrawals.annual", data=T)
+eia.us.ng.mon =reproscir::read_data("eia.us.ng.withdrawals.month", data=T )[,c(1,2)]%>% 
+  dplyr::rename(us.gas=us) 
+
+
+eia.us.ng.ann =reproscir::read_data("eia.us.ng.withdrawals.annual", data=T)
 
 prb.monthly.data = read.csv(paste(getwd(),"data/powder.river.basin.cbm.csv" ,sep="/")) %>% 
   dplyr::select(c("Month.Year", "Total.Gas.Mcf", "Total.Water.Bbls")) %>% 
@@ -29,7 +38,8 @@ prb.monthly.data = read.csv(paste(getwd(),"data/powder.river.basin.cbm.csv" ,sep
 prb.monthly.data  %>% head()
 
  
-us.cbm.data <-read_data("eia.us.cbm.annual", data=T) %>% dplyr::rename(date= Date)%>% dplyr::mutate(cbm= US*1e9/tj2cf/365, date=as.Date(date))  
+us.cbm.data <- read_data("eia.us.cbm.annual", data=T) %>%  
+  dplyr::mutate(cbm= us*1e9/tj2cf/365)  
 
 roma.daily.data = reproscir::download_gasbb() %>%
   reproscir::read_gasbb( ) %>%  
@@ -46,6 +56,51 @@ roma.monthly.data=roma.daily.data %>%
   dplyr::arrange(gasdate)
 library(reproscir)
 data.source= "http://wogcc.state.wy.us/coalbedchart.cfm"
+
+merged.data <-dplyr::bind_rows(prb.monthly.data[,c(1,2)] %>% 
+                   dplyr::rename(val=prb.cbm) %>% 
+                   dplyr::mutate(val=val*1e3/tj2cf , region="Powder River Basin, Wyoming"),
+                 roma.monthly.data[,c(4,3)] %>%   
+                   dplyr::rename(date=gasdate, val=actualquantity)%>% 
+                   dplyr::mutate(region="Roma, Qld"),
+                 us.cbm.data[, c(1,2)] %>% 
+                   dplyr::rename(val=us) %>% 
+                   dplyr::mutate( val=val*1e6*1e3/tj2cf/365,region="US Total"), 
+                 # data.frame(date= us.cbm.data$date, 
+                 #            val=rowSums(us.cbm.data[, c("Wyoming")] ,na.rm=TRUE)*1e6*1e3/tj2cf/365, 
+                 #            region="Wyoming"),
+                 data.frame(date= us.cbm.data$date, 
+                            val=rowSums(us.cbm.data[, c("new.mexico","colorado","utah")] ,na.rm=TRUE)*1e6*1e3/tj2cf/365, 
+                            region="New Mexico, Colarado, Utah"))
+
+library(ggplot2)
+ggplot(merged.data %>% subset(date> lubridate::ymd("1990-01-01")), aes(date, val , col=region , linetype=region))+
+  geom_line()+
+  scale_color_manual(values=c("darkgreen", "black", "grey40", "red3"))+
+  scale_linetype_manual(values=c(2,1,1,2))+
+  geom_point( aes(size=factor(region)), show.legend = F)+
+  scale_size_manual(values=c(2,0,0,2))+
+  theme(legend.title = element_blank(), legend.position = c(.2,.8))+
+  labs (x=NULL, y="gas production, TJ/day", 
+        subtitle= "the collpase of coal bed methane #1",
+        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/008"
+  )
+
+\
+  geom_line(data=head(tail(roma.monthly.data, -1),-1),  
+            aes(gasdate,actualquantity), colour="red2")+
+  # # geom_line(data=us.cbm.data, aes(x=as.Date(Date), y=TJ.d), linetype=2)+
+  # # geom_line(data=us.dry.data, aes(x=as.Date(date), y=value), colour="green3")+
+  geom_line(data=us.cbm.data , aes(x=date, y=cbm), linetype=2, col="green4")+
+  geom_line(data=us.cbm.data, aes(x=date, y=
+                                    rowSums( cbind (New.Mexico,Colorado,Utah ), na.rm=TRUE)*1e6*1e3/tj2cf/365), linetype=2, col="black")+
+  #geom_line(data=us.cbm.data, aes(x=date, y=Colorado*1e6*1e3/tj2cf/365), linetype=2, col="darkgreen")+
+  geom_point(data=us.cbm.data , aes(x=date, y=
+                                      rowSums( cbind (New.Mexico,Colorado,Utah ), na.rm=TRUE)*1e6*1e3/tj2cf/365),  size=3, col="white")+
+  geom_point(data=us.cbm.data, aes(x=date, y=
+                                     rowSums( cbind (New.Mexico,Colorado,Utah ), na.rm=TRUE)*1e6*1e3/tj2cf/365),  size=.75, col="black")+
+  scale_x_date(limits=ymd(c("1989-01-01","2017-08-01"))) 
+
 
 ggplot(prb.monthly.data, aes(date, prb.cbm*1e3/tj2cf  ))+
   geom_line()+
@@ -96,9 +151,9 @@ ggplot(eia.us.ng.ann.gather %>% subset(date >lubridate::ymd("1970-01-01")), aes(
   geom_area(posit="stack", col="white", size=.2)+
   theme(legend.position = c(.3,.8))
 
-ggplot(prb.dat, aes(Month.Year,Total.Water.Bbls/1e6/cm2bbl ))+
+ggplot(prb.monthly.data, aes(date,Total.Water.Bbls/1e6/cm2bbl ))+
   geom_line()+
-  labs (x="date", y="total water production, mill cubic metres month", subtitle=region, caption=data.source)
+  labs (x="date", y="total CBM water production, mill cubic metres month", subtitle="Powder River Basin", caption=data.source)
 
 
 

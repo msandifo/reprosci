@@ -5,16 +5,13 @@ pkgconfig::set_config('drake::strings_in_dots' = 'literals')
 reproplan = drake::drake_plan(
   #add data munging here
   eia.us.cbm.mon =reproscir::read_data("eia.us.cbm.withdrawals.month",data=T ) %>%
-    dplyr::rename(cbm=US) %>%
-    dplyr::mutate( date=as.Date(date)) ,#shoul correctly adjust for days inmonth
+    dplyr::rename(cbm=us)  ,#shoul correctly adjust for days inmonth
+
+ eia.us.cbm.ann=reproscir::read_data("eia.us.cbm.withdrawals.annual" ,data=T) %>%
+    dplyr::rename(cbm=us)   ,
   
-  eia.us.cbm.ann=reproscir::read_data("eia.us.cbm.withdrawals.annual" ,data=T) %>%
-    dplyr::rename(cbm=US, date=date) %>%
-    dplyr::mutate( date=as.Date(date)) ,
-  
-  eia.us.ng.mon=reproscir::read_data("eia.us.ng.withdrawals.month", data=T )[,c(2,3)]%>% 
-    dplyr::rename(us.gas=us) %>%
-    dplyr::mutate(us.gas=us.gas, date=as.Date(date)) ,#shoul correctly adjust for days inmonth
+  eia.us.ng.mon=reproscir::read_data("eia.us.ng.withdrawals.month", data=T )[,c(1,2)]%>% 
+    dplyr::mutate(us.gas=us ) ,#shoul correctly adjust for days inmonth
   
   eia.us.ng.ann=reproscir::read_data("eia.us.ng.withdrawals.annual", data=T),
   
@@ -25,9 +22,8 @@ reproplan = drake::drake_plan(
                     as.Date("%d-%b-%y"), prb.cbm = prb.cbm/1e3*30 ,  # MCF/DAY -> MMCF/MONTH
                   Cum.Water.Bbls = cumsum(as.numeric(Total.Water.Bbls))),
 
-    us.cbm.data =read_data("eia.us.cbm.annual", data=T) %>% 
-    dplyr::rename(date= Date)%>% 
-    dplyr::mutate(cbm= US*1e9/tj2cf/365, date=as.Date(date))  ,
+  us.cbm.data =read_data("eia.us.cbm.annual", data=T) %>% 
+    dplyr::mutate(cbm= us*1e9/tj2cf/365)  ,
   
   roma.daily.data = reproscir::download_gasbb() %>%
     reproscir::read_gasbb( ) %>%  
@@ -50,13 +46,13 @@ reproplan = drake::drake_plan(
                                    dplyr::rename(date=gasdate, val=actualquantity)%>% 
                                    dplyr::mutate(region="Roma, Qld"),
                                  us.cbm.data[, c(1,2)] %>% 
-                                   dplyr::rename(val=US) %>% 
+                                   dplyr::rename(val=us) %>% 
                                    dplyr::mutate( val=val*1e6*1e3/tj2cf/365,region="US Total"), 
                                  # data.frame(date= us.cbm.data$date, 
                                  #            val=rowSums(us.cbm.data[, c("Wyoming")] ,na.rm=TRUE)*1e6*1e3/tj2cf/365, 
                                  #            region="Wyoming"),
                                  data.frame(date= us.cbm.data$date, 
-                                            val=rowSums(us.cbm.data[, c("New.Mexico","Colorado","Utah")] ,na.rm=TRUE)*1e6*1e3/tj2cf/365, 
+                                            val=rowSums(us.cbm.data[, c("new.mexico","colorado","utah")] ,na.rm=TRUE)*1e6*1e3/tj2cf/365, 
                                             region="New Mexico, Colarado, Utah")),
   
   #merged.data =merge(x,y)
