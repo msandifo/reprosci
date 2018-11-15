@@ -16,17 +16,19 @@ source('./src/plan.R')
 source('./src/downloads.R')
 ```
 
-##  Desription
+##  Australian energy emissions and consumption snapshots
 
-Reprosci 010 has no description as yet.
-
+Including demand for electricty in the NEM (Austrlaian east coast electricity market supplying around ~80% of Australians)
 
 ## Data Sources
 
-*  to be added
+* AEMO
+* BP Statistical Review of World Energy
+* ...
 
 ##  Caveats
 
+* AEMO emsiisons are preprocessed applying a correction factor of +2.5% applied to recorded valeus prior to 2105. following a change in methodology reported here)
 
 ## Code
 
@@ -55,7 +57,7 @@ Details of the steps invoked by ```drake.R``` are summarised below.
 * `source('./src/plan.R')` defines the drake plan ```reproplan```
 * `source('./src/ouputs.R')` potsprocessing output functions
 
-The dependency structure of the reprplan is obtained by procesing as follows
+The dependency structure of the reproplan is obtained by processing as follows
 ```{r drake_plan, echo=TRUE, cache=F}
 source('./src/settings.R')
 source('./src/theme.R')
@@ -72,7 +74,7 @@ drake::render_drake_graph(graph, file='figs/rmd_render_drake.png')
 
 Note that ```reproplan``` processes the files downloaded  by ```./src/downloads.R```, returning ```merged.data```
 ```{r  cache=FALSE}
-print(head(readd(merged.data)))
+#print(head(readd(merged.data)))
 
 ```
 
@@ -85,8 +87,20 @@ p010<-drake::readd(p010)
 
  ```
 
- <img src='./figs/p010_01.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+<img src='./figs/p010_01.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
+<img src='./figs/p010_01a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+   
+<img src='./figs/p010_02.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+  
+   
+   Australian gas consumption is rising  becaus eof LNG production, with  around 8-12% of new production is "consumed" in liquefaction etc. For every 1 tonne of LNG exported that adds about 0.3 tonnes to domestic emissions (molecular weight of CO2=44, CH4=16)
+ 
+<img src='./figs/p010_03.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+ 
+   With BP estimating LNG exports at  75.9 bcm (= 55 million tonnes),  that gives yields a total of 17 million tinnes CO2 emissions, with an increase  of 12 million tonnes over 2005 levels.
+
+ <img src='./figs/p010_04.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 ## Code Notes
 

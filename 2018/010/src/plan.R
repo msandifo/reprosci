@@ -23,12 +23,16 @@ reproplan = drake::drake_plan(
     dplyr::summarise(total=mean(te), date=mean(date), total.corrected=mean(co*te)) %>%
     tidyr::gather(n, te, -date, -year),
   
+  
   nem.year.te.2005 = nem.year$te[nem.year$year=="2005" &nem.year$n=="total.corrected" ],
-  
- # nem.year.te.2005 = nem.year$te[nem.year$year=="2005"],
-  
+  #gas.con.mtoe = reproscir::BP_all(verbose=F, sheet=27, countries="Australia", years=1969:2017 , units="Tonnes", data=T ),
+   # nem.year.te.2005 = nem.year$te[nem.year$year=="2005"],
+  gas.con = reproscir::BP_all(verbose=F, sheet=25, countries="Australia", years=1969:2017 , units="bcm", data=T ),
+  gas.prod = reproscir::BP_all(verbose=F, sheet=22, countries="Australia", years=1969:2017 , units="bcm", data=T ),
+
+    
 #rint(nem.year.te.2005),
   #merged.data =merge(x,y)
-  p010 = plots( nem.month  )
+  p010 = plots( nem.month ,nem.year, gas.con, gas.prod  )
 
 )
