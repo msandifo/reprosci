@@ -111,12 +111,14 @@ CH4=16)
 \#<img src='./figs/p010_03a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 With BP estimating LNG exports at 75.9 bcm (= 55 million tonnes), that
-gives yields a total of 17 million tinnes CO2 emissions, with an
+gives yields a total of 17 million tonnes CO2 emissions, with an
 increase of 12 million tonnes over 2005
 levels.
 
 <img src='./figs/p010_04.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 <img src='./figs/p010_05.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+<img src='./figs/p010_06.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+<img src='./figs/p010_07.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 ## Code Notes
 
