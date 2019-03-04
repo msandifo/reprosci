@@ -2,23 +2,29 @@ library(ggplot2)
 # --------------------
 # ggplot routines
 #---------------------
-plots <- function(nem.month , nem.year,gas.con, gas.prod, gas.con.t, oil.con , coal.con, emissions) {
+plots <- function(nem.month , nem.quarter, nem.year, gas.con, gas.prod, gas.con.t, oil.con , coal.con, emissions) {
 
     nem.2005 = nem.month %>%
      subset(year==2005 & n=="total.corrected")  %>%
     dplyr::summarise(te=mean(te), date=mean(date))
   
-      nem.2017 = nem.month %>%
+    nem.q.2005 = nem.quarter %>%
+      subset(year==2005 & n=="total.corrected")  %>%
+      dplyr::summarise(te=mean(te), date=mean(date))
+    
+    nem.2017 = nem.month %>%
       subset(year==2017 & n=="total.corrected")  %>%
       dplyr::summarise(te=mean(te), date=mean(date))
     
     nem.diff  <-(nem.2005$te-nem.2017$te)*365/1e6
     nem.year$diffs  <-(nem.2005$te-nem.year$te)*365/1e6
-    print(nem.year$diffs)
+  #  print(nem.year$diffs)
     my.cols =c( "grey40","firebrick4" )
     
-  
+   gas.con.2005 = gas.con$value[gas.con$year==2005]  
+    
   my.cols =c( "grey50","firebrick3" )
+  my.cols4 =c(  "grey50",  "green4" ,"brown","firebrick2")
   my.sizes= c(.2,.3 )
   my.linetypes=c(2,1)
   
@@ -61,7 +67,8 @@ plots <- function(nem.month , nem.year,gas.con, gas.prod, gas.con.t, oil.con , c
  #(nem.year.te.2005-nem.year.te.2017)*365/1e6
  
  
- p01b <- ggplot(nem.year %>% subset(year>2000 & n=="total.corrected"), aes(year, (te- nem.year.te.2005)*365/1e6, col=time, fill=time))+
+ p01b <- ggplot(nem.year %>% subset(year>2000 & year<2019 & n=="total.corrected"), 
+                aes(year, (te- nem.year.te.2005)*365/1e6, col=time, fill=time))+
    #  geom_smooth( data=nem.year %>% subset(year>2007 & n=="total.corrected"), se=T, method="lm", size=.2,   alpha=.1 ) +
    # geom_smooth( data=nem.year %>% subset(year<=2008 & n=="total.corrected"), se=T, method="lm", size=.2,   alpha=.1 ) +
    #  geom_smooth( data= oil.con %>% subset(year>1980 & year<2005), se=T, colour="white", fill="grey50", size=.2, method="lm", alpha=.3) +
@@ -87,7 +94,39 @@ plots <- function(nem.month , nem.year,gas.con, gas.prod, gas.con.t, oil.con , c
         caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
    theme(legend.position="None")
  
+# print(tail(nem.quarter))
   
+ 
+ nem.quarter$quarter<- factor(nem.quarter$quarter)
+ p01c <- ggplot(nem.quarter %>% subset(year>2000 & year<2019 & n=="total.corrected"), 
+                aes(lubridate::decimal_date(date), te /1e6 , col=quarter, shape=quarter))+
+   #  geom_smooth( data=nem.year %>% subset(year>2007 & n=="total.corrected"), se=T, method="lm", size=.2,   alpha=.1 ) +
+   # geom_smooth( data=nem.year %>% subset(year<=2008 & n=="total.corrected"), se=T, method="lm", size=.2,   alpha=.1 ) +
+   #  geom_smooth( data= oil.con %>% subset(year>1980 & year<2005), se=T, colour="white", fill="grey50", size=.2, method="lm", alpha=.3) +
+   # geom_smooth( data= oil.con %>% subset(year> 2004), se=T, colour="white", fill="darksalmon", size=.2, method="lm", alpha=.3) +
+   geom_line(size=.3 ) +
+   geom_point(colour="white", size=2 ) +
+   geom_point(size=1.5)  +
+   # annotate("text", x=1995, y=8, label= "oil consumption added\n ", size=6, col="red3")+
+   # annotate("text", x=2016, y=-5, label= paste("electrical power system\n CO2-e emissions reduced by \n~", 
+   #                                             signif((nem.year.te.2005 -nem.year.te.2017)*365/1e6,2) ,"million tonnes \n in 2017  cf. 2005*"), 
+   #          fontface =3, size=4, col=my.cols[2])+
+   # annotate("text", x=2004, y=-25, label= "*due to both decarbonisation and demand destruction", fontface=3, size=2.5, col="grey70")+
+   
+   #  scale_y_continuous(labels=scales::percent_format(accuracy = 1))+
+  # geom_hline(yintercept = 0,  size=.25 ,linetype=2)+
+   # annotate("text", x=2016.7, y=.4, label= "2005 level", size=3)+
+   # annotate("text", x=1989, y=-4, label= paste0(oil.growth.rate[1], "% p.a."), size=4, col=my.cols[1])+
+   # annotate("text", x=2013, y=5, label= paste0(oil.growth.rate[2], "% p.a."), size=4, col=my.cols[2])+
+   scale_colour_manual(values=rev(my.cols4))+
+   scale_fill_manual(values=rev(my.cols4))+
+   labs(y="million tonnes Co2-e per quarter, NEM", x=NULL, 
+        subtitle="A ministerial energy primer #1\nNEM emissions by quarter, AEMO",
+        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
+   theme(legend.position=c(.85,.85))
+ 
+ ( p01c )
+ 
 p02<- ggplot(nem.month, aes(date, te/nem.2005$te, col=n, size=n, linetype=n))+
   geom_smooth(data=nem.month %>% subset(n=="total.corrected") %>% dplyr::ungroup() %>%dplyr::mutate(year=factor(year)),
               aes(group=year), size=1,method="lm", formula=y~1, colour=  my.col, show.legend = F, se=F)+
@@ -289,5 +328,5 @@ p07<- ggplot(emissions %>% subset(year>1980), aes(year, value- emissions.2005, c
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   theme(legend.position="None")
 
-return (list(p1=p01,p1a=p01a,  p1b=p01b, p2=p02, p3=p03 , p3a=p03a , p4=p04 ,p5=p05, p6=p06, p7=p07))
+return (list(p1=p01,p1a=p01a,  p1b=p01b, p1c= p01c , p2=p02, p3=p03 , p3a=p03a , p4=p04 ,p5=p05, p6=p06, p7=p07))
 }

@@ -1,7 +1,7 @@
 #--------
 #drake plan
 #------
-load("./data/aemo.CO2EII.RDATA")
+load("./data/aemo.CO2EII.RDATA")  # need to amke this updatable.
 
 pkgconfig::set_config('drake::strings_in_dots' = 'literals')
 reproplan = drake::drake_plan(
@@ -11,12 +11,17 @@ reproplan = drake::drake_plan(
   nem = CO2EII %>%
     subset(REGIONID=="NEM") %>%
     dplyr::rename(te="TOTAL_EMISSIONS", date="SETTLEMENTDATE", co="CORRECTION") %>%
-    dplyr::mutate(year=lubridate::year(date), month=lubridate::month(date)),
+    dplyr::mutate(year=lubridate::year(date), month=lubridate::month(date), quarter=lubridate::quarter(date)),
   
   nem.month = nem %>%
     dplyr::group_by(year, month) %>%
     dplyr::summarise(total=mean(te), date=mean(date), total.corrected=mean(co*te)) %>%
     tidyr::gather(n, te, -date, -year, -month),
+  
+  nem.quarter = nem %>%
+    dplyr::group_by(year, quarter) %>%
+    dplyr::summarise(total=sum(te), date=mean(date), total.corrected=sum(co*te)) %>%
+    tidyr::gather(n, te, -date, -year, -quarter),
   
   nem.year = nem %>%
     dplyr::group_by(year ) %>%
@@ -25,7 +30,7 @@ reproplan = drake::drake_plan(
     dplyr::mutate(time= dplyr::case_when(year < 2005 ~ "low", year >=2005~ "high")),
   
   
-  nem.year.te.2005 = nem.year$te[nem.year$year=="2005" &nem.year$n=="total.corrected" ],
+ # nem.year.te.2005 = nem.year$te[nem.year$year=="2005" &nem.year$n=="total.corrected" ],
   #gas.con.mtoe = reproscir::BP_all(verbose=F, sheet=27, countries="Australia", years=1969:2017 , units="Tonnes", data=T ),
    # nem.year.te.2005 = nem.year$te[nem.year$year=="2005"],
   gas.con = reproscir::BP_all(verbose=F, sheet=25, countries="Australia", years=1969:2017 , units="bcm", data=T ),
@@ -44,6 +49,6 @@ reproplan = drake::drake_plan(
    
 #rint(nem.year.te.2005),
   #merged.data =merge(x,y)
-  p010 = plots( nem.month ,nem.year, gas.con, gas.prod , gas.con.t, oil.con, coal.con, emissions )
+  p010 = plots( nem.month ,nem.quarter, nem.year, gas.con, gas.prod , gas.con.t, oil.con, coal.con, emissions )
 
 )

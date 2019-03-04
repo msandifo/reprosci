@@ -1,7 +1,7 @@
 005
 ================
 
-## Norway v Australia
+## Norway v Australia - structural budget balances
 
 Norway and Australia are both major exporters of fossil fuels. Since the
 early 90’s Australian fossil energy exports have increased 270% measured
@@ -26,6 +26,9 @@ countries. Key points:
     equivalent terms) since 1990, Australia has accrued very significant
     structural deficit accumulating an interest bill of around US$12
     billion per year.
+
+The analysis here is also rleevant to Australian political narraitives
+concerning budget repair, as indicated by the last sequence of images.
 
 ## Data Sources
 
@@ -156,6 +159,12 @@ p005<-drake::readd(p005)
 <img src="./figs/p005_07.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
 ## On Australian government “Budget Repair”
+
+“Budget repeair”" is part of the Coalition governments narrative as it
+prepares for re-election in 2019. These figures provide some background.
+Note the budget balances are expressed here in Australian dollar terms,
+and not US dollars shown in the
+previous
 
 <img src="./figs/p005_08.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 

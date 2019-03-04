@@ -26,7 +26,7 @@ net  <-merged.data %>%
   dplyr::summarise(total=tail(GGXCNL.cum*US.exchange,1), per.cap = tail(GGXCNL.cum*US.exchange/LP,1))
 ```
 
-##  Norway v Australia
+##  Norway v Australia - structural budget balances
 
 Norway and Australia are both major exporters of fossil fuels. Since the early 90's Australian fossil energy exports have increased `r paste0(signif(perc.increases[1,2], 2), "%")` measured on an energy basis,  whereas Norway has increased by `r paste0(signif(perc.increases[2,2], 2), "%")`. Despite this, the structural budget balances of the two countries have diverged dramatically since the early 1990's, in favour of Norway. Factors include 
 
@@ -38,7 +38,7 @@ The analysis here uses open-sourced data  to illustrate how  energy exports and 
 
 * Despite the  `r paste0(signif(perc.increases[1,2], 2), "%")` increase in fossil fuel exports (in energy equivalent terms)  since 1990, Australia  has accrued very significant structural deficit accumulating an interest bill of around US$12 billion per year.
 
-
+The analysis here is also rleevant to Australian political narraitives concerning budget repair, as indicated by the last sequence of images.
 
 ## Data Sources
 
@@ -116,6 +116,9 @@ p005<-drake::readd(p005)
 <img src="./figs/p005_07.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
  
 ## On Australian government "Budget Repair"  
+   
+ "Budget repeair"" is part  of the  Coalition  governments narrative as it prepares for re-election in 2019.  These figures provide some background.
+   Note the budget balances are expressed here in Australian dollar terms, and not US dollars shown in the previous 
    
    <img src="./figs/p005_08.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 

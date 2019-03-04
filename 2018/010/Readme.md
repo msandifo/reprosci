@@ -100,7 +100,9 @@ p010<-drake::readd(p010)
 
 <img src='./figs/p010_01b.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
-<img src='./figs/p010_02.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+<img src='./figs/p010_01c.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+
+    <img src='./figs/p010_02.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 Australian gas consumption is rising becaus eof LNG production, with
 around 8-12% of new production is “consumed” in liquefaction etc. For

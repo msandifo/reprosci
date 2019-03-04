@@ -1,5 +1,5 @@
 
-    full.repro=T
+    full.repro=F
 
     source('./src/settings.R')
     source('./src/packages.R')
