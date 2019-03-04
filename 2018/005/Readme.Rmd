@@ -115,7 +115,7 @@ p005<-drake::readd(p005)
 <img src="./figs/p005_06.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 <img src="./figs/p005_07.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
  
-## On Australian governemnt "Budget Repair"  
+## On Australian government "Budget Repair"  
    
    <img src="./figs/p005_08.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
