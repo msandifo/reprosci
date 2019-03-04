@@ -5,7 +5,7 @@
 
 Norway and Australia are both major exporters of fossil fuels. Since the
 early 90’s Australian fossil energy exports have increased 270% measured
-on an energy basis, whereas Norway has increased by 97%. Despite this,
+on an energy basis, whereas Norway has increased by 92%. Despite this,
 the structural budget balances of the two countries have diverged
 dramatically since the early 1990’s, in favour of Norway. Factors
 include
@@ -134,7 +134,7 @@ Note that `reproplan` processes the files downloaded by
     ## 4  1993 Austr…  17.7       0.680 -21.5      -54.6    -13.2       -23.0 
     ## 5  1994 Austr…  17.9       0.732 -18.3      -72.9     -8.61      -31.6 
     ## 6  1995 Austr…  18.1       0.741 -13.3      -86.2     -2.55      -34.1 
-    ## # ... with 2 more variables: ff.cons.mtoe <dbl>, ff.prod.mtoe <dbl>
+    ## # … with 2 more variables: ff.cons.mtoe <dbl>, ff.prod.mtoe <dbl>
 
   - `source(drake::make( reproplan ))`
 
@@ -154,6 +154,12 @@ p005<-drake::readd(p005)
 <img src="./figs/p005_05.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 <img src="./figs/p005_06.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 <img src="./figs/p005_07.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+
+## On Australian governemnt “Budget Repair”
+
+<img src="./figs/p005_08.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+
+<img src="./figs/p005_09.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
 ## Code Notes
 
