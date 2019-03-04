@@ -2,7 +2,7 @@ library(ggplot2)
 # --------------------
 # ggplot routines
 #---------------------
-plots <- function(m.data) {
+plots <- function(m.data, i.data) {
 
   
   reproscir::theme_twitter()
@@ -54,5 +54,47 @@ plots <- function(m.data) {
     theme(legend.position = c(.2,.9), legend.title = element_blank())
   
   
-return (list(p1=p01,p2=p02,p3=p03,p4=p04,p4=p04,p5=p05,p6=p06,p7=p07 ))
+  imf.data.aus =   subset( i.data,countries == "Australia"  )
+  
+  imf.data.aus$gov = "Labor"
+  imf.data.aus$gov[imf.data.aus$year>1996] = "Coalition"
+  imf.data.aus$gov[imf.data.aus$year>2007] = "Labor"
+  imf.data.aus$gov[imf.data.aus$year>2013] = "Coalition"
+  imf.data.aus$p = "1"
+  imf.data.aus$p[imf.data.aus$year>1996] = "2"
+  imf.data.aus$p[imf.data.aus$year>2007] = "3"
+  imf.data.aus$p[imf.data.aus$year>2013] = "4"
+  
+  print(imf.data.aus)
+  
+  p08 =  ggplot(imf.data.aus, aes(year+.5, GGXCNL.cum  , group=p, col=gov, fill=gov, shape=gov))+
+    geom_vline(xintercept = c( 1991.9, 2008.8), col="grey30", linetype=2, size=.3)+
+    geom_smooth( method = "loess", size=0.5, se=F)+
+    geom_point(colour="white", size=3.5)+
+    geom_point(size=2.5)+
+    scale_color_manual(values=c("blue3","firebrick2"))+
+    labs(y= "Cumulative net government lending/borrowing, GGXCNL\nA$'billions", x=NULL,         
+         caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")+
+    theme(legend.position = c(.3,.2), legend.title = element_blank())
+   
+  
+  imf.data.diff.aus = tail(imf.data.aus,-1)
+  imf.data.diff.aus$GGXCNL.cum =  diff(imf.data.aus$GGXCNL.cum ) 
+  
+  
+  
+  p09 = ggplot(imf.data.diff.aus %>% head(-1), aes(year+.5, GGXCNL.cum, group=p, col=gov, fill=gov, shape=gov))+
+    geom_smooth( method = "loess", size=0.5, se=F, span=.52)+
+    geom_vline(xintercept = c( 1991.9, 2008.8), col="grey30", linetype=2, size=.3)+
+    geom_smooth( method = "lm", formula = y~1,size=1.5, se=F, level=.2 , show.legend = F)+
+    geom_point(colour="white", size=3.5)+
+    geom_point(size=2.5)+
+    scale_color_manual(values=c("blue3","firebrick2"))+
+    labs(y= "Change in  net government lending/borrowing\nA$'billions", x=NULL,         
+         caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")+
+    theme(legend.position = c(.3,.2), legend.title = element_blank())
+  
+  
+  
+return (list(p1=p01,p2=p02,p3=p03,p4=p04,p4=p04,p5=p05,p6=p06,p7=p07,p8=p08,p9=p09 ))
 }

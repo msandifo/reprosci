@@ -92,7 +92,8 @@ ggplot(emissions %>% subset(year>1980), aes(year, value- emissions.2005, col=tim
   
   #  scale_y_continuous(labels=scales::percent_format(accuracy = 1))+
   geom_hline(yintercept = 0,  size=.25 ,linetype=2)+
-  # annotate("text", x=2016.7, y=.4, label= "2005 level", size=3)+
+  geom_hline(yintercept = -emissions.2005*.26,  size=.25 ,linetype=2, colour="red")+
+  annotate("text", x=2014, y=-emissions.2005*.26+3, label= "26% below 2005 levels", size=3)+
   annotate("text", x=1989, y=-80, label= paste0(coal.growth.rate[1], "% p.a."), size=4, col=my.cols[1])+
   annotate("text", x=2012, y=40, label= paste0(coal.growth.rate[2], "% p.a."), size=4, col=my.cols[2])+
   scale_colour_manual(values=rev(my.cols))+

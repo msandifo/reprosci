@@ -87,6 +87,31 @@ plots <- function(cg.ch4,
           axis.title.y= element_text(  color = "firebrick2"),
           axis.text.y= element_text(  color = "firebrick2"),                   
           axis.title.y.right= element_text(angle = -90,   color = "royalblue4"))
+  
+  p03a<-ggplot(cg.us %>% subset(cdate<dmy("01-11-2000") & !is.na(date)) , 
+              aes(date, trend.grad, colour=source))+
+    geom_smooth(span=.165, se=T, size=0, alpha=.5,   aes(  fill=source), show.legend = F)+
+    geom_line(size=.1) +
+    geom_point(size=.7, colour="white") +
+    geom_point(size=.5) +
+    theme(legend.position=c(.2,.925))+
+    guides(  colour = guide_legend( title = NULL))+
+    scale_colour_manual(values =c("royalblue4","firebrick2"))+
+    scale_fill_manual(values =c("royalblue4","firebrick2"))+
+    scale_y_continuous(labels = signif_scale, 
+                       sec.axis = sec_axis(~./10,  
+                                           "Cape Grim CH4 growth rate\ndeseasonalised and annualised", 
+                                           labels = signif_scale))+
+    labs(title=NULL,
+         subtitle= "the methane enigma #3",
+         x=NULL,          
+         caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/007",
+         y ="US natural gas production growth rate\ndeseasonalised and annualised")+
+    theme(axis.text.y.right = element_text(color = "royalblue4"),
+          axis.title.y= element_text(  color = "firebrick2"),
+          axis.text.y= element_text(  color = "firebrick2"),                   
+          axis.title.y.right= element_text(angle = -90,   color = "royalblue4"))
+  
            
   p04= ggplot(m.data , 
               aes(trend.grad.x, trend.grad.y, colour=grouping,label=range, fill=grouping))+
@@ -111,7 +136,7 @@ plots <- function(cg.ch4,
                colour="royalblue4",
                size=5, 
                hjust=0 )+
-    coord_cartesian(ylim=c(-1,9))
+    coord_cartesian(ylim=c(-1,11))
   
-return (list(p1=p01, p1a=p01a, p2=p02 ,p2a=p02a, p3=p03, p4=p04))
+return (list(p1=p01, p1a=p01a, p2=p02 ,p2a=p02a, p3=p03, p3a=p03a, p4=p04))
 }

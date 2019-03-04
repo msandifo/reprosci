@@ -7,7 +7,7 @@ always_allow_html: yes
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE,  message=FALSE, warning=FALSE)
 drake.path<-'~/Dropbox/msandifo/documents/programming/r/twitter/2018/007/'
-full.repro<-F
+full.repro<-T
 library(reproscir)
 source('./src/settings.R')
 source('./src/theme.R')

@@ -16,16 +16,13 @@ reproplan = drake::drake_plan(
     dplyr::mutate(year=as.numeric(year))%>%
     tidyr::spread( measure, value  ) %>% 
     dplyr::arrange(region, year) %>%
-    subset(year>1989 & year<2018) %>%
+    subset(year>1989 & year<= 2019) %>%
     dplyr::group_by(region ) %>%
     # dplyr::mutate(GGR.cum=cumsum(GGR), GGX.cum=cumsum(GGX),GGXCNL.cum=cumsum(GGXCNL))
     dplyr::mutate( US.exchange=NGDPDPC/NGDPPC,GGXCNL.cum=cumsum(GGXCNL), GGXONLB.cum=cumsum(GGXONLB)) %>%
     dplyr::select(year, region,LP,US.exchange,GGXCNL, GGXCNL.cum, GGXONLB, GGXONLB.cum),
   
-  
-  
-  
-  
+   
   ##------------
   
   ff.prod.sheets =rbind(reproscir::BP_sheets(search=c(    "oil", "prod", "tonne"), and=T),
@@ -44,6 +41,6 @@ reproplan = drake::drake_plan(
   
   merged.data = dplyr::inner_join(imf.data, bp.cons.data ) %>% dplyr::inner_join(bp.prod.data),
   #merged.data =merge(x,y)
-  p005= plots( merged.data )
+  p005= plots( merged.data ,   imf.data)
 
 )

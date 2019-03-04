@@ -1,4 +1,4 @@
-downloads=F
+downloads=T
     full.repro=T
 
     source('./src/settings.R')

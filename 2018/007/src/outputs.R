@@ -2,6 +2,8 @@ p007<-drake::readd(p007)
 ggsave('./figs/p007_01.png',  p007$p1 ,width=8, height=5)
 ggsave('./figs/p007_02.png',  p007$p2 ,width=8, height=5)
 ggsave('./figs/p007_03.png',  p007$p3 ,width=8, height=5)
+ggsave('./figs/p007_03a.png',  p007$p3a ,width=8, height=5)
+
 ggsave('./figs/p007_04.png',  p007$p4 ,width=8, height=5)
 ggsave('./figs/p007_01a.png',  p007$p1a ,width=8, height=5)
 ggsave('./figs/p007_02a.png',  p007$p2a ,width=8, height=5)
