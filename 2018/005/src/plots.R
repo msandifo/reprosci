@@ -6,14 +6,18 @@ plots <- function(m.data, i.data) {
 
   
   reproscir::theme_twitter()
+  l.cols<- c("blue3","firebrick2")
+  
   p01 <- ggplot(merged.data, aes(year, ff.prod.mtoe - ff.cons.mtoe , colour=region ))+
     geom_line()+
+    scale_color_manual(values=l.cols)+
     labs(y= "annual fossil export\nmtoe", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.2,.9), legend.title = element_blank())
   
   p02 <-ggplot(merged.data, aes(year, (ff.prod.mtoe - ff.cons.mtoe)/LP  , colour=region ))+
     geom_line()+
+    scale_color_manual(values=l.cols)+
     labs(y= " fossil export\nmtoe per capita", x=NULL,
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.1,.9), legend.title = element_blank())
@@ -27,6 +31,7 @@ plots <- function(m.data, i.data) {
   
   p04 <- ggplot(merged.data, aes(year, (GGXONLB-GGXCNL)*US.exchange  , colour=region ))+
     geom_line()+
+    scale_color_manual(values=l.cols)+
     labs(y= "interest payable/paid GGXONLB-GGXCNL, 1990+\nUS$'billions", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.2,.9), legend.title = element_blank())+
@@ -35,6 +40,7 @@ plots <- function(m.data, i.data) {
   
   p05 <-ggplot(merged.data, aes(year, GGXCNL.cum*US.exchange , colour=region ))+
     geom_line()+
+    scale_color_manual(values=l.cols)+
     labs(y= "Cumulative net lending/borrowing, GGXCNL, 1990+\nUS$'billions", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.2,.9), legend.title = element_blank())
@@ -42,6 +48,7 @@ plots <- function(m.data, i.data) {
   
   p06 <-ggplot(merged.data, aes(year, GGXCNL.cum*US.exchange/LP, colour=region ))+
     geom_line()+
+    scale_color_manual(values=l.cols)+
     labs(y= "Cumulative per.capita net revenue balance, GGXCNL, 1990+\nUS$'000s", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.2,.9), legend.title = element_blank())
@@ -49,6 +56,7 @@ plots <- function(m.data, i.data) {
   
   p07 <- ggplot(merged.data, aes(year, US.exchange , colour=region ))+
     geom_line()+
+    scale_color_manual(values=l.cols)+
     labs(y= " local currency - US$ exchange", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.2,.9), legend.title = element_blank())
@@ -74,7 +82,7 @@ plots <- function(m.data, i.data) {
     geom_smooth( method = "loess", size=0.35, se=F)+
     geom_point(colour="white", size=2.5)+
     geom_point(size=1.5)+
-    scale_color_manual(values=c("blue3","firebrick2"))+
+    scale_color_manual(values=l.cols)+
     labs(subtitle = "budget repair, #01",
          y= "Cumulative net Aus. gov. lending/borrowing, GGXCNL\nA$'billions", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
@@ -91,7 +99,7 @@ plots <- function(m.data, i.data) {
     geom_smooth( method = "lm", formula = y~1,size=1., se=F, level=.2 , show.legend = F)+
     geom_point(colour="white", size=2.5)+
     geom_point(size=1.5)+
-    scale_color_manual(values=c("blue3","firebrick2"))+
+    scale_color_manual(values=l.cols)+
     labs(subtitle = "budget repair, #02" ,
          y= "Change in  net Aus. gov. lending/borrowing\nA$'billions", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+

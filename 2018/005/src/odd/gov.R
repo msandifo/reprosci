@@ -29,9 +29,9 @@ ggplot(imf.data, aes(year+.5, GGXCNL.cum  , group=p, col=gov, fill=gov, shape=go
   geom_vline(xintercept = c( 1991.9, 2008.8), col="grey30", linetype=2, size=.3)+
   geom_smooth( method = "loess", size=0.5, se=F)+
   geom_point(colour="white", size=3.5)+
-  geom_point(size=2)+
+  geom_point(size=2.5)+
   scale_color_manual(values=c("blue3","firebrick2"))+
-  labs(y= "Cumulative net lending/borrowing, GGXCNL, 1990+\nA$'billions", x=NULL,         
+  labs(y= "Cumulative net government lending/borrowing, GGXCNL\nA$'billions", x=NULL,         
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")+
   theme(legend.position = c(.3,.2), legend.title = element_blank())
 ggsave("~/Desktop/gov.png", width=8,height=5 )
@@ -45,11 +45,11 @@ imf.data.diff$GGXCNL.cum = diff(imf.data$GGXCNL.cum )
 ggplot(imf.data.diff %>% head(-1), aes(year+.5, GGXCNL.cum, group=p, col=gov, fill=gov, shape=gov))+
   geom_smooth( method = "loess", size=0.5, se=F, span=.52)+
   geom_vline(xintercept = c( 1991.9, 2008.8), col="grey30", linetype=2, size=.3)+
-  geom_smooth( method = "lm", formula = y~1,size=1.5, se=F, level=.2 )+
-  geom_point(colour="white", size=4.5)+
-  geom_point(size=3)+
+  geom_smooth( method = "lm", formula = y~1,size=1.5, se=F, level=.2 , show.legend = F)+
+  geom_point(colour="white", size=3.5)+
+  geom_point(size=2.5)+
   scale_color_manual(values=c("blue3","firebrick2"))+
-  labs(y= "Change in  net lending/borrowing, GGXCNL, 1990+\nA$'billions", x=NULL,         
+  labs(y= "Change in  net government lending/borrowing\nA$'billions", x=NULL,         
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/004")+
   theme(legend.position = c(.3,.2), legend.title = element_blank())
 
