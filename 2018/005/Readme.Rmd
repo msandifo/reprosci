@@ -28,17 +28,17 @@ net  <-merged.data %>%
 
 ##  Norway v Australia - structural budget balances
 
-Norway and Australia are both major exporters of fossil fuels. Since the early 90's Australian fossil energy exports have increased `r paste0(signif(perc.increases[1,2], 2), "%")` measured on an energy basis,  whereas Norway has increased by `r paste0(signif(perc.increases[2,2], 2), "%")`. Despite this, the structural budget balances of the two countries have diverged dramatically since the early 1990's, in favour of Norway. Factors include 
+Norway and Australia are both major exporters of fossil fuels. Since the early 90's Australian fossil energy exports have increased `r paste0(signif(perc.increases[1,2], 2), "%")`  on a total energy  content basis,  whereas Norway has increased by `r paste0(signif(perc.increases[2,2], 2), "%")`. Despite this, the structural budget balances of the two countries have diverged dramatically, in favour of Norway. Factors include 
 
-* rather different commodity mixes (more oil and gas in Norway, more coal in Australia which increasingly relies on net oil imports) and , more importantly, 
+* rather different commodity mixes (more oil and gas in Norway, more coal in Australia which increasingly relies on net oil imports) and, more importantly, 
 
 * very different petroleum/mineral royalty and taxation regimes (see [Paul Cleary's _Trillion dollar baby_, BlackInc Books, 2016](https://www.blackincbooks.com.au/books/trillion-dollar-baby)).
 
-The analysis here uses open-sourced data  to illustrate how  energy exports and government financial balances have evolved in both countries. Key points:
+The analysis here uses open-sourced data (from IMF and BP) to illustrate how  energy exports and government financial balances have evolved in both countries. Key points:
 
 * Despite the  `r paste0(signif(perc.increases[1,2], 2), "%")` increase in fossil fuel exports (in energy equivalent terms)  since 1990, Australia  has accrued very significant structural deficit accumulating an interest bill of around US$12 billion per year.
 
-The analysis here is also rleevant to Australian political narraitives concerning budget repair, as indicated by the last sequence of images.
+The last sequence of images,  somewhat off topic, is relevant to the Australian political narratives concerning budget repair.
 
 ## Data Sources
 

@@ -25,6 +25,7 @@ plots <- function(m.data, i.data) {
   
   p03 <-ggplot(merged.data, aes(year, GGXCNL*US.exchange , colour=region ))+
     geom_line()+
+    scale_color_manual(values=l.cols)+
     labs(y= "net government revenue balance GGXCNL, 1990+\nUS$'billions", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.2,.9), legend.title = element_blank())
