@@ -2,7 +2,7 @@ library(ggplot2)
 # --------------------
 # ggplot routines
 #---------------------
-plots <- function(m.data, i.data) {
+plots <- function(merged.data, i.data) {
 
   
   reproscir::theme_twitter()

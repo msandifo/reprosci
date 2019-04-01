@@ -140,8 +140,7 @@ Note that `reproplan` processes the files downloaded by
 
   - `source(drake::make( reproplan ))`
 
-  - `source('./src/ouputs.R')` output charts to the `./figs` directory
-:
+  - `source('./src/ouputs.R')` output charts to the `./figs` directory :
 
 <!-- end list -->
 
@@ -159,11 +158,10 @@ p005<-drake::readd(p005)
 
 ## On Australian government “Budget Repair”
 
-“Budget repeair”" is part of the Coalition governments narrative as it
-prepares for re-election in 2019. These figures provide some background.
-Note the budget balances are expressed here in Australian dollar terms,
-and not US dollars shown in the
-previous
+“Budget repair” is part of the Coalition’s narrative as it prepares for
+re-election in 2019. These figures provide some background. Note the
+budget balances are expressed here in Australian dollar terms, rather
+than US dollars (as for the previous figures).
 
 <img src="./figs/p005_08.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
