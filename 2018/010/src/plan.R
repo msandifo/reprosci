@@ -47,8 +47,17 @@ reproplan = drake::drake_plan(
   emissions = reproscir::BP_all(verbose=F, sheet=57, countries="Australia", years=1969:2017 , units="mt", data=T ) %>% 
     dplyr::mutate(time= dplyr::case_when(year < 2005 ~ "low", year >=2005~ "high")),
    
+ ob  = merge(reproscir::BP_all(sheet =9, countries="Australia", drop=3)$data,
+            reproscir::BP_all(sheet =7, countries="Australia", drop=3)$data,
+            by =c("year", "region")) ,
+ oil.balance =ob%>%
+   dplyr::mutate(import =value.x-value.y) %>%
+   dplyr::rename(consumption=value.x, production=value.y) %>%
+   tidyr::pivot_longer(cols=c(consumption, production, import)),
+ 
+ 
 #rint(nem.year.te.2005),
   #merged.data =merge(x,y)
-  p010 = plots( nem.month ,nem.quarter, nem.year, gas.con, gas.prod , gas.con.t, oil.con, coal.con, emissions )
+  p010 = plots( nem.month ,nem.quarter, nem.year, gas.con, gas.prod , gas.con.t, oil.con, coal.con, emissions, ob, oil.balance )
 
 )

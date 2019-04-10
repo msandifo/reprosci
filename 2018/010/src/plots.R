@@ -2,7 +2,7 @@ library(ggplot2)
 # --------------------
 # ggplot routines
 #---------------------
-plots <- function(nem.month , nem.quarter, nem.year, gas.con, gas.prod, gas.con.t, oil.con , coal.con, emissions) {
+plots <- function(nem.month, nem.quarter, nem.year, gas.con, gas.prod, gas.con.t, oil.con , coal.con, emissions, ob, oil.balance) {
 
     nem.2005 = nem.month %>%
      subset(year==2005 & n=="total.corrected")  %>%
@@ -257,6 +257,42 @@ p05<-ggplot(oil.con %>% subset(year>1980), aes(year, value- oil.con.2005, col=ti
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   theme(legend.position="None")
 
+ob1 = tail(ob,1) # %>% tidyr::pivot_longer(cols=c(value.x, value.y))
+ob.p =  round((ob1$value.x-ob1$value.y)/ob1$value.x * 100, 0)
+
+model.prod <- lm(  value~ year, data=oil.balance %>% subset(name == "production" & year>=2000) )
+model.cons<- lm(  value ~year,  data=oil.balance %>% subset(name == "consumption" & year>=2000) )
+xseq <- 2000:2033
+pred.prod  <- model.prod$coefficients[1] + xseq*model.prod$coefficients[2]
+pred.prod[pred.prod<0]<-0
+pred.cons  <- model.cons$coefficients[1] + xseq*model.cons$coefficients[2]
+pred <- data.frame(year=xseq, consumption=pred.cons, production=pred.prod) %>% tidyr::pivot_longer(cols=c(consumption, production))
+
+p05a<-ggplot(oil.balance %>% subset(name != "import"), aes(year,value, col=name))+
+  geom_line(data=pred, linetype=2)+
+  geom_point(data= pred %>%subset(year==2030), col="white", size=2.5 ) +
+  geom_point(data= pred%>%subset(year==2030), size=2. ) +
+  
+  geom_line(size=1., aes(group=name), colour="white") +
+  geom_line(size=.5) +
+  geom_point(data= oil.balance %>% subset(name != "import" & year==2017), col="white", size=2.5 ) +
+  geom_point(data= oil.balance %>% subset(name != "import" & year==2017), size=2. ) +
+  labs(x=NULL, y="million tonnes per year",
+       subtitle= "A ministerial energy primer #5a\nAustralian oil production/consumption trends, BP Statistical Review 2018",
+       caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
+  theme(legend.position = c(.15,.83), legend.title = element_blank() )+
+  # geom_segment(data=ob1, aes(xend=year, y=value.x-1, yend= value.y+1), col="red2", linetype=1, size=.23,
+  #              arrow = arrow(length = unit(0.04, "npc")))+
+  # geom_segment(data=ob1, aes(xend=year, y=value.y+1, yend= value.x-1), col="red2", linetype=1, size=.23,
+  #              arrow = arrow(length = unit(0.04, "npc")))+
+  # geom_segment(data=ob1, aes(xend=year, yend=value.y-1, y= 0), col="blue1", linetype=1, size=.23,
+  #              arrow = arrow(length = unit(0.04, "npc")))+
+  annotate("text", x= 2017, y=34, label= paste0("2017\n net oil imports\n~ ", ob.p, "%"), col="red3", size=3.2)+
+  annotate("text", x= 2030, y=34, label= paste0("2030 (trend)\nnet oil imports\n~ ", "100", "%"), col="grey20", size=3.2)+
+  # stat_smooth(data=oil.balance %>% subset(name != "import" & year>1999), method="lm",
+  #             se=F, fullrange=T, size=.5, linetype=2 )+
+  xlim(c(1965,2033))
+
 coal.con.2005 <-coal.con$value[coal.con$year==2005]
 coal.growth.rate <- c(round(lm(value/coal.con.2005 ~year, coal.con %>% subset(year<=2005  &year>1980))$coef[2]*100,1),
                       round(lm(value/coal.con.2005 ~year, coal.con %>% subset(year>=2005))$coef[2]*100,1))
@@ -328,5 +364,5 @@ p07<- ggplot(emissions %>% subset(year>1980), aes(year, value- emissions.2005, c
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   theme(legend.position="None")
 
-return (list(p1=p01,p1a=p01a,  p1b=p01b, p1c= p01c , p2=p02, p3=p03 , p3a=p03a , p4=p04 ,p5=p05, p6=p06, p7=p07))
+return (list(p1=p01,p1a=p01a,  p1b=p01b, p1c= p01c , p2=p02, p3=p03 , p3a=p03a , p4=p04 ,p5=p05, p5a=p05a, p6=p06, p7=p07))
 }

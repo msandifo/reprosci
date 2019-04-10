@@ -9,10 +9,18 @@ download_aemo_CO2EII <- function(remote.url="http://www.nemweb.com.au/reports/cu
 }
 
 csv_merge <- function(local.path = "~/data/regional/Australia/energy/aemo/emissions",
-                      cols = c("I", "CO2E11", "PUBLISHING", "FLAG", "CONTRACTYEAR", "WEEKNO",
-                               "SETTLEMENTDATE", "REGIONID", "TOTAL_SENT_OUT_ENERGY", "TOTAL_EMISSIONS", "CO2E_INTENSITY_INDEX"),
-                      classes = c("NULL", "NULL", "NULL", "NULL", "NULL", "NULL",
-                                  "character", "factor", "numeric", "numeric", "numeric"),
+                      cols = c("I", "CO2E11", 
+                               "PUBLISHING", "FLAG", 
+                               "CONTRACTYEAR", "WEEKNO",
+                               "SETTLEMENTDATE", "REGIONID", 
+                               "TOTAL_SENT_OUT_ENERGY", "TOTAL_EMISSIONS", 
+                               "CO2E_INTENSITY_INDEX"),
+                      classes = c("NULL", "NULL", 
+                                  "NULL", "NULL", 
+                                  "NULL", "NULL",
+                                  "character", "factor",
+                                  "numeric", "numeric", 
+                                  "numeric"),
                       skip = 2,
                       header = F,
                       tail.clip = -1,
@@ -48,28 +56,57 @@ csv_merge <- function(local.path = "~/data/regional/Australia/energy/aemo/emissi
     return(datalist)
   else return(head(datalist, tail.clip))
 }
+reorder_dmy <-function(my.dates){
+  
+  my.locs<- stringr::str_locate(my.dates, c("/" ))
+  
+  inds<-which(my.locs[,1]<4)
+  print(inds)
+  my.splits<-stringr::str_split(my.dates[inds]," ")
+  
+  
+  my.u.d<-sapply(my.splits, "[[", 1)
+  
+  my.u.d.2<-sapply(my.splits, "[[", 2)
+  
+  my.u.d.1 <-stringr::str_split(my.u.d, "/") %>% 
+    sapply("rev") %>% 
+    t() %>% 
+    as.data.frame() %>%
+    apply(  1, paste, collapse="/")%>% 
+    as.data.frame() %>%
+    dplyr::mutate(V4=paste0(" ", my.u.d.2))  %>%
+    apply(  1, paste0, collapse="")
+  
+  my.dates[inds]<-my.u.d.1  
+  my.dates[stringr::str_length(my.dates)==16] <-  stringr::str_c(my.dates[stringr::str_length(my.dates)==16], ":00")
+  my.dates
+}
 
-update_aemo_CO2EII <- function(correction=2.5, verbose=FALSE, save=T) {
+update_aemo_CO2EII <- function(correction=2.5, 
+                               verbose=FALSE, 
+                               save=T) {
   data.results <- csv_merge(verbose=verbose)
   data.historical <- csv_merge(local.path = "~/data/regional/Australia/energy/aemo/emissions/",
-                               cols = c("CONTRACTYEAR", "WEEKNO", "SETTLEMENTDATE", "REGIONID",
-                                        "TOTAL_SENT_OUT_ENERGY", "TOTAL_EMISSIONS", "CO2E_INTENSITY_INDEX"),
-                               classes = c("NULL", "NULL", "character", "factor", "numeric", "numeric", "numeric"),
+                               cols = c("CONTRACTYEAR", "WEEKNO", 
+                                        "SETTLEMENTDATE", "REGIONID",
+                                        "TOTAL_SENT_OUT_ENERGY", "TOTAL_EMISSIONS", 
+                                        "CO2E_INTENSITY_INDEX"),
+                               classes = c("NULL", "NULL", 
+                                           "character", "factor", 
+                                           "numeric", "numeric", 
+                                           "numeric"),
                                file.pattern = "HISTORICAL_SNAPSHOT",
                                verbose=verbose)
   
-  data.results$SETTLEMENTDATE<-reorder_dmy(data.results$SETTLEMENTDATE)
+  data.results$SETTLEMENTDATE<- reorder_dmy(data.results$SETTLEMENTDATE)
   # print(head(data.results$SETTLEMENTDATE))
-  # print(tail(data.results$SETTLEMENTDATE))
-  # 
+  # print(tail(data.results$SETTLEMENTDATE))  # 
   # print(head(data.historical$SETTLEMENTDATE))
   # print(tail(data.historical$SETTLEMENTDATE))
-  
   #	data.historical$SETTLEMENTDATE <- as.Date(data.historical$SETTLEMENTDATE, format = "%d/%m/%Y", tz="GMT")
-  data.historical$SETTLEMENTDATE <- lubridate::dmy(data.historical$SETTLEMENTDATE,   tz=my.tz)  #"GMT")
-  data.results$SETTLEMENTDATE <-  lubridate::ymd_hms(data.results$SETTLEMENTDATE,   tz=my.tz)  #"GMT")
-  
-  
+  data.historical$SETTLEMENTDATE <- lubridate::dmy(data.historical$SETTLEMENTDATE, tz=my.tz)  #"GMT")
+  data.results$SETTLEMENTDATE <- lubridate::ymd_hms(data.results$SETTLEMENTDATE, tz=my.tz)  #"GMT")
   print(str(data.results))
   print(str(data.historical))
   #print(tail(data.results))
@@ -78,18 +115,17 @@ update_aemo_CO2EII <- function(correction=2.5, verbose=FALSE, save=T) {
   #	data$CORRECTION[data$SETTLEMENTDATE >= as.Date("01/06/2014",format = "%d/%m/%Y",  tz="GMT")]= 1
   data$CORRECTION[data$SETTLEMENTDATE >   "2014-06-01" ]= 1
   if (save==TRUE) {save_aemo_CO2EII(data, save.directory= "data/")
-    }
-  else return(data)
+    } else return(data)
 }
 
-save_aemo_CO2EII <- function(data, var.name="CO2EII", save.directory="~/data/regional/Australia/energy/aemo/R/", file.name = "aemo.CO2EII.RDATA") {
-  
+save_aemo_CO2EII <- function(data, 
+                             var.name="CO2EII", 
+                             save.directory="~/data/regional/Australia/energy/aemo/R/", 
+                             file.name = "aemo.CO2EII.RDATA") {
   assign(var.name, data)
   out.file<-paste0(save.directory,file.name)
-  
   print(paste("saving data.frame as ", var.name))   # n.b. deparse(substitute(var)) gets name of var as string
   print(paste("saving data.frame to ", out.file))
-  
   save(list=var.name, file=out.file, compress=TRUE)
   return(out.file)
 }
