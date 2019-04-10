@@ -49,7 +49,7 @@ plots <- function(nem.month, nem.quarter, nem.year, gas.con, gas.prod, gas.con.t
                aes(group=year), size=1,method="lm", formula=y~1, colour=  my.col, show.legend = F, se=F)+
    geom_line( )+
    labs(y="million tonnes CO2-e, annualised cf. 2005", x=NULL, 
-        subtitle="NEM emissions cf. 2005, AEMO" ,
+        subtitle="A ministerial energy primer #1b\nNEM emissions cf. 2005, AEMO" ,
         caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
    geom_label(data= nem.year %>% subset(n=="total.corrected"), aes(x= date+ months(0), y=-40, label = signif(round(diffs,1),2) ),
                label.size=0,size=2, col="black")+
@@ -90,7 +90,7 @@ plots <- function(nem.month, nem.quarter, nem.year, gas.con, gas.prod, gas.con.t
    scale_colour_manual(values=rev(my.cols))+
    scale_fill_manual(values=rev(my.cols))+
    labs(y="million tonnes Co2-e, cf. 2005", x=NULL, 
-        subtitle="A ministerial energy primer #1\nNEM electrical power generation, AEMO",
+        subtitle="A ministerial energy primer #1b\nNEM electrical power generation, AEMO",
         caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
    theme(legend.position="None")
  
@@ -121,7 +121,7 @@ plots <- function(nem.month, nem.quarter, nem.year, gas.con, gas.prod, gas.con.t
    scale_colour_manual(values=rev(my.cols4))+
    scale_fill_manual(values=rev(my.cols4))+
    labs(y="million tonnes Co2-e per quarter, NEM", x=NULL, 
-        subtitle="A ministerial energy primer #1\nNEM emissions by quarter, AEMO",
+        subtitle="A ministerial energy primer #1c\nNEM emissions by quarter, AEMO",
         caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
    theme(legend.position=c(.85,.85))
  
@@ -135,7 +135,7 @@ p02<- ggplot(nem.month, aes(date, te/nem.2005$te, col=n, size=n, linetype=n))+
     geom_hline(yintercept = 1,  size=.25 ,linetype=2)+
    annotate("text", x=lubridate::ymd("2018-03-01") %>% as.POSIXct(), y=1.005, label= "2005 level", size=2)+
     labs(y="normalised to 2005 levels", x=NULL, 
-         subtitle="NEM emissions, AEMO" ,
+         subtitle="A ministerial energy primer #2\nNEM emissions, AEMO" ,
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010"
     )+
     scale_color_manual(values=my.cols)+
@@ -159,7 +159,7 @@ p03<- ggplot(gas.con %>% subset(year>1980), aes(year, value/gas.con.2005))+
   annotate("text", x=1992, y=.85, label= paste0(growth.rate[1], "% p.a."), size=4)+
   annotate("text", x=2013, y=1.4, label= paste0(growth.rate[2], "% p.a."), size=4)+
   labs(y="normalised to 2005 levels", x=NULL, 
-       subtitle="Australian gas consumption, BP Statistical review, 2018",
+       subtitle="A ministerial energy primer #3\nAustralian gas consumption, BP Statistical review, 2018",
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")
 
 
@@ -194,7 +194,7 @@ p03a<-ggplot(gas.con.t %>% subset(year>1980), aes(year, value- gas.con.t.2005, c
   scale_colour_manual(values=rev(my.cols))+
   scale_fill_manual(values=rev(my.cols))+
   labs(y="gas consumption - mtoe, cf. 2005", x=NULL, 
-       subtitle="A ministerial energy primer #3\nAustralian gas consumption, BP Statistical Review 2018",
+       subtitle="A ministerial energy primer #3a\nAustralian gas consumption, BP Statistical Review 2018",
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   theme(legend.position="None")
 
@@ -219,7 +219,7 @@ p04<-ggplot(gas.lng%>% subset(year>1980), aes(year, (value-gas.lng.2005 )*.735 )
   # annotate("text", x=1992, y=-3, label= paste0(growth.rate[1], "% p.a."), size=4)+
   # annotate("text", x=2013, y=7, label= paste0(growth.rate[2], "% p.a."), size=4)+
   labs(y="million tonnes LNG,cf. 2005 levels", x=NULL, 
-       subtitle="Australian gas exports, BP Statistical review, 2018",
+       subtitle="A ministerial energy primer #4\nAustralian gas exports, BP Statistical review, 2018",
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   xlim(c(1987,2017))
 
@@ -253,7 +253,7 @@ p05<-ggplot(oil.con %>% subset(year>1980), aes(year, value- oil.con.2005, col=ti
   scale_colour_manual(values=rev(my.cols))+
   scale_fill_manual(values=rev(my.cols))+
   labs(y="oil consumption - mtoe, cf. 2005", x=NULL, 
-       subtitle="A ministerial energy primer #2\nAustralian oil consumption, BP Statistical Review 2018",
+       subtitle="A ministerial energy primer #5\nAustralian oil consumption, BP Statistical Review 2018",
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   theme(legend.position="None")
 
@@ -323,7 +323,7 @@ p06<-ggplot(coal.con %>% subset(year>1980), aes(year, value- coal.con.2005, col=
   scale_colour_manual(values=rev(my.cols))+
   scale_fill_manual(values=rev(my.cols))+
   labs(y="coal consumption - mtoe, cf. 2005", x=NULL, 
-       subtitle="A ministerial energy primer #4\nAustralian coal consumption, BP Statistical Review 2018",
+       subtitle="A ministerial energy primer #6\nAustralian coal consumption, BP Statistical Review 2018",
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   theme(legend.position="None")
 
@@ -360,9 +360,9 @@ p07<- ggplot(emissions %>% subset(year>1980), aes(year, value- emissions.2005, c
   annotate("text", x=2012, y=-emissions.2005*.26+6, label= "26% below 2005 levels", size=3,colour=my.cols[2],fontface =3)+
   
   labs(y="CO2-e million tonnes, cf. 2005", x=NULL, 
-       subtitle="A ministerial energy primer #5\nAustralian Energy sector emissions, BP Statistical Review 2018",
+       subtitle="A ministerial energy primer #7\nAustralian Energy sector emissions, BP Statistical Review 2018",
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   theme(legend.position="None")
 
-return (list(p1=p01,p1a=p01a,  p1b=p01b, p1c= p01c , p2=p02, p3=p03 , p3a=p03a , p4=p04 ,p5=p05, p5a=p05a, p6=p06, p7=p07))
+return (list(p1=p01,p1a=p01a,  p1b=p01b, p1c= p01c , p2=p02,  p3=p03 , p3a=p03a , p4=p04 ,p5=p05, p5a=p05a, p6=p06, p7=p07))
 }
