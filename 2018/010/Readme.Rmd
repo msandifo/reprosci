@@ -109,6 +109,13 @@ p010<-drake::readd(p010)
 <img src='./figs/p010_06.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 <img src='./figs/p010_07.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
+## Additions
+
+### April 2019
+      
+<img src='./figs/p010_05a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+
+      
 ## Code Notes
 
 ## Errata

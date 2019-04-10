@@ -1,4 +1,4 @@
-010
+10
 ================
 
 ## Australian energy emissions and consumption snapshots
@@ -85,8 +85,7 @@ Note that `reproplan` processes the files downloaded by
 `./src/downloads.R`, returning `merged.data`
 
   - `source(drake::make( reproplan ))`
-  - `source('./src/ouputs.R')` output charts to the `./figs` directory
-:
+  - `source('./src/ouputs.R')` output charts to the `./figs` directory :
 
 <!-- end list -->
 
@@ -107,20 +106,24 @@ p010<-drake::readd(p010)
 Australian gas consumption is rising becaus eof LNG production, with
 around 8-12% of new production is “consumed” in liquefaction etc. For
 every 1 tonne of LNG exported that adds about 0.3 tonnes to domestic
-emissions (molecular weight of CO2=44,
-CH4=16)
+emissions (molecular weight of CO2=44, CH4=16)
 
 \#<img src='./figs/p010_03a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 With BP estimating LNG exports at 75.9 bcm (= 55 million tonnes), that
 gives yields a total of 17 million tonnes CO2 emissions, with an
-increase of 12 million tonnes over 2005
-levels.
+increase of 12 million tonnes over 2005 levels.
 
 <img src='./figs/p010_04.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 <img src='./figs/p010_05.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 <img src='./figs/p010_06.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 <img src='./figs/p010_07.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+
+## Additions
+
+### April 2019
+
+<img src='./figs/p010_05a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 ## Code Notes
 
