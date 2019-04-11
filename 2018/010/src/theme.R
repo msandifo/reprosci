@@ -3,7 +3,7 @@
 library(ggplot2)
 library(hrbrthemes)
 
-if (!exists('base_size')) base_size<-16
+if (!exists('base_size')) base_size<-18
 if (!exists('ffamily')) ffamily='Arial'  #'Gill Sans'
 ggplot2::theme_set( ggplot2::theme_linedraw(base_size = base_size, base_family=ffamily))
 ggplot2::theme_set( hrbrthemes::theme_ipsum(axis='xy',
