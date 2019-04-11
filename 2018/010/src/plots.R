@@ -49,7 +49,7 @@ plots <- function(nem.month, nem.quarter, nem.year, gas.con, gas.prod, gas.con.t
                aes(group=year), size=1,method="lm", formula=y~1, colour=  my.col, show.legend = F, se=F)+
    geom_line( )+
    labs(y="million tonnes CO2-e, annualised cf. 2005", x=NULL, 
-        subtitle="A ministerial energy primer #1b\nNEM emissions cf. 2005, AEMO" ,
+        subtitle="A ministerial energy primer #1a\nNEM emissions cf. 2005, AEMO" ,
         caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
    geom_label(data= nem.year %>% subset(n=="total.corrected"), aes(x= date+ months(0), y=-40, label = signif(round(diffs,1),2) ),
                label.size=0,size=2, col="black")+

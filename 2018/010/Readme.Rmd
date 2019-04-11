@@ -18,17 +18,18 @@ source('./src/downloads.R')
 
 ##  Australian energy emissions and consumption snapshots
 
-Including demand for electricty in the NEM (Australian east coast electricity market supplying around ~80% of Australians), and gas demand and emsiisons associated with LNG exports and othe ruses 
+These snapshots include demand for electricty in the NEM (Australian east coast electricity market supplying around ~80% of Australians), and fosil fuel demand, production and emissions, inclduing those associated with LNG exports.
 
 ## Data Sources
 
 * AEMO
 * BP Statistical Review of World Energy
-* ...
+
 
 ##  Caveats
 
-* AEMO emisssons (CDEII) data are preprocessed applying a correction factor of +2.5% to reported values prior June 2014,  following a change in methodology (as reported here)[https://www.aemo.com.au/Electricity/National-Electricity-Market-NEM/Settlements-and-payments/Settlements/Carbon-Dioxide-Equivalent-Intensity-Index]
+* AEMO emisssons (CDEII) data are preprocessed applying a correction factor of +2.5% to reported values prior June 2014,  following a change in methodology (as reported here)[https://www.aemo.com.au/Electricity/National-Electricity-Market-NEM/Settlements-and-payments/Settlements/Carbon-Dioxide-Equivalent-Intensity-Index].
+
 
 ## Code
 
@@ -86,18 +87,28 @@ output charts  to the ```./figs``` directory :
 p010<-drake::readd(p010)
 
  ```
+## NEM emissions
 
+1. Annualised emissions by month
 <img src='./figs/p010_01.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
+1a. Annualised emissions  by month relative to 2005
+ 
 <img src='./figs/p010_01a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
+
+1b. Annual emissions 
 <img src='./figs/p010_01b.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
-   
+
+1c. Quarterly emissions   
 <img src='./figs/p010_01c.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
+2. Annualised emissions  by month as  percentage of 2005   
     <img src='./figs/p010_02.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
-  
-   
+ 
+    
+## Gas emissions  - BP2018 
+    
    Australian gas consumption is rising  becaus eof LNG production, with  around 8-12% of new production is "consumed" in liquefaction etc. For every 1 tonne of LNG exported that adds about 0.3 tonnes to domestic emissions (molecular weight of CO2=44, CH4=16)
  
 #<img src='./figs/p010_03a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
@@ -105,9 +116,15 @@ p010<-drake::readd(p010)
    With BP estimating LNG exports at  75.9 bcm (= 55 million tonnes),  that gives yields a total of 17 million tonnes CO2 emissions, with an increase  of 12 million tonnes over 2005 levels.
 
 <img src='./figs/p010_04.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+      
+## Oil emissions - BP2018 (see additions)
 <img src='./figs/p010_05.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+
+## Coal emissions  - BP2018
 <img src='./figs/p010_06.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
-<img src='./figs/p010_07.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+
+      ## Total energy sector emissions - BP2018
+      <img src='./figs/p010_07.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 ## Additions
 
