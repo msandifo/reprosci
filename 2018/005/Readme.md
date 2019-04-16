@@ -166,6 +166,7 @@ than US dollars (as for the previous figures).
 <img src="./figs/p005_08.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
 <img src="./figs/p005_09.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
+<img src="./figs/p005_10.png" alt="hist1" align="center" style = "border: none; float: center;" width = "1000px">
 
 ## Code Notes
 
