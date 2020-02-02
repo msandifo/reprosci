@@ -152,7 +152,7 @@ plots <- function(merged.data, i.data) {
     annotate("text", x=2016, y=-2, label="annual deficit", size=3, hjust=0, col=l.cols[2], fontface ="italic")+
     labs(title = "on the myth of budget repair, #02", 
          subtitle="tell them they're dreaming ...",
-         y= "Annual Aus. gov. lending/borrowing\nA$'billions relative to 1991", x=NULL,         
+         y= "Annual Aus. gov. lending/borrowing\nA$'billions", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.3,.2), legend.title = element_blank())
   
@@ -198,7 +198,7 @@ coalition.proj = data.frame(x=c(2016.5, 2021.75),
  #  annotate("text", x=2021, y=-32, label="current\n net deficit\n $530 billion", size=3, hjust=0.5, col=l.cols[1], fontface ="italic")+
    labs(title = "on the myth of budget repair, #03", 
         subtitle="tell them they're dreaming ..." ,
-         y= "Annual Aus. gov. lending/borrowing\nA$'billions relative to 1991", x=NULL,         
+         y= "Annual Aus. gov. lending/borrowing\nA$'billions", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.3,.2), legend.title = element_blank())+xlim(c(1991.4, 2022.5))
   
