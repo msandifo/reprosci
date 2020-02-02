@@ -51,6 +51,7 @@ setwd(drake.path)
 source('./src/theme.R')
 source('./src/functions.R')
 source('./src/plan.R')
+source('./src/plots.R')
 
 ``` 
 
@@ -65,7 +66,7 @@ directs the download of the  AEMO csv data files to be downloaded  into the loca
 By default ``` local.path=NULL``` in which case data is downloaded via ```rappdirs::user_cache_dir()``` to a folder in the users cache directory (for macOSX, ```~/Library/cache```) to ```file.path(local.path, aemo)```.  ```'./src/downloads.R'```  is a wrapper on the function calls
 
 ```{r echo=T, eval=F}
-download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
+download_aemo_aggregated(year=2010:lubridate::year(Sys.Date()), months=1:12, local.path=local.path)
 download_aemo_current( local.path=local.path )
 ```
 

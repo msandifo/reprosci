@@ -12,6 +12,7 @@ if (file.exists('./src/reports.R')) source('./src/reports.R')
 source('./src/plan.R')
 if (full.repro==TRUE) drake::clean(force=T)
 drake::make( reproplan )
-source('./src/outputs.R')
+source('./src/outputs.R') 
+
   
   

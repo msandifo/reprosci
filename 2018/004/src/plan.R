@@ -6,14 +6,14 @@ reproplan = drake::drake_plan(
   countries = c("Australia","US",
                 "France","China","Indonesia",
                 "Japan", "Norway",
-                "South Korea", "Canada", 
+                "South Korea", "Canada", "Poland",
                 "United Kingdom", "India",
                 "Germany"),
   pop.data = purrr::map_df(countries, reproscir::read_IMF, measure="LP", percent=F) ,
   #print(head(pop.data)),
   gdp.data = purrr::map_df(countries, reproscir::read_IMF, measure="PPPGDP" , percent=F) ,
   #      print(head(gdp.data)),
-        co2.data = reproscir::BP_all(verbose=F, sheet=57, countries=countries, years=1969:2017,fuel="CO2 emissions", units="Tonnes" ),
+        co2.data = reproscir::BP_all(verbose=F, sheet=65, countries=countries, years=1969:2018,  units="Tonnes" ),
  #       print(head(co2.data)),
         merged.data =merge(pop.data, co2.data$data, by=c("region","year")) %>% 
     merge(gdp.data, by=c("region","year")) %>% 

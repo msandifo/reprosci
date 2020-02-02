@@ -4,8 +4,24 @@ library(ggplot2)
 #---------------------
 plots <- function(merged.data, i.data) {
 
-  
-  reproscir::theme_twitter()
+  if (!exists('base_size')) base_size<-16
+  if (!exists('ffamily')) ffamily='Arial' #'Gill Sans',
+  ggplot2::theme_set( ggplot2::theme_linedraw(base_size = base_size, base_family=ffamily))
+  ggplot2::theme_set( hrbrthemes::theme_ipsum(axis='xy',
+                                              base_size=base_size,
+                                              grid=T,
+                                              plot_margin = margin(10,10,10,10),
+                                              axis_title_size = base_size*.8,
+                                              axis_text_size = base_size*.7))
+  ggplot2::theme_update(
+    plot.title = element_text(size = rel(.8),family = ffamily, angle=0),
+    plot.subtitle = element_text(size = rel(.7), family = ffamily, colour='grey50', angle=0),
+    plot.caption = element_text(size = rel(.3),family = ffamily, colour='grey80', angle=0,hjust=1),
+    panel.grid.major = element_line(colour = 'grey85', size=.05,  linetype=1),
+    panel.grid.minor =element_line(colour = 'grey90', size=.0, linetype=1),
+    axis.text= element_text(size = rel(1.4), angle=0 , family = ffamily),
+    axis.title=element_text(size = rel(1.4), angle=0 , family = ffamily,face="bold"))
+ # reproscir::theme_twitter()
   l.cols<- c("blue3","firebrick2")
   
   p01 <- ggplot(merged.data, aes(year, ff.prod.mtoe - ff.cons.mtoe , colour=region ))+
@@ -67,6 +83,7 @@ plots <- function(merged.data, i.data) {
     dplyr::ungroup() %>%
     dplyr::arrange(year)
   
+  print(tail(  imf.data.aus))
   imf.data.aus$gov = "Labor"
   imf.data.aus$gov[imf.data.aus$year>1996] = "Coalition"
   imf.data.aus$gov[imf.data.aus$year>2007] = "Labor"
@@ -76,10 +93,10 @@ plots <- function(merged.data, i.data) {
   imf.data.aus$p[imf.data.aus$year>2007] = "3"
   imf.data.aus$p[imf.data.aus$year>2013] = "4"
   
-  print(imf.data.aus)
+  print(tail(imf.data.aus))
   imf.data.sums <- imf.data.aus  %>% dplyr::group_by(p)  %>% 
     dplyr::summarise(GGXCNL.cum =round(tail(GGXCNL.cum,1),0), y=GGXCNL.cum, year=tail(year,1),  gov=tail(gov,1))
-  
+  print(imf.data.sums)
   
   p08 =  ggplot(imf.data.aus, aes(year+.5, GGXCNL.cum, group=p, col=gov, fill=gov, shape=gov))+
     geom_vline(xintercept = c( 1991.9, 2008.8), col="grey30", linetype=2, size=.2)+
@@ -91,8 +108,9 @@ plots <- function(merged.data, i.data) {
     scale_color_manual(values=l.cols)+
     geom_text(data= imf.data.sums, aes(year+1.5,y=y+20, label= paste0("$",GGXCNL.cum, " bil.")), size=3, show.legend = F)+
     
-    labs(subtitle = "budget repair, #01\ntell them they're dreaming ..." ,
-         y= "Net Aus. gov. lending/borrowing, GGXCNL\nA$'billions", x=NULL,         
+    labs(title = "on the myth of budget repair, #01", 
+         subtitle="tell them they're dreaming ...",
+         y= "Net Aus. gov. lending/borrowing, GGXCNL\nA$'billions relative to 1991", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.3,.2), legend.title = element_blank())
    
@@ -108,14 +126,16 @@ plots <- function(merged.data, i.data) {
   # imf.data.diff.aus.neg$p <- 1
   
   
-  imf.data.diff.sums <- imf.data.diff.aus %>% head(-1) %>% dplyr::group_by(p)  %>% 
+  imf.data.diff.sums <- imf.data.diff.aus   %>% dplyr::group_by(p)  %>% 
     dplyr::summarise(GGXCNL=round(sum(GGXCNL.cum),0), GGXCNL.cum =round(mean(GGXCNL.cum),0), 
                      y=mean(GGXCNL.cum), yearm=mean(year), year=tail(year,1),  gov=tail(gov,1))
   
-  print(imf.data.diff.sums)
-  p09 = ggplot(imf.data.diff.aus %>% head(-1), aes(year+.5, GGXCNL.cum, group=p, col=gov, fill=gov, shape=gov))+
-    geom_area(data= imf.data.diff.aus.pos %>% head(-1) , aes(year+.5, GGXCNL.cum), fill="grey30",alpha=.15, size=0, show.legend = F)+
-    geom_area(data= imf.data.diff.aus.neg %>% head(-1) , aes(year+.5, GGXCNL.cum), fill="red3",alpha=.25, size=0, show.legend=F)+
+ message("imf.data.diff.aus") 
+ print(tail(imf.data.diff.aus))
+  p09 = ggplot(imf.data.diff.aus , aes(year+.5, GGXCNL.cum, group=p, col=gov, fill=gov, shape=gov))+
+    #geom_area(data= imf.data.diff.aus    , aes(year+.5, GGXCNL.cum,     fill=gov),alpha=.15, size=0, show.legend = F)+
+     geom_area(data= imf.data.diff.aus.pos   , aes(year+.5, GGXCNL.cum), fill="grey30",alpha=.15, size=0, show.legend = F)+
+      geom_area(data= imf.data.diff.aus.neg   , aes(year+.5, GGXCNL.cum), fill="red3",alpha=.25, size=0, show.legend=F)+
     geom_smooth( method = "loess", size=2.5, se=F, span=.52, col="white")+
     geom_smooth( method = "loess", size=0.5, se=F, span=.52)+
     geom_vline(xintercept = c( 1991.9, 2008.8), col="grey30", linetype=2, size=.2)+
@@ -130,8 +150,9 @@ plots <- function(merged.data, i.data) {
     annotate("text", x=2009, y=15, label="the \nGFC", size=3, hjust=0, col="black", fontface ="italic")+
     annotate("text", x=2016, y=2.5, label="annual surplus", size=3, hjust=0, col="black", fontface ="italic")+
     annotate("text", x=2016, y=-2, label="annual deficit", size=3, hjust=0, col=l.cols[2], fontface ="italic")+
-    labs(subtitle = "budget repair, #02\ntell them they're dreaming ..." ,
-         y= "Annual Aus. gov. lending/borrowing\nA$'billions", x=NULL,         
+    labs(title = "on the myth of budget repair, #02", 
+         subtitle="tell them they're dreaming ...",
+         y= "Annual Aus. gov. lending/borrowing\nA$'billions relative to 1991", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.3,.2), legend.title = element_blank())
   
@@ -140,11 +161,11 @@ plots <- function(merged.data, i.data) {
                                  imf.data.diff.aus$GGXCNL.cum[imf.data.diff.aus$year==2013]*2- 
                                    5/4*(imf.data.diff.aus$GGXCNL.cum[imf.data.diff.aus$year==2010])))
  
-coalition.proj = data.frame(x=c(2017, 2022), 
+coalition.proj = data.frame(x=c(2016.5, 2021.75), 
                           y= c(imf.data.diff.aus$GGXCNL.cum[imf.data.diff.aus$year==2016], 
-                               imf.data.diff.aus$GGXCNL.cum[imf.data.diff.aus$year==2018]*2- 
-                                 4.25/3*(imf.data.diff.aus$GGXCNL.cum[imf.data.diff.aus$year==2016])))
-  
+                               imf.data.diff.aus$GGXCNL.cum[imf.data.diff.aus$year==2019]*2- 
+                                 3.85/3*(imf.data.diff.aus$GGXCNL.cum[imf.data.diff.aus$year==2016])))
+ print(coalition.proj ) 
   labor.proj$p<-3
   labor.proj$gov<-"Labor"
   print(labor.proj) 
@@ -153,9 +174,9 @@ coalition.proj = data.frame(x=c(2017, 2022),
   print(labor.proj) 
   
  
- p10 = ggplot(imf.data.diff.aus %>% head(-1), aes(year+.5, GGXCNL.cum, group=p, col=gov, fill=gov, shape=gov))+
-    geom_area(data= imf.data.diff.aus.pos %>% head(-1) , aes(year+.5, GGXCNL.cum), fill="grey30",alpha=.15, size=0, show.legend = F)+
-    geom_area(data= imf.data.diff.aus.neg %>% head(-1) , aes(year+.5, GGXCNL.cum), fill="red3",alpha=.25, size=0, show.legend=F)+
+ p10 = ggplot(imf.data.diff.aus  , aes(year+.5, GGXCNL.cum, group=p, col=gov, fill=gov, shape=gov))+
+    geom_area(data= imf.data.diff.aus.pos   , aes(year+.5, GGXCNL.cum), fill="grey30",alpha=.15, size=0, show.legend = F)+
+    geom_area(data= imf.data.diff.aus.neg   , aes(year+.5, GGXCNL.cum), fill="red3",alpha=.25, size=0, show.legend=F)+
    geom_smooth( method = "loess", size=2.5, se=F, span=.52, col="white")+
     geom_smooth( method = "loess", size=0.5, se=F, span=.52)+
    geom_line(data= labor.proj, aes(x,y),linetype=2, size=.25, arrow = arrow(length = unit(0.1, "cm")), show.legend = F)+
@@ -173,10 +194,11 @@ coalition.proj = data.frame(x=c(2017, 2022),
    #  annotate("text", x=2010, y=2.5, label="annual surplus", size=3, hjust=0, col="black", fontface ="italic")+
    #  annotate("text", x=2010, y=-2, label="annual deficit", size=3, hjust=0, col=l.cols[2], fontface ="italic")+
     annotate("text", x=2017.7, y=10, label="Labor's\nprojected\n net deficit\n ~$380 billion", size=3, hjust=0.5, col=l.cols[2], fontface ="italic")+
-   annotate("text", x=2022, y=10, label="Coalition's\nprojected\n net deficit\n ~$570 billion", size=3, hjust=0.5, col=l.cols[1], fontface ="italic")+
-   annotate("text", x=2020.25, y=-32, label="current\n net deficit\n $542 billion", size=3, hjust=0.5, col=l.cols[1], fontface ="italic")+
-   labs(subtitle = "budget repair, #03\ntell them they're dreaming ..." ,
-         y= "Annual Aus. gov. lending/borrowing\nA$'billions", x=NULL,         
+   annotate("text", x=2022, y=10, label="Coalition's\nprojected\n net deficit\n ~$550 billion", size=3, hjust=0.5, col=l.cols[1], fontface ="italic")+
+ #  annotate("text", x=2021, y=-32, label="current\n net deficit\n $530 billion", size=3, hjust=0.5, col=l.cols[1], fontface ="italic")+
+   labs(title = "on the myth of budget repair, #03", 
+        subtitle="tell them they're dreaming ..." ,
+         y= "Annual Aus. gov. lending/borrowing\nA$'billions relative to 1991", x=NULL,         
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/005")+
     theme(legend.position = c(.3,.2), legend.title = element_blank())+xlim(c(1991.4, 2022.5))
   

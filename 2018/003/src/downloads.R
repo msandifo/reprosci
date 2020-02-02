@@ -5,6 +5,6 @@
  
 
 if (full.repro==TRUE) 
-  file.names<-reproscir::download_aemo_aggregated(year=2008:2018, months=1:12, local.path=NULL)  #dowload aemo data
+  file.names<-reproscir::download_aemo_aggregated(year=2008:2019, months=1:12, local.path=NULL)  #dowload aemo data
 
  

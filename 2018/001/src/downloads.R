@@ -1,5 +1,5 @@
 if (!file.exists(paste0(drake.path, "/data/data.Rdata"))  ){
-  file.names<-download_aemo_aggregated(year=2010:2018, months=1:12, local.path=local.path)
+  file.names<-download_aemo_aggregated(year=2010:lubridate::year(Sys.Date()), months=1:12, local.path=local.path)
 #download_aemo_current( local.path=local.path )
   # NSW1 = get_aemo_data(state='NSW') # %>% padr::pad()
   # VIC1 = get_aemo_data(state='VIC') 

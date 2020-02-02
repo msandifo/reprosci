@@ -1,5 +1,5 @@
 
-    full.repro=F
+    full.repro=T
 
     source('./src/settings.R')
     source('./src/packages.R')
@@ -12,5 +12,7 @@
 
     source('./src/plan.R')
     if (full.repro==TRUE) drake::clean(force=T)
-    drake::make( reproplan )
+  
+    source('./src/plots.R')
     source('./src/outputs.R')
+    

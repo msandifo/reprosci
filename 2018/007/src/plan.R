@@ -6,27 +6,39 @@ reproplan = drake::drake_plan(
   #add data munging here
    
   
+  cg.ch4= reproscir::read_data("cape.grim.ch4", data=T)  %>% 
+    mutate(cdate=date, date=decimal_date(date)) %>%  
+    
+    subset(source != "Cape Grim air archive") %>%
+    mutate(trend = (decompose(ts(value, frequency=12)))$trend %>% 
+             as.numeric(  optional=T),
+           trend.grad = 12* (c(NA, diff( trend)/tail( trend, -1))+
+                               c( diff( trend)/head( trend, -1), NA))/2  ), # %T>% glimpse()
+  # mutate( mutate( cdate = dmy(paste0("15-", month(date_decimal(date)),"-", year(date_decimal(date)) )))  -> 
   
     us.gas = reproscir::read_data("eia.us.ng.withdrawals", data=T)[,c(1,3)] %>% 
-    dplyr::mutate(cdate=date, date=decimal_date(date), value=us) %>%  
+       dplyr::mutate(cdate=as.Date(date), date=decimal_date(date), value=us) %>%  
     #   cdate = dmy(paste0("15-", month(date_decimal(date)),"-", year(date_decimal(date)) )) )  %>% 
     dplyr::select(date, cdate,value) %>%  
     subset(date > min(cg.ch4$date) & date<= max(cg.ch4$date) ) %>%
     dplyr::mutate(trend = (decompose(ts(value, frequency=12)))$trend %>% 
              as.numeric(  optional=T),
              trend.grad = 12* (c(NA, diff( trend)/tail( trend, -1))+
-                                 c( diff( trend)/head( trend, -1), NA))/2 ),
-  
-    cg.ch4= reproscir::read_data("cape.grim.ch4", data=T)  %>% 
-      mutate(cdate=date, date=decimal_date(date)) %>%  
-      
-      subset(source != "Cape Grim air archive") %>%
-      mutate(trend = (decompose(ts(value, frequency=12)))$trend %>% 
-               as.numeric(  optional=T),
-             trend.grad = 12* (c(NA, diff( trend)/tail( trend, -1))+
-                                 c( diff( trend)/head( trend, -1), NA))/2  ), # %T>% glimpse()
-    # mutate( mutate( cdate = dmy(paste0("15-", month(date_decimal(date)),"-", year(date_decimal(date)) )))  -> 
+                                 c( diff( trend)/head( trend, -1), NA))/2 ) %>%
+      rename(cdate=2,us=3) %>%
+      dplyr::mutate(#cdate=as.Date(date,origin = "1970-01-01"), date=decimal_date(as.Date(date,origin = "1970-01-01")),
+                    value=us) %>%  
+      #   cdate = dmy(paste0("15-", month(date_decimal(date)),"-", year(date_decimal(date)) )) )  %>% 
+      dplyr::select(date, cdate,value) %>%  
+      subset(date > min(cg.ch4$date) & date<= max(cg.ch4$date) ) %T>%
+    glimpse() %>%
     
+      dplyr::mutate(trend = (decompose(ts(value, frequency=12)))$trend %>% 
+                      as.numeric(  optional=T),
+                    trend.grad = 12* (c(NA, diff( trend)/tail( trend, -1))+
+                                        c( diff( trend)/head( trend, -1), NA))/2 ),
+    
+       
 #  library(readxl)
   us.rig.count= reproscir::read_data("bh.rc.bytrajectory", data=T)  %>% 
     # mutate(date=decimal_date(date)) %>% 
@@ -124,7 +136,7 @@ reproplan = drake::drake_plan(
                      trend.grad=annual.percentage.factor*mean(trend.grad, na.rm=T) ) %>%
     mutate(range= my.cpt.ranges ,  
            labels=paste0(round(trend.grad,2), "% p.a."),
-           nlabels=paste0(round(trend.grad,2),"%" )),
+           nlabels=paste0(round(trend.grad,2),"%" )) %T>% glimpse(),
   
   
   

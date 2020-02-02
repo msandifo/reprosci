@@ -113,7 +113,7 @@ plots <- function(cg.ch4,
           axis.title.y.right= element_text(angle = -90,   color = "royalblue4"))
   
            
-  p04= ggplot(m.data , 
+  p04= ggplot(my.cpt.data , 
               aes(trend.grad.x, trend.grad.y, colour=grouping,label=range, fill=grouping))+
     geom_smooth(method="lm", alpha=.1, fullrange=T, size=.2)+
     ggrepel::geom_text_repel(nudge_y=1, size=2.5, segment.size=.25 )+
@@ -124,10 +124,10 @@ plots <- function(cg.ch4,
     theme(legend.position="none")+
     labs( subtitle= "the methane enigma #4",
                  x="Cape Grim growth rate\nannualised",
-                 y="US natural gas growth rate\nannualised ",
+                 y="US natural gas growth rate\nannualised",
                  caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/007") +
     geom_text( data=my.cpt.data[1,], x=.05, y=7.5, 
-               label= paste0("2000+ , r-squared = ",  round(cptfits[[2]],2)) , 
+               label= paste0("2000+, r-squared = ",  round(cptfits[[2]],2)) , 
                colour="firebrick2",
                size=5, 
                hjust=0 )+

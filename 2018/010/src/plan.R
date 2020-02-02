@@ -33,22 +33,22 @@ reproplan = drake::drake_plan(
  # nem.year.te.2005 = nem.year$te[nem.year$year=="2005" &nem.year$n=="total.corrected" ],
   #gas.con.mtoe = reproscir::BP_all(verbose=F, sheet=27, countries="Australia", years=1969:2017 , units="Tonnes", data=T ),
    # nem.year.te.2005 = nem.year$te[nem.year$year=="2005"],
-  gas.con = reproscir::BP_all(verbose=F, sheet=25, countries="Australia", years=1969:2017 , units="bcm", data=T ),
-  gas.prod = reproscir::BP_all(verbose=F, sheet=22, countries="Australia", years=1969:2017 , units="bcm", data=T ),
+  gas.con = reproscir::BP_all(verbose=F, sheet=28, countries="Australia", years=1969:2018 , units="bcm", data=T ),
+  gas.prod = reproscir::BP_all(verbose=F, sheet=25, countries="Australia", years=1969:2018 , units="bcm", data=T ),
 
-  gas.con.t = reproscir::BP_all(verbose=F, sheet=27, countries="Australia", years=1969:2017 , units="mtoe", data=T ) %>% 
+  gas.con.t = reproscir::BP_all(verbose=F, sheet=30, countries="Australia", years=1969:2018 , units="mtoe", data=T ) %>% 
     dplyr::mutate(time= dplyr::case_when(year < 2005 ~ "low", year >=2005~ "high")),
    
-  oil.con = reproscir::BP_all(verbose=F, sheet=10, countries="Australia", years=1969:2017 , units="mtoe", data=T ) %>% 
+  oil.con = reproscir::BP_all(verbose=F, sheet=12, countries="Australia", years=1969:2018 , units="mtoe", data=T ) %>% 
     dplyr::mutate(time= dplyr::case_when(year < 2005 ~ "low", year >=2005~ "high")),
-  coal.con = reproscir::BP_all(verbose=F, sheet=36, countries="Australia", years=1969:2017 , units="mtoe", data=T ) %>% 
+  coal.con = reproscir::BP_all(verbose=F, sheet=40, countries="Australia", years=1969:2018 , units="mtoe", data=T ) %>% 
     dplyr::mutate(time= dplyr::case_when(year < 2005 ~ "low", year >=2005~ "high")),
   
-  emissions = reproscir::BP_all(verbose=F, sheet=57, countries="Australia", years=1969:2017 , units="mt", data=T ) %>% 
+  emissions = reproscir::BP_all(verbose=F, sheet=65, countries="Australia", years=1969:2018 , units="mt", data=T ) %>% 
     dplyr::mutate(time= dplyr::case_when(year < 2005 ~ "low", year >=2005~ "high")),
    
- ob  = merge(reproscir::BP_all(sheet =9, countries="Australia", drop=3)$data,
-            reproscir::BP_all(sheet =7, countries="Australia", drop=3)$data,
+ ob  = merge(reproscir::BP_all(sheet =12, countries="Australia" )$data,
+            reproscir::BP_all(sheet =8, countries="Australia" )$data,
             by =c("year", "region")) ,
  oil.balance =ob%>%
    dplyr::mutate(import =value.x-value.y) %>%

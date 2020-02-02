@@ -18,7 +18,7 @@ source('./src/downloads.R')
 
 ##  Desription
 
-Ausrtralian natrual gas have variable amounts of CO2, which can amount to as much as 20% (molecular) .
+Ausrtralian natural gas have variable amounts of CO2, which can amount to as much as 20% (molecular) .
 
 Gorgon uibn the  Barrow sub-basin of the Carnarvon Basin has about 14 mol% CO2 and it comprises about 65% of th gas stream in LNG exprort ags, the rmainde coming form the much lowe Co2 content Janz feild. For every tonne of LNG produced, some `r (.15*.65+ .05*.35)*44/16 ` tonnes of CO2a are prodcued of which th enevironemntal apporavals reauire 80%  to sequestered. 
 

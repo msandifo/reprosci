@@ -12,11 +12,11 @@ plots <- function(nem.month, nem.quarter, nem.year, gas.con, gas.prod, gas.con.t
       subset(year==2005 & n=="total.corrected")  %>%
       dplyr::summarise(te=mean(te), date=mean(date))
     
-    nem.2017 = nem.month %>%
-      subset(year==2017 & n=="total.corrected")  %>%
+    nem.2018 = nem.month %>%
+      subset(year==2018 & n=="total.corrected")  %>%
       dplyr::summarise(te=mean(te), date=mean(date))
     
-    nem.diff  <-(nem.2005$te-nem.2017$te)*365/1e6
+    nem.diff  <-(nem.2005$te-nem.2018$te)*365/1e6
     nem.year$diffs  <-(nem.2005$te-nem.year$te)*365/1e6
   #  print(nem.year$diffs)
     my.cols =c( "grey40","firebrick4" )
@@ -54,8 +54,8 @@ plots <- function(nem.month, nem.quarter, nem.year, gas.con, gas.prod, gas.con.t
    geom_label(data= nem.year %>% subset(n=="total.corrected"), aes(x= date+ months(0), y=-40, label = signif(round(diffs,1),2) ),
                label.size=0,size=2, col="black")+
    
-   # annotate("text", x=lubridate::ymd("2017-06-01") %>% as.POSIXct(), y= -10, 
-   #          label= paste("2017 down",round( nem.diff,2), "\nmill.tonnes"), size=2)+
+   # annotate("text", x=lubridate::ymd("2018-06-01") %>% as.POSIXct(), y= -10, 
+   #          label= paste("2018 down",round( nem.diff,2), "\nmill.tonnes"), size=2)+
    scale_color_manual(values=my.cols)+
    scale_size_manual(values=my.sizes)+
    scale_linetype_manual(values=my.linetypes, guide=F)+
@@ -63,8 +63,8 @@ plots <- function(nem.month, nem.quarter, nem.year, gas.con, gas.prod, gas.con.t
  
  
  nem.year.te.2005 = nem.year$te[nem.year$year==2005 &nem.year$n=="total.corrected" ]
- nem.year.te.2017 = nem.year$te[nem.year$year==2017 &nem.year$n=="total.corrected" ]
- #(nem.year.te.2005-nem.year.te.2017)*365/1e6
+ nem.year.te.2018 = nem.year$te[nem.year$year==2018 &nem.year$n=="total.corrected" ]
+ #(nem.year.te.2005-nem.year.te.2018)*365/1e6
  
  
  p01b <- ggplot(nem.year %>% subset(year>2000 & year<2019 & n=="total.corrected"), 
@@ -78,7 +78,7 @@ plots <- function(nem.month, nem.quarter, nem.year, gas.con, gas.prod, gas.con.t
    geom_point(size=1.5)  +
    # annotate("text", x=1995, y=8, label= "oil consumption added\n ", size=6, col="red3")+
    annotate("text", x=2016, y=-5, label= paste("electrical power system\n CO2-e emissions reduced by \n~", 
-                                               signif((nem.year.te.2005 -nem.year.te.2017)*365/1e6,2) ,"million tonnes \n in 2017  cf. 2005*"), 
+                                               signif((nem.year.te.2005 -nem.year.te.2018)*365/1e6,2) ,"million tonnes \n in 2018  cf. 2005*"), 
             fontface =3, size=4, col=my.cols[2])+
    annotate("text", x=2004, y=-25, label= "*due to both decarbonisation and demand destruction", fontface=3, size=2.5, col="grey70")+
    
@@ -109,7 +109,7 @@ plots <- function(nem.month, nem.quarter, nem.year, gas.con, gas.prod, gas.con.t
    geom_point(size=1.5)  +
    # annotate("text", x=1995, y=8, label= "oil consumption added\n ", size=6, col="red3")+
    # annotate("text", x=2016, y=-5, label= paste("electrical power system\n CO2-e emissions reduced by \n~", 
-   #                                             signif((nem.year.te.2005 -nem.year.te.2017)*365/1e6,2) ,"million tonnes \n in 2017  cf. 2005*"), 
+   #                                             signif((nem.year.te.2005 -nem.year.te.2018)*365/1e6,2) ,"million tonnes \n in 2018  cf. 2005*"), 
    #          fontface =3, size=4, col=my.cols[2])+
    # annotate("text", x=2004, y=-25, label= "*due to both decarbonisation and demand destruction", fontface=3, size=2.5, col="grey70")+
    
@@ -182,7 +182,7 @@ p03a<-ggplot(gas.con.t %>% subset(year>1980), aes(year, value- gas.con.t.2005, c
         
         axis.title.y.right= element_text(angle = -90, hjust = 1, color = my.cols[2]))+
   # annotate("text", x=1995, y=8, label= "oil consumption added\n ", size=6, col="red3")+
-  annotate("text", x=2006, y=12, label= paste("gas consumption added\n~", signif((tail(gas.con.t$value,1)-gas.con.t.2005 )*mtogas2co2e,2) ,"million tonnes CO2-e\n in 2017  cf. 2005"), 
+  annotate("text", x=2006, y=12, label= paste("gas consumption added\n~", signif((tail(gas.con.t$value,1)-gas.con.t.2005 )*mtogas2co2e,2) ,"million tonnes CO2-e\n in 2018  cf. 2005"), 
            fontface =3, size=4, col=my.cols[2])+
   annotate("text", x=2011, y=-11, label= paste("assuming,",mtogas2co2e,"tonnes CO2\nfor every  tonne oil equiv. gas"), fontface=3, size=2.5, col="grey70")+
   
@@ -198,7 +198,7 @@ p03a<-ggplot(gas.con.t %>% subset(year>1980), aes(year, value- gas.con.t.2005, c
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   theme(legend.position="None")
 
-
+ 
 gas.prod.2005 <-gas.prod$value[gas.prod$year==2005]
 
 gas.lng <- gas.con%>% subset(year>1980)
@@ -214,14 +214,14 @@ p04<-ggplot(gas.lng%>% subset(year>1980), aes(year, (value-gas.lng.2005 )*.735 )
   geom_point(size=1.5)+
   # scale_y_continuous(labels=scales::percent_format(accuracy = 1))+
   geom_hline(yintercept = 0,  size=.25 ,linetype=2)+
-  annotate("text", x=1995, y=40, label= "2017-2005 LNG processing emissions - estimated", size=4, col="red3")+
+  annotate("text", x=1995, y=40, label= "2018-2005 LNG processing emissions - estimated", size=4, col="red3")+
   annotate("text", x=1995, y=37, label= paste(signif((tail(gas.lng$value,1)-gas.lng.2005 )*.735*.3,2) ,"mill.tonnes CO2-e"), size=4, col="red3")+
   # annotate("text", x=1992, y=-3, label= paste0(growth.rate[1], "% p.a."), size=4)+
   # annotate("text", x=2013, y=7, label= paste0(growth.rate[2], "% p.a."), size=4)+
   labs(y="million tonnes LNG,cf. 2005 levels", x=NULL, 
        subtitle="A ministerial energy primer #4\nAustralian gas exports, BP Statistical review, 2018",
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
-  xlim(c(1987,2017))
+  xlim(c(1987,2018))
 
 
 oil.con.2005 <-oil.con$value[oil.con$year==2005]
@@ -241,7 +241,7 @@ p05<-ggplot(oil.con %>% subset(year>1980), aes(year, value- oil.con.2005, col=ti
         
         axis.title.y.right= element_text(angle = -90, hjust = 1, color = my.cols[2]))+
   # annotate("text", x=1995, y=8, label= "oil consumption added\n ", size=6, col="red3")+
-  annotate("text", x=2002, y=7, label= paste("oil consumption added\n~", signif((tail(oil.con$value,1)-oil.con.2005 )*mto2co2e,2) ,"million tonnes CO2-e\n in 2017  cf. 2005"), 
+  annotate("text", x=2002, y=7, label= paste("oil consumption added\n~", signif((tail(oil.con$value,1)-oil.con.2005 )*mto2co2e,2) ,"million tonnes CO2-e\n in 2018  cf. 2005"), 
            fontface =3, size=4, col=my.cols[2])+
   annotate("text", x=2011, y=-11, label= paste("assuming",mto2co2e,"tonnes CO2\nfor per tonne oil equiv."), fontface=3, size=2.5, col="grey70")+
   
@@ -275,10 +275,11 @@ p05a<-ggplot(oil.balance %>% subset(name != "import"), aes(year,value, col=name)
   
   geom_line(size=1., aes(group=name), colour="white") +
   geom_line(size=.5) +
-  geom_point(data= oil.balance %>% subset(name != "import" & year==2017), col="white", size=2.5 ) +
-  geom_point(data= oil.balance %>% subset(name != "import" & year==2017), size=2. ) +
+  geom_point(data= oil.balance %>% subset(name != "import" & year==2018), col="white", size=2.5 ) +
+  geom_point(data= oil.balance %>% subset(name != "import" & year==2018), size=2. ) +
   labs(x=NULL, y="million tonnes per year",
-       subtitle= "A ministerial energy primer #5a\nAustralian oil production/consumption trends, BP Statistical Review 2018",
+       subtitle= #"A ministerial energy primer #5a\n
+       "Australian oil production/consumption trends,\nBP Statistical Review 2019",
        caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/010")+
   theme(legend.position = c(.15,.83), legend.title = element_blank() )+
   # geom_segment(data=ob1, aes(xend=year, y=value.x-1, yend= value.y+1), col="red2", linetype=1, size=.23,
@@ -287,7 +288,7 @@ p05a<-ggplot(oil.balance %>% subset(name != "import"), aes(year,value, col=name)
   #              arrow = arrow(length = unit(0.04, "npc")))+
   # geom_segment(data=ob1, aes(xend=year, yend=value.y-1, y= 0), col="blue1", linetype=1, size=.23,
   #              arrow = arrow(length = unit(0.04, "npc")))+
-  annotate("text", x= 2017, y=34, label= paste0("2017\n net oil imports\n~ ", ob.p, "%"), col="red3", size=3.2)+
+  annotate("text", x= 2018, y=34, label= paste0("2018\n net oil imports\n~ ", ob.p, "%"), col="red3", size=3.2)+
   annotate("text", x= 2030, y=34, label= paste0("2030 (trend)\nnet oil imports\n~ ", "100", "%"), col="grey20", size=3.2)+
   # stat_smooth(data=oil.balance %>% subset(name != "import" & year>1999), method="lm",
   #             se=F, fullrange=T, size=.5, linetype=2 )+
@@ -311,7 +312,7 @@ p06<-ggplot(coal.con %>% subset(year>1980), aes(year, value- coal.con.2005, col=
         
         axis.title.y.right= element_text(angle = -90, hjust = 1, color = my.cols[2]))+
   # annotate("text", x=1995, y=8, label= "oil consumption added\n ", size=6, col="red3")+
-  annotate("text", x=2006, y=-12, label= paste("coal consumption removed\n~", signif(abs(tail(coal.con$value,1)-coal.con.2005 )*mtoc2co2e,2) ,"million tonnes CO2-e\n in 2017  cf. 2005"), 
+  annotate("text", x=2006, y=-12, label= paste("coal consumption removed\n~", signif(abs(tail(coal.con$value,1)-coal.con.2005 )*mtoc2co2e,2) ,"million tonnes CO2-e\n in 2018  cf. 2005"), 
            fontface =3, size=4, col=my.cols[2])+
   annotate("text", x=2011, y=-24, label= paste("assuming", mtoc2co2e,"tonnes CO2\nfor every oil equiv. tonne coal"), fontface=3, size=2.5, col="grey70")+
   
@@ -328,7 +329,7 @@ p06<-ggplot(coal.con %>% subset(year>1980), aes(year, value- coal.con.2005, col=
   theme(legend.position="None")
 
 emissions.2005 <-emissions$value[emissions$year==2005]
-emissions.2017 <-emissions$value[emissions$year==2017]
+emissions.2018 <-emissions$value[emissions$year==2018]
 coal.growth.rate <- c(round(lm(value/emissions.2005 ~year, emissions %>% subset(year<=2005  &year>1980))$coef[2]*100,1),
                       round(lm(value/emissions.2005 ~year, emissions %>% subset(year>=2005))$coef[2]*100,1))
 
@@ -345,7 +346,7 @@ p07<- ggplot(emissions %>% subset(year>1980), aes(year, value- emissions.2005, c
         
         axis.title.y.right= element_text(angle = -90, hjust = 1, color = my.cols[2]))+
   # annotate("text", x=1995, y=8, label= "oil consumption added\n ", size=6, col="red3")+
-  annotate("text", x=2012, y=-20, label= paste("energy sector added\n~", signif(abs(emissions.2017 -emissions.2005 ) ,3) ,"million tonnes CO2-e\n in 2017  cf. 2005"), 
+  annotate("text", x=2012, y=-20, label= paste("energy sector added\n~", signif(abs(emissions.2018 -emissions.2005 ) ,3) ,"million tonnes CO2-e\n in 2018  cf. 2005"), 
            fontface =3, size=4, col=my.cols[2])+
   # annotate("text", x=2011, y=-24, label= paste("assuming", mtoc2co2e," mill. tonnes CO2\nfor every mill. tonnes oil"), fontface=3, size=2.5, col="grey70")+
   
@@ -366,3 +367,4 @@ p07<- ggplot(emissions %>% subset(year>1980), aes(year, value- emissions.2005, c
 
 return (list(p1=p01,p1a=p01a,  p1b=p01b, p1c= p01c , p2=p02,  p3=p03 , p3a=p03a , p4=p04 ,p5=p05, p5a=p05a, p6=p06, p7=p07))
 }
+

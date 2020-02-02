@@ -11,8 +11,8 @@ if (file.exists('./src/tables.R')) source('./src/tables.R')
 if (file.exists('./src/reports.R')) source('./src/reports.R') 
 
 source('./src/plan.R')
-if (full.repro==TRUE) drake::clean(force=T)
-drake::make( reproplan )
+if (full.repro==TRUE) drake::clean()
+drake::make( reproplan, force =T)
 source('./src/outputs.R')
   
   
