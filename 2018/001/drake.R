@@ -14,6 +14,7 @@ if (file.exists('./src/tables.R')) source('./src/tables.R')
 if (full.repro==TRUE) drake::clean(force=T)
 
 drake::make( reproplan )
+#drake::make(reproplan, recover = TRUE)
 source('./src/outputs.R')
   
   
