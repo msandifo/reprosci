@@ -1,7 +1,7 @@
 if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
   message("---->> updating aemo aggregated")
-  
-  file.names<-reproscir::download_aemo_aggregated(year=2007:2018, months=1:12, local.path=local.path, states="QLD")
+  load(paste0(drake.path, "/data/data.Rdata"))
+  file.names<-reproscir::download_aemo_aggregated(year=2007:lubridate::year(Sys.Date()), months=1:12, local.path=local.path, states="QLD")
   QLD1 = reproscir::read_aemo_aggregated(state='QLD') 
   QLD.month = QLD1 %>% 
       dplyr::group_by(year, month) %>% 
@@ -10,7 +10,7 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
                      TOTALDEMAND= sum(TOTALDEMAND)/length(TOTALDEMAND) )   %>%
   head(-1)
   message("---->> updating lng")
-  lng = reproscir::update_gladstone( local.path=local.path)  %>% subset( !is.na(tonnes))
+  lng =  update_gladstone( local.path=local.path)  %>% subset( !is.na(tonnes))
   message("---->> updating gassb")
   gasbb <- reproscir::download_gasbb() %>%  
      reproscir::read_gasbb( ) %>% 
@@ -19,7 +19,8 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata")) | full.repro){
     dplyr::mutate(year= lubridate::year(gasdate), month= lubridate::month(gasdate)) %>%
     dplyr::group_by(year,month) %>%
     dplyr::summarise(date=mean(gasdate), TOTALDEMAND = mean(reproscir::tjd_to_mw(actualquantity)))
-  save( QLD.month, lng, gasbb , file = paste0(drake.path,"/data/data.Rdata"))
+  save( QLD.month, lng, gasbb ,
+        file = paste0(drake.path,"/data/data.Rdata"))
 } else {
   load(paste0(drake.path, "/data/data.Rdata"))
   day.dif <-Sys.Date()- (tail(QLD.month,2)[1,])$date  # %>% mutate(date= lubridate::ymd(year,month, "01")) # year and date of last records in NEM.month
