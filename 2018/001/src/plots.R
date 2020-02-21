@@ -72,7 +72,10 @@ p02 <-ggplot(gas, aes(date, mw/1000 ))+geom_area(aes( fill=gas.type), alpha=.85,
                                       label="end\nC-Tax"), hjust=-0.,col="Red4", size=3)+
     geom_text(data = data.frame(),aes(x=lubridate::ymd("2017-04-19"), y=3.200,
                                       label="Hazelwood\nclosure"), hjust=-0.,col="darkgreen", size=3)+
-    theme(legend.position = "bottom")
+    theme(legend.position = "bottom")+
+  geom_point(data=gas %>% subset(month==1) %>% 
+               dplyr::group_by(date) %>% 
+               dplyr::summarise(  mw=sum(mw)), size=1, col="red4")
   
 p02 <- p02  +geom_line(data=NEM.month %>% subset(date< max( gas$date)+months(1)), aes(y=VWP*20/1000))+
     coord_cartesian(ylim=c(0,3.200))+
@@ -82,7 +85,13 @@ p02 <- p02  +geom_line(data=NEM.month %>% subset(date< max( gas$date)+months(1))
           axis.title.y.right= element_text(angle = -90, hjust = 0, color = "black"))+
     labs(subtitle="NEM gas generation, prices", x=NULL, 
          y="gigawatts", caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci -> 2018/001")+
-    theme(plot.caption=element_text(colour="grey80", size=8,hjust=1) )
+    theme(plot.caption=element_text(colour="grey80", size=8,hjust=1) )+
+  geom_point(data=gas %>% subset(month==1) %>% 
+               dplyr::group_by(date) %>% 
+               dplyr::summarise(  mw=sum(mw)), size=1., col="red4")+
+geom_point(data=gas %>% subset(month==1) %>% 
+               dplyr::group_by(date) %>% 
+               dplyr::summarise(  mw=sum(mw)), size=.7, col="white", alpha=.3)
 
 
 

@@ -7,7 +7,7 @@ plots <- function(cg.ch4,
                   cptfits, 
                   my.cpts,
                   cg.ch4.cpt.groupings,
-                  m.data , 
+                  my.cpt.data , 
                   us.gas,
                   us.cpt.groupings,
                   cg.us

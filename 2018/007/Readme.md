@@ -129,8 +129,7 @@ Note that `reproplan` processes the files downloaded by
 `./src/downloads.R`, returning `merged.data`
 
   - `source(drake::make( reproplan ))`
-  - `source('./src/ouputs.R')` output charts to the `./figs` directory
-:
+  - `source('./src/ouputs.R')` output charts to the `./figs` directory :
 
 <!-- end list -->
 

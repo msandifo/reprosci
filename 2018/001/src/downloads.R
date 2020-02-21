@@ -8,16 +8,32 @@ if (!file.exists(paste0(drake.path, "/data/data.Rdata"))  ){
   # TAS1 = get_aemo_data(state='TAS') 
   # aemo = data.table::rbindlist(list(NSW1,QLD1,SA1,TAS1,VIC1))  
   aemo= build_aemo()
-  gas.use = gas.use <-data.table::fread(paste0(drake.path, "/data/gas_generation.csv"))%>%
-    purrr::set_names(~ stringr::str_to_lower(.)) %>% 
-    dplyr::mutate(date = lubridate::ymd(paste0(year,"-",month,"-15")),
-                  sum = gas_ccgt+gas_ocgt+gas_steam,
-                  efficiencyLower =(gas_ccgt*.45 +gas_ocgt*.3 + gas_steam*.3 )/sum,
-                  efficiencyUpper =(gas_ccgt*.5 + gas_ocgt*.35 + gas_steam*.35 )/sum) 
+  gas.use  <-
+     data.table::fread(paste0(drake.path,   "/data/OpenNEM.csv"))[,c(1,7:10)] 
+  gas.use$date<-gas.use$date %>% lubridate::dmy_hm()
+     names(gas.use) <-  c("date","gas_recip", "gas_ocgt", "gas_ccgt", "gas_steam")
+    
+     gas.use  <- gas.use  %>%   dplyr::mutate( year= lubridate::year(date),
+                                             month=lubridate::month(date),
+                                             date = lubridate::ymd(paste0(year,"-",month,"-15")),
+                   sum = gas_ccgt+gas_ocgt+gas_steam,
+                   efficiencyLower =(gas_ccgt*.45 +gas_ocgt*.3 + gas_steam*.3 )/sum,
+                   efficiencyUpper =(gas_ccgt*.5 + gas_ocgt*.35 + gas_steam*.35 )/sum)  %>%
+       subset(year>=2010) %>%
+       dplyr::select(year,month,gas_ccgt,gas_ocgt,gas_steam,date,sum,efficiencyLower,efficiencyUpper)
+                               
+  names(gas.use)
+  # gas.use  <-data.table::fread(paste0(drake.path, "/data/gas_generation.csv"))%>%
+  #   purrr::set_names(~ stringr::str_to_lower(.)) %>% 
+  #   dplyr::mutate(date = lubridate::ymd(paste0(year,"-",month,"-15")),
+  #                 sum = gas_ccgt+gas_ocgt+gas_steam,
+  #                 efficiencyLower =(gas_ccgt*.45 +gas_ocgt*.3 + gas_steam*.3 )/sum,
+  #                 efficiencyUpper =(gas_ccgt*.5 + gas_ocgt*.35 + gas_steam*.35 )/sum) 
   gas.tidy = tidyr::gather(gas.use[,1:5], gas.type,value, -year, -month) %>% 
     dplyr::mutate(date = lubridate::ymd(paste0(year,"-",month,"-15")) ,
                   mdays = lubridate::days_in_month(date),
-                  mw= value*1e3/(mdays*24)*12, 
+                #  mw= value*1e3/(mdays*24)*12, 
+                  mw = value*1e3/(mdays*24),
                   gas.type=stringr::str_remove_all(gas.type, "gas_")) 
   
   # nb 5 regions being summed so length is 5x number of time increments
