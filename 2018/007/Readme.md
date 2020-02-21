@@ -5,10 +5,8 @@
 
 Since 2006, atmospheric methane levels have been rising alarmingly. This
 follows a significant pause in growth from 2000-2005, and before that, a
-period of reducing growth rates since the early 90’s. The record from
-Australia’s Cape Grim Observatory show the year on year growth September
-2017 to September 2018 is 0.64% (cf 0.6 for CO2). This latest period of
-extremem growth started around February 2017.
+period of reducing growth rates since the early 90’s.
+<!-- The record from Australia's Cape Grim Observatory show the year on year growth September 2017 to September 2018 is 0.64% (cf 0.6 for CO2). This latest period of extreme growth started around February 2017. -->
 <!-- `{diff(rbind( tail(  cg.ch4,13) %>% head(1),tail( cg.ch4,1) )$value)/(tail(  cg.ch4,2) %>% head(1))$value*100` 
 
 To be added ... Some notes about global warming potential.-->
@@ -18,22 +16,23 @@ subject of considerable discussion in recent literature. It coincides in
 time with the remarkable developments in *shale gas* (or *unconventinal
 gas*) production in the US, which have seen a dramatic increase in US
 natural gas production as well as US *unconventional oil* or *“tight”
-oil* production. For example, the recent increases since Feb 2017, were
-accompanied by a massive increase in US gas production, up almost 10%.
+oil* production. For example, the recent increases in CH4 have been
+accompanied by a massive increase in US gas production, up almost 10%
+p.a.
 
-However, the causal relationship between the two is not at all clear
-because, while atmospheric levels of methane have rise the isotopic
-ratio of the methane has trended to lighter ratios (more negative
-C13/C12 ratios). Thermogenic methane produced from shale gas is
-istopically similar, or slighly heavier than, atmospheric.
+However, the causal relationship between the two is not at all clear.
+While atmospheric levels of methane have rise the isotopic ratio of the
+methane has trended to lighter ratios (more negative C13/C12 ratios).
+Thermogenic methane produced from shale gas is istopically similar, or
+slighly heavier than, atmospheric.
 
 Noting that correlation is not causation, this post explores changes in
 the correlation between several datasets that make for further
 reassessment of the relationships.
 
-I note that since around 2005 there is a very significant correlation
-between the *rate of growth* in CH4 and US gas production. This was not
-the case prior to 2000.
+Since around 2005 there is a very significant correlation between the
+*rate of growth* in CH4 and US gas production. This was not the case
+prior to 2000.
 
   - Most interstingly, the correlation is not with the volume of gas
     produced, but the rate of increase in volume, which suggests any
@@ -43,16 +42,16 @@ the case prior to 2000.
   - We might ask questions about what happens more broadly in the
     production cycle. For example *coal seam gas* (CSG) production in
     the US has dramatically reduced because of cost pressures from the
-    shale gas. CSG methane has isotopically much lighter CH4 than
-    thermogenic. Leakage rates from abandoned CSG/CBM fields need only
-    be a minor proportion of fugitives from shale gas, in order to drive
-    isotope ratios down.
+    shale gas. CSG methane is isotopically much lighter CH4 than
+    thermogenic methane. Leakage rates from abandoned CSG/CBM fields
+    need only be a minor proportion of fugitives from shale gas, in
+    order to drive isotope ratios down.
 
 ## Data Sources
 
-  - US gas volumes form US energy Infroamtion Agency (EIA)
-  - Cape grim Observatoy data from CSIRO
-  - US rig cout data from Baker Hughes
+  - US gas volumes form US Energy Information Agency (EIA)
+  - Cape Grim Observatory data from CSIRO
+  - US rig count data from Baker Hughes
 
 ## Caveats
 
@@ -61,7 +60,7 @@ the case prior to 2000.
     data downloads. This still needs some generics to work for others. I
     am working on this and it will be coming soon …
   - BakerHughes rig count data is distributed as a binary xlsb (binary)
-    format. For conversion to `.xlsz` so it cna be read via packages
+    format. For conversion to `.xlsz` so it can be read via packages
     like `readxl`, I use the soffice cli (from the libreoffice suite)
 
 ## Code
@@ -142,7 +141,16 @@ p007<-drake::readd(p007)
 <img src='./figs/p007_02.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 <img src='./figs/p007_02a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 <img src='./figs/p007_03.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+<img src='./figs/p007_03a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 <img src='./figs/p007_04.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+
+### CH4 carbon isotope
+
+<img src='./figs/p007_05.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
+
+### Rig count
+
+<img src='./figs/p007_06.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 ## Code Notes
 
