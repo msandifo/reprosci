@@ -6,6 +6,8 @@ source('./src/downloads.R')
 if (file.exists('./src/plots.R')) source('./src/plots.R')
 if (file.exists('./src/tables.R')) source('./src/tables.R')
 if (file.exists('./src/reports.R')) source('./src/reports.R')
+if (!exists("do.plots")) do.plots=F
+if (!exists("do.updates")) do.updates=F
 
 cg.ch4= reproscir::read_data("cape.grim.ch4", data=T)  %>% 
   mutate(cdate=date, date=decimal_date(date)) %>%  
@@ -28,8 +30,7 @@ us.gas = reproscir::read_data("eia.us.ng.withdrawals", data=T)[,c(1,3)] %>%
                 trend.grad = 12* (c(NA, diff( trend)/tail( trend, -1))+
                                     c( diff( trend)/head( trend, -1), NA))/2 ) %>%
   rename(cdate=2,us=3)  %>%
-  dplyr::mutate( 
-    value=us) %>%  
+  dplyr::mutate( value=us) %>%  
   #   cdate = dmy(paste0("15-", month(date_decimal(date)),"-", year(date_decimal(date)) )) )  %>% 
   dplyr::select(date, cdate,value) %>%  
   subset(date > min(cg.ch4$date) & date<= max(cg.ch4$date) ) %T>%
@@ -171,7 +172,7 @@ cg.ch4.spread  =cg.us %>%
   #  subset( date < ymd("2015-04-01")) %>% 
   spread(source, trend.grad) %>% 
   rename( cape.grim=`Cape Grim CH4`, US.gas=`US gas production`) %>% 
-  mutate(factor= cut(date,c(ymd("1900-1-01"), ymd("2000-01-01") ,ymd("2100-1-01")), labels=c("pre","post"))),
+  mutate(factor= cut(date,c(ymd("1900-1-01"), ymd("2000-01-01") ,ymd("2100-1-01")), labels=c("pre","post")))
 # cg.ch4.spread$factor <- paste0("pre:", my.year)
 # cg.ch4.spread$factor[cg.ch4.spread$date > my.date] <- paste0("post:", my.year)
 
@@ -182,7 +183,8 @@ p007= plots(cg.ch4,  cptfits, my.cpts, cg.ch4.cpt.groupings, my.cpt.data,
             us.gas,
             us.cpt.groupings, cg.us )
 
-ggsave('./figs/p007_01.png',  p007$p1 ,width=8, height=5)
+if (do.plots) {
+  ggsave('./figs/p007_01.png',  p007$p1 ,width=8, height=5)
 ggsave('./figs/p007_02.png',  p007$p2 ,width=8, height=5)
 ggsave('./figs/p007_03.png',  p007$p3 ,width=8, height=5)
 ggsave('./figs/p007_03a.png',  p007$p3a ,width=8, height=5)
@@ -190,20 +192,22 @@ ggsave('./figs/p007_03a.png',  p007$p3a ,width=8, height=5)
 ggsave('./figs/p007_04.png',  p007$p4 ,width=8, height=5)
 ggsave('./figs/p007_01a.png',  p007$p1a ,width=8, height=5)
 ggsave('./figs/p007_02a.png',  p007$p2a ,width=8, height=5)
-
-
+}
+if (do.updates) reproscir::update_data("noaa.monthly.CGO.c13")
 cg.c13=reproscir::read_data("noaa.monthly.CGO.c13", data=T)  %>% 
   mutate(cdate=date, date=decimal_date(date)) %>%  
   
- reproscir::add_trends()#
+ reproscir::add_trends(order=24,index=3 )#
 #
+names(cg.c13)
 
 library(ggtext) #remotes::install_github("clauswilke/ggtext")
 (p05= ggplot(cg.c13 %>% subset(cdate>dmy("01-11-2000") & !is.na(date)) , 
              aes(date, value ))+
   geom_smooth(span=.3, se=T, size=0, alpha=.25, fill="firebrick3",   show.legend = F)+
   geom_line(size=.1, colour="firebrick3") +
-  geom_point(size=.7, colour="white") +
+    geom_line(  aes(y=trend),colour="firebrick3", size=1.2) +
+    geom_point(size=.7, colour="white") +
   geom_point(size=.5,colour= "firebrick3") +
   theme(legend.position=c(.2,.925))+
   guides(  colour = guide_legend( title = NULL))+
@@ -222,7 +226,7 @@ library(ggtext) #remotes::install_github("clauswilke/ggtext")
 )
 
 (p05a= ggplot(cg.c13 %>% subset(cdate>dmy("01-11-2000") & !is.na(date)) , 
-             aes(date, trend.grad ))+
+             aes(date, trend.grad*1000))+
     geom_smooth(span=.25, se=T, size=0, alpha=.25, fill="firebrick3",   show.legend = F)+
     geom_line(size=.1, colour="firebrick3") +
     geom_point(size=.7, colour="white") +
@@ -233,18 +237,18 @@ library(ggtext) #remotes::install_github("clauswilke/ggtext")
     scale_fill_manual(values =c( "firebrick2"))+
     
     labs(title=NULL,
-         subtitle= "the methane enigma #5",
+         subtitle= "the methane enigma #5a",
          x=NULL,          
          caption= "Mike Sandiford, msandifo@gmail.com\n repo: https://github.com/msandifo/reprosci/tree/master/2018/007",
-         y =  "*&delta;*<sup>13</sup>C<sub>CH<sub>4</sub></sub> (&permil; PDB)") +
+         y =  "*&Delta;(*&delta;*<sup>13</sup>C<sub>CH<sub>4</sub></sub> )")  +
     theme(
       axis.title.x = element_markdown(),
       axis.title.y = element_markdown()
     )
 )
-ggsave('./figs/p007_05.png',  p05 ,width=8, height=5)
+if (do.plots) ggsave('./figs/p007_05.png',  p05 ,width=8, height=5)
 
-reproscir::update_data("bh.rc.bytrajectory")
+if (do.updates) reproscir::update_data("bh.rc.bytrajectory")
 (p06<-reproscir::read_data("bh.rc.bytrajectory", data=T)[,1:4] %>%
   gather(   type, value,  -date) %>%
   subset(type=="horz") %>%
@@ -261,4 +265,4 @@ reproscir::update_data("bh.rc.bytrajectory")
   scale_fill_manual(values =c( "firebrick2","green4" )) 
 )
 
-ggsave('./figs/p007_06.png',  p06 ,width=8, height=5)
+if (do.plots) ggsave('./figs/p007_06.png',  p06 ,width=8, height=5)
