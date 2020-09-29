@@ -1,7 +1,8 @@
 007
 ================
 
-## The methane enigma
+The methane enigma
+------------------
 
 Since 2006, atmospheric methane levels have been rising alarmingly. This
 follows a significant pause in growth from 2000-2005, and before that, a
@@ -34,12 +35,12 @@ Since around 2005 there is a very significant correlation between the
 *rate of growth* in CH4 and US gas production. This was not the case
 prior to 2000.
 
-  - Most interstingly, the correlation is not with the volume of gas
+-   Most interstingly, the correlation is not with the volume of gas
     produced, but the rate of increase in volume, which suggests any
     plausible causation must associate with the way gas fields are
     developed.
 
-  - We might ask questions about what happens more broadly in the
+-   We might ask questions about what happens more broadly in the
     production cycle. For example *coal seam gas* (CSG) production in
     the US has dramatically reduced because of cost pressures from the
     shale gas. CSG methane is isotopically much lighter CH4 than
@@ -47,23 +48,26 @@ prior to 2000.
     need only be a minor proportion of fugitives from shale gas, in
     order to drive isotope ratios down.
 
-## Data Sources
+Data Sources
+------------
 
-  - US gas volumes form US Energy Information Agency (EIA)
-  - Cape Grim Observatory data from CSIRO
-  - US rig count data from Baker Hughes
+-   US gas volumes form US Energy Information Agency (EIA)
+-   Cape Grim Observatory data from CSIRO
+-   US rig count data from Baker Hughes
 
-## Caveats
+Caveats
+-------
 
-  - not fuly reproducible yet as I am developing a `data.yml`
+-   not fuly reproducible yet as I am developing a `data.yml`
     specification in read via the `reropscir` package to implement the
     data downloads. This still needs some generics to work for others. I
     am working on this and it will be coming soon …
-  - BakerHughes rig count data is distributed as a binary xlsb (binary)
+-   BakerHughes rig count data is distributed as a binary xlsb (binary)
     format. For conversion to `.xlsz` so it can be read via packages
     like `readxl`, I use the soffice cli (from the libreoffice suite)
 
-## Code
+Code
+----
 
 The code base is in `r` and is managed within RStudio, using the `drake`
 package, and my `reoproscir` package on `github` obtained with
@@ -75,66 +79,60 @@ will likely need reinstalling with
 The code can be executed by opening the `Rstudio` project `007.Rproj`
 and sourcing `drake.R`.
 
-``` r
-source('drake.R')
-```
+    source('drake.R')
 
 Details of the steps invoked by `drake.R` are summarised below.
 
-  - `source('./src/packages.R')` checks for and automatically installs
+-   `source('./src/packages.R')` checks for and automatically installs
     missing package dependencies
     <!-- ```tidyverse```, ```ggplot2```, ```magrittr```, ```purrr```, ```stringr```, ```drake```, ```lubridate```, ```rvest```, ```rappdirs```,```data.table```, ```fasttime```, ```devtools```, ```wbstats```  -->
     <!--  from cran, and ```hrbrthemes```  and ```reproscir``` from the github repos ```hrbrmstr/hrbrthemes``` and ```msandifo/reproscir``` -->
 
-  - `source('./src/settings.R')` sets variables, such as the
+-   `source('./src/settings.R')` sets variables, such as the
     `drake.path`,
 
-  - `source('./src/functions.R')` reads any functions not in `reproscir`
+-   `source('./src/functions.R')` reads any functions not in `reproscir`
 
-  - `source('./src/theme.R')` sets a ggplot theme derived from
+-   `source('./src/theme.R')` sets a ggplot theme derived from
     `hrbrthemes`
 
-  - `source('./src/plots.R')` plot functions
+-   `source('./src/plots.R')` plot functions
 
-  - `source('./src/downloads.R')` directs the download of the relevant
+-   `source('./src/downloads.R')` directs the download of the relevant
     data files to be downloaded into the local directory set by
     `local.path`. By default `local.path=NULL` in which case data is
     downloaded via `rappdirs::user_cache_dir()` to a folder in the users
     cache directory (for macOSX, `~/Library/cache`) to
     `file.path(local.path, aemo)`.
 
-  - `source('./src/plan.R')` defines the drake plan `reproplan`
+-   `source('./src/plan.R')` defines the drake plan `reproplan`
 
-  - `source('./src/ouputs.R')` potsprocessing output functions
+-   `source('./src/ouputs.R')` potsprocessing output functions
 
 The dependency structure of the reprplan is obtained by procesing as
 follows
 
-``` r
-source('./src/settings.R')
-source('./src/theme.R')
-source('./src/functions.R')
-source('./src/plots.R')
-source('./src/plan.R')
-drake::make( reproplan )
-config <- drake::drake_config(reproplan)
-graph <- drake::drake_graph_info(config, group = 'status', clusters = 'imported')
-drake::render_drake_graph(graph, file='figs/rmd_render_drake.png')
-```
+    source('./src/settings.R')
+    source('./src/theme.R')
+    source('./src/functions.R')
+    source('./src/plots.R')
+    source('./src/plan.R')
+    drake::make( reproplan )
+    config <- drake::drake_config(reproplan)
+    graph <- drake::drake_graph_info(config, group = 'status', clusters = 'imported')
+    drake::render_drake_graph(graph, file='figs/rmd_render_drake.png')
 
 <img src='./figs/rmd_render_drake.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
 Note that `reproplan` processes the files downloaded by
 `./src/downloads.R`, returning `merged.data`
 
-  - `source(drake::make( reproplan ))`
-  - `source('./src/ouputs.R')` output charts to the `./figs` directory :
+-   `source(drake::make( reproplan ))`
+-   `source('./src/ouputs.R')` output charts to the `./figs` directory :
 
-<!-- end list -->
+<!-- -->
 
-``` r
-p007<-drake::readd(p007)
-```
+    p007<-drake::readd(p007)
 
 <img src='./figs/p007_01.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 <img src='./figs/p007_01a.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
@@ -152,6 +150,8 @@ p007<-drake::readd(p007)
 
 <img src='./figs/p007_06.png' alt='hist1' align='center' style = 'border: none; float: center;' width = '1000px'>
 
-## Code Notes
+Code Notes
+----------
 
-## Errata
+Errata
+------

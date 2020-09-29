@@ -68,8 +68,11 @@ plots <- function(cg.ch4,
               aes(date, trend.grad, colour=source))+
       geom_smooth(span=.165, se=T, size=0, alpha=.5,   aes(  fill=source), show.legend = F)+
       geom_line(size=.1) +
+
       geom_point(size=.7, colour="white") +
       geom_point(size=.5) +
+    geom_vline(xintercept=2017, size=.2, linetype=2)+
+
       theme(legend.position=c(.2,.925))+
       guides(  colour = guide_legend( title = NULL))+
       scale_colour_manual(values =c("royalblue4","firebrick2"))+
@@ -98,7 +101,7 @@ plots <- function(cg.ch4,
     guides(  colour = guide_legend( title = NULL))+
     scale_colour_manual(values =c("royalblue4","firebrick2"))+
     scale_fill_manual(values =c("royalblue4","firebrick2"))+
-    scale_y_continuous(labels = signif_scale, 
+     scale_y_continuous(labels = signif_scale, 
                        sec.axis = sec_axis(~./10,  
                                            "Cape Grim CH4 growth rate\ndeseasonalised and annualised", 
                                            labels = signif_scale))+
@@ -119,6 +122,7 @@ plots <- function(cg.ch4,
     ggrepel::geom_text_repel(nudge_y=1, size=2.5, segment.size=.25 )+
     geom_point(size=4, colour="white")+
     geom_point(size=3.3)+
+
     scale_colour_manual(values =c("royalblue4","firebrick2"))+
     scale_fill_manual(values =c(  "royalblue4","firebrick2"))+
     theme(legend.position="none")+

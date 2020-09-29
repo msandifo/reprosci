@@ -25,7 +25,7 @@ download_aemo_current <- function(states = c("NSW", "QLD", "SA", "TAS", "VIC"),
 ) {
   local.path=validate_directory(local.path)
    for (state in states) {
-    file.name <- paste0("/DATACURRENTMONTH_", state, "1.csv")
+    file.name <- paste0("DATACURRENTMONTH_", state, "1.csv")
     remote.url <- paste0(remote.path, file.name)
     local.file <- paste0(local.path, file.name)
     download.file(remote.url, local.file)
